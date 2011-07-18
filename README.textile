@@ -78,14 +78,14 @@ h2. Operating System Prep
 
 h3. Fedora 15
 
-    bc. yum update -y
-    yum install -y gcc gcc-c++ kernel-devel make autoconf flex bison git java-1.6.0-openjdk java-1.6.0-openjdk-devel ruby ruby-libs ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc ruby-mode rubygems rpm-build libxml2 libxml2-devel libxslt libxslt-devel wget automake help2man libtool gettext texinfo which
-    gem install fpm ohai --no-rdoc --no-ri
-    wget https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
-    git clone git://github.com/adamhjk/omnibus.git
-    cd omnibus
-    mkdir build
-    lein deps
+bc.   yum update -y
+bc.   yum install -y gcc gcc-c++ kernel-devel make autoconf flex bison git java-1.6.0-openjdk java-1.6.0-openjdk-devel ruby ruby-libs ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc ruby-mode rubygems rpm-build libxml2 libxml2-devel libxslt libxslt-devel wget automake help2man libtool gettext texinfo which
+bc.   gem install fpm ohai --no-rdoc --no-ri
+bc.   wget https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
+bc.   git clone git://github.com/adamhjk/omnibus.git
+bc.   cd omnibus
+bc.   mkdir build
+bc.   lein deps
 
 h3. SL 6
 
