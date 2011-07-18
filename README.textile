@@ -44,7 +44,7 @@ To add new software to omnibus, you want to extract it and commit the source in 
   3. Removed the tarball
   4. Added the following configuration in config/software/gdbm.clj
 
-(software "gdbm" :source "gdbm-1.8.3"
+bc. (software "gdbm" :source "gdbm-1.8.3"
                  :steps [["./configure" "--prefix=/opt/opscode/embedded"]
                          (if (is-os? "darwin") ["perl" "-pi" "-e" "s/BINOWN = bin/BINOWN = root/g" "Makefile"])
                          (if (is-os? "darwin") ["perl" "-pi" "-e" "s/BINGRP = bin/BINGRP = wheel/g" "Makefile"])
@@ -57,7 +57,7 @@ h2. Adding software to a project
 
 In config/projects, you will find the actual project definitions themselves.  These contain a name for the project, a version number, and the build order.  For the chef client:
 
-(project 
+bc. (project 
   "chef-full" 
   "0.9.8" 
   [ "zlib" "libiconv" "db" "gdbm" "ncurses" "openssl" "libxml2" "libxslt" "ree" "rubygems" "rsync" "chef" ])
@@ -70,7 +70,7 @@ h2. The full build process
 
 If you want to kick off a full build, the easiest way is with:
 
-  $ sudo lein run --project-name "chef-full" --bucket-name FULL_STACK --s3-access-key "ACCESS_KEY" --s3-secret-key "SECRET_KEY"                                             
+bc. $ sudo lein run --project-name "chef-full" --bucket-name FULL_STACK --s3-access-key "ACCESS_KEY" --s3-secret-key "SECRET_KEY"                                             
 
 The resulting build artifact will be dropped off in the S3 bucket named above. If you want to submit a build to us, drop it off in your own bucket, and let us know where and how to test the final product.
 
