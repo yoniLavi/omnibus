@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o errexit
+
 export LEIN_ROOT=true
 export PATH=/opt/opscode/embedded/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/gnu/bin:/usr/sfw/bin:/usr/gcc/4.3/bin:/var/ruby/1.8/gem_home/bin
 cd /root/omnibus
