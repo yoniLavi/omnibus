@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 
 require 'systemu'
+require 'net/ssh/multi'
+
+
 
 BASE_PATH = File.dirname(__FILE__)
 VM_BASE_PATH = File.expand_path("~/Documents/Virtual Machines.localized")
@@ -11,96 +14,86 @@ S3_SECRET_KEY = ARGV[3]
 SPECIFIC_HOSTS = ARGV[4..-1] || []
 
 hosts_to_build = {
-  'debian-6-i686' => {
-    "vm" => "debian-6-i686.vmwarevm"
-  },
-  'debian-6-x86_64' => {
-    "vm" => "debian-6-x86_86.vmwarevm"
-  },
-  'el-6-i686' => {
-    "vm" => "SL-6-i386.vmwarevm"
-  },
-  'el-6-x86_64' => {
-    "vm" => "SL-6-x86_64.vmwarevm"
-  },
-  'el-5.6-i686' => {
-    "vm" => "centos-5.6-i386.vmwarevm"
-  },
-  'el-5.6-x86_64' => {
-    "vm" => "centos-5.6-x86_64.vmwarevm"
-  },
-  'ubuntu-1004-i686' => {
-    "vm" => "ubuntu-1004-i386.vmwarevm"
-  },
-  'ubuntu-1004-x86_64' => {
-    "vm" => "ubuntu-1004-x86_64.vmwarevm"
-  },
-  'ubuntu-1104-i686' => {
-    "vm" => "ubuntu-1104-i386.vmwarevm"
-  },
-  'ubuntu-1104-x86_64' => {
-    "vm" => "ubuntu-1104-x86_64.vmwarevm"
-  },
+  'debian-6-i686' => "debian-6-i386.opscode.us",
+  'debian-6-x86_64' => "debian-6-x86-64.opscode.us",
+  'el-6-i686' => "sl-6-i386.opscode.us",
+  'el-6-x86_64' => "sl-6-x86-64.opscode.us",
+  'el-5.6-i686' => "centos-5-i386.opscode.us", 
+  'el-5.6-x86_64' => "centos-5-x86-64.opscode.us",
+  'ubuntu-1004-i686' => "ubuntu-1004-i386.opscode.us",
+  'ubuntu-1004-x86_64' => "ubuntu-1004-x86-64.opscode.us",
+  'ubuntu-1104-i686' => "ubuntu-1104-i386.opscode.us",
+  'ubuntu-1104-x86_64' => "ubuntu-1104-x86-64.opscode.us",
+  'openindiana-148-i686' => "openindiana-148-i386.opscode.us"
 }
 
-def run_command(cmd)
-  puts "Running #{cmd}"
-  status, stdout, stderr = systemu cmd 
-  raise "Command failed: #{stdout}, #{stderr}" if status.exitstatus != 0
+session = Net::SSH::Multi.start(:concurrent_connections => 6)
+hosts_to_build.each do |host_type, build_host|
+  session.use("root@#{build_host}")
 end
-
-build_status = Hash.new
-child_pids = Hash.new
-build_at_a_time = 2 
-total_hosts = hosts_to_build.keys.length
-current_count = 0 
-total_count = 0
-hosts_to_build.each do |host_type, host_data|
-  if SPECIFIC_HOSTS.length > 0
-    next unless SPECIFIC_HOSTS.include?(host_type)
-  end
-  total_count += 1
-  current_count += 1
-
-  pid = fork
-  if pid
-    child_pids[pid] = host_type
-    if current_count == build_at_a_time 
-      current_count = 0
-      Process.waitall.each do |pstat|
-        if pstat[1].exitstatus != 0
-          build_status[host_type] = "failed"
-          puts "Failed to build: #{child_pids[pstat[0]]}"
-        else
-          build_status[host_type] = "success"
-        end
-      end
-    end
-  else
-    puts "Building #{host_type}"
-    ENV['PATH'] = "#{ENV['PATH']}:/Library/Application Support/VMware Fusion"
-    vm_path = "#{VM_BASE_PATH}/#{host_data["vm"]}"
-    begin
-      run_command "vmrun start '#{vm_path}'"
-      run_command "vmrun -gu root -gp opscode runProgramInGuest '#{vm_path}' /root/omnibus/build-omnibus.sh #{PROJECT} #{BUCKET} '#{S3_ACCESS_KEY}' '#{S3_SECRET_KEY}'"
-      run_command "vmrun -gu root -gp opscode CopyFileFromGuestToHost '#{vm_path}' /tmp/omnibus.out '#{BASE_PATH}/build-output/#{host_type}.out'"
-    ensure
-      run_command "vmrun stop '#{vm_path}'"
-    end
-    exit 0
-  end
+channel = session.exec "/root/omnibus/build-omnibus.sh #{PROJECT} #{BUCKET} '#{S3_ACCESS_KEY}' '#{S3_SECRET_KEY}'" do |ch, stream, data|
+  puts "[#{ch[:host]} : #{stream}] #{data}"
 end
-
-Process.waitall.each do |pstat|
-  if pstat[1].exitstatus != 0
-    build_status[child_pids[pstat[0]]] = "failed"
-    puts "Failed to build: #{child_pids[pstat[0]]}"
-  else
-    build_status[child_pids[pstat[0]]] = "success"
-  end
+channel.wait
+channel.each do |c|
+  puts "Failed on #{ch[:host]}" if c[:exit_status] != 0
+  run_command "scp root@#{ch[:host]}:/tmp/omnibus.out '#{BASE_PATH}/build-output/#{host_type}.out'"
+  puts "Build output captured."
 end
+session.close
 
-build_status.each do |key, value|
-  puts "#{key}: #{value}"
-end
 
+#def run_command(cmd)
+#  puts "Running #{cmd}"
+#  status, stdout, stderr = systemu cmd 
+#  raise "Command failed: #{stdout}, #{stderr}" if status.exitstatus != 0
+#end
+#
+#build_status = Hash.new
+#child_pids = Hash.new
+#build_at_a_time = 5 
+#total_hosts = hosts_to_build.keys.length
+#current_count = 0 
+#total_count = 0
+#hosts_to_build.each do |host_type, build_host|
+#  if SPECIFIC_HOSTS.length > 0
+#    next unless SPECIFIC_HOSTS.include?(host_type)
+#  end
+#  total_count += 1
+#  current_count += 1
+#
+#  pid = fork
+#  if pid
+#    child_pids[pid] = host_type
+#    if current_count == build_at_a_time 
+#      current_count = 0
+#      Process.waitall.each do |pstat|
+#        if pstat[1].exitstatus != 0
+#          build_status[host_type] = "failed"
+#          puts "Failed to build: #{child_pids[pstat[0]]}"
+#        else
+#          build_status[host_type] = "success"
+#        end
+#      end
+#    end
+#  else
+#    puts "Building #{host_type}"
+#    run_command "ssh root@#{build_host} /root/omnibus/build-omnibus.sh #{PROJECT} #{BUCKET} '#{S3_ACCESS_KEY}' '#{S3_SECRET_KEY}'"
+#    run_command "scp root@#{build_host}:/tmp/omnibus.out '#{BASE_PATH}/build-output/#{host_type}.out'"
+#    exit 0
+#  end
+#end
+#
+#Process.waitall.each do |pstat|
+#  if pstat[1].exitstatus != 0
+#    build_status[child_pids[pstat[0]]] = "failed"
+#    puts "Failed to build: #{child_pids[pstat[0]]}"
+#  else
+#    build_status[child_pids[pstat[0]]] = "success"
+#  end
+#end
+#
+#build_status.each do |key, value|
+#  puts "#{key}: #{value}"
+#end
+#

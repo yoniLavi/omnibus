@@ -150,6 +150,17 @@ cd omnibus
 mkdir build
 lein deps
 
+h3. Joyent Smartmachine
+
+bc. pkgin up
+pkgin in autoconf-2.68 gtexinfo bison flex
+wget --no-check-certificate https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
+git clone git://github.com/adamhjk/omnibus.git
+cd omnibus
+mkdir build
+lein deps
+
+
 h3. OpenIndiana 148
 
 bc. #!/bin/bash
