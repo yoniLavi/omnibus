@@ -29,15 +29,18 @@ hosts_to_build = {
 
 session = Net::SSH::Multi.start(:concurrent_connections => 6)
 hosts_to_build.each do |host_type, build_host|
+  if SPECIFIC_HOSTS.length > 0
+    next unless SPECIFIC_HOSTS.include?(host_type)
+  end
   session.use("root@#{build_host}")
 end
 channel = session.exec "/root/omnibus/build-omnibus.sh #{PROJECT} #{BUCKET} '#{S3_ACCESS_KEY}' '#{S3_SECRET_KEY}'" do |ch, stream, data|
   puts "[#{ch[:host]} : #{stream}] #{data}"
 end
-channel.wait
+session.loop
 channel.each do |c|
-  puts "Failed on #{ch[:host]}" if c[:exit_status] != 0
-  run_command "scp root@#{ch[:host]}:/tmp/omnibus.out '#{BASE_PATH}/build-output/#{host_type}.out'"
+  puts "Failed on #{c[:host]}" if c[:exit_status] != 0
+  run_command "scp root@#{c[:host]}:/tmp/omnibus.out '#{BASE_PATH}/build-output/#{c[:host]}.out'"
   puts "Build output captured."
 end
 session.close
