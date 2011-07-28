@@ -26,6 +26,13 @@ hosts_to_build = {
   'ubuntu-1104-x86_64' => "ubuntu-1104-x86-64.opscode.us",
   'openindiana-148-i686' => "openindiana-148-i386.opscode.us"
 }
+build_to_hosts = hosts_to_build.invert 
+build_status = {}
+
+def run_command(cmd)
+  status, stdout, stderr = systemu cmd 
+  raise "Command failed: #{stdout}, #{stderr}" if status.exitstatus != 0
+end
 
 session = Net::SSH::Multi.start(:concurrent_connections => 6)
 hosts_to_build.each do |host_type, build_host|
@@ -35,22 +42,28 @@ hosts_to_build.each do |host_type, build_host|
   session.use("root@#{build_host}")
 end
 channel = session.exec "/root/omnibus/build-omnibus.sh #{PROJECT} #{BUCKET} '#{S3_ACCESS_KEY}' '#{S3_SECRET_KEY}'" do |ch, stream, data|
-  puts "[#{ch[:host]} : #{stream}] #{data}"
+  puts "[#{build_to_hosts[ch[:host]]}] #{data}"
 end
 session.loop
 channel.each do |c|
-  puts "Failed on #{c[:host]}" if c[:exit_status] != 0
-  run_command "scp root@#{c[:host]}:/tmp/omnibus.out '#{BASE_PATH}/build-output/#{c[:host]}.out'"
-  puts "Build output captured."
+  build_status[build_to_hosts[c[:host]]] = c[:exit_status] == 0 ? "success" : "failed"
+  output_file = "#{BASE_PATH}/build-output/#{build_to_hosts[c[:host]]}.out"
+  run_command "scp root@#{c[:host]}:/tmp/omnibus.out '#{output_file}'"
+  puts "[#{c[:host]}] Build output captured to #{output_file}"
 end
 session.close
 
+puts "------------"
+exit_code = 0  
+build_status.keys.sort.each do |key|
+  if build_status[key] == 'failed'
+    exit_code = 1 
+  end
+  puts "#{key}: #{build_status[key]}"
+end
 
-#def run_command(cmd)
-#  puts "Running #{cmd}"
-#  status, stdout, stderr = systemu cmd 
-#  raise "Command failed: #{stdout}, #{stderr}" if status.exitstatus != 0
-#end
+exit exit_code
+
 #
 #build_status = Hash.new
 #child_pids = Hash.new
