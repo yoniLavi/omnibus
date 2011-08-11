@@ -113,7 +113,7 @@
   (let [
         asset-name (str project-name "-" version "-" iteration "." (os-data :machine) ".rpm")
         asset-path (.toString (file-str *omnibus-pkg-dir* "/" asset-name))
-        status (sh "fpm" "-s" "dir" "-t" "rpm" "-v" version "--iteration" iteration "-n" project-name "/opt/opscode" "-m" "Opscode, Inc." "--post-install" (str *omnibus-source-dir* "postinst") "--post-uninstall" (str *omnibus-source-dir* "/postrm") "--description" "The full stack install of Opscode Chef" "--url" "http://www.opscode.com" :dir "./pkg")]
+        status (sh "fpm" "-s" "dir" "-t" "rpm" "-v" version "--iteration" iteration "-n" project-name "/opt/opscode" "-m" "Opscode, Inc." "--post-install" (str *omnibus-source-dir* "/postinst") "--post-uninstall" (str *omnibus-source-dir* "/postrm") "--description" "The full stack install of Opscode Chef" "--url" "http://www.opscode.com" :dir "./pkg")]
     (log-sh-result status
                    (do
                      (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*) 
