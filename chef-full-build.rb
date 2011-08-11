@@ -3,8 +3,6 @@
 require 'systemu'
 require 'net/ssh/multi'
 
-
-
 BASE_PATH = File.dirname(__FILE__)
 VM_BASE_PATH = File.expand_path("~/Documents/Virtual Machines.localized")
 PROJECT = ARGV[0]
@@ -64,52 +62,3 @@ end
 
 exit exit_code
 
-#
-#build_status = Hash.new
-#child_pids = Hash.new
-#build_at_a_time = 5 
-#total_hosts = hosts_to_build.keys.length
-#current_count = 0 
-#total_count = 0
-#hosts_to_build.each do |host_type, build_host|
-#  if SPECIFIC_HOSTS.length > 0
-#    next unless SPECIFIC_HOSTS.include?(host_type)
-#  end
-#  total_count += 1
-#  current_count += 1
-#
-#  pid = fork
-#  if pid
-#    child_pids[pid] = host_type
-#    if current_count == build_at_a_time 
-#      current_count = 0
-#      Process.waitall.each do |pstat|
-#        if pstat[1].exitstatus != 0
-#          build_status[host_type] = "failed"
-#          puts "Failed to build: #{child_pids[pstat[0]]}"
-#        else
-#          build_status[host_type] = "success"
-#        end
-#      end
-#    end
-#  else
-#    puts "Building #{host_type}"
-#    run_command "ssh root@#{build_host} /root/omnibus/build-omnibus.sh #{PROJECT} #{BUCKET} '#{S3_ACCESS_KEY}' '#{S3_SECRET_KEY}'"
-#    run_command "scp root@#{build_host}:/tmp/omnibus.out '#{BASE_PATH}/build-output/#{host_type}.out'"
-#    exit 0
-#  end
-#end
-#
-#Process.waitall.each do |pstat|
-#  if pstat[1].exitstatus != 0
-#    build_status[child_pids[pstat[0]]] = "failed"
-#    puts "Failed to build: #{child_pids[pstat[0]]}"
-#  else
-#    build_status[child_pids[pstat[0]]] = "success"
-#  end
-#end
-#
-#build_status.each do |key, value|
-#  puts "#{key}: #{value}"
-#end
-#
