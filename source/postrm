@@ -1,8 +1,9 @@
 #!/bin/bash
 
-rm /usr/bin/chef-client
-rm /usr/bin/chef-solo
-rm /usr/bin/shef
-rm /usr/bin/knife
-rm /usr/bin/ohai
+# Clean up binary symlinks if they exist
+rm -f /usr/bin/chef-client
+rm -f /usr/bin/chef-solo
+rm -f /usr/bin/shef
+rm -f /usr/bin/knife
+rm -f /usr/bin/ohai
 
