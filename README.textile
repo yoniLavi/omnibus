@@ -206,6 +206,19 @@ gem install fpm
 
 h3. FreeBSD 8.2
 
+bc. portsnap fetch update
+cd /usr/ports/ports-mgmt/portupgrade && make && make install # Be sure that BATCH=yes
+portupgrade -a -m BATCH=yes # Upgrade all ports
+portinstall lang/python26 devel/autoconf textproc/flex devel/bison devel/git java/openjdk6 lang/ruby19
+gem update
+gem install ohai
+gem install fpm
+wget --no-check-certificate https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
+git clone git://github.com/adamhjk/omnibus.git
+cd omnibus
+mkdir build
+lein deps
+
 h2. Bundled software and licensing
 
 All software under the "source" directory retains the license by which it was originally distributed.
