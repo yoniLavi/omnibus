@@ -30,7 +30,7 @@ module Omnibus
         dependency = Gem::Dependency.new(gem_name, '>= 0')
         gem_version = @gem_env.candidate_version_from_remote(dependency, *[]).to_s
       end
-      puts gem_version
+
       # extract a Gem's executable names from the remote .gem file since
       # you *CANNOT* retrieve these executables using Gem::DependencyInstaller >_<
       gem_file = "#{gem_name}-#{gem_version}.gem"
