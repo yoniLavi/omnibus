@@ -206,11 +206,13 @@ gem install fpm
 
 h3. FreeBSD 8.2
 
+bc. COMING SOON
+
 h3. Windows
 
-Run in PowerShell 2.0+.  "*Set-ExecutionPolicy RemoteSigned*" must be set.
+Run in PowerShell 2.0+.  "*Set-ExecutionPolicy RemoteSigned*" must be set on the target machine if run as a 'ps1' script (vs pasted into PowerShell).
 
-bc. $client = new-object System.Net.WebClient
+bc.. $client = new-object System.Net.WebClient
 
 # download/install Git
 $client.DownloadFile("http://msysgit.googlecode.com/files/Git-1.7.6-preview20110708.exe","$ENV:TEMP\gitinstaller.exe")
@@ -226,9 +228,7 @@ $client.DownloadFile("http://cloud.github.com/downloads/oneclick/rubyinstaller/D
 New-Item C:\DevKit -type directory
 Copy-Item $ENV:TEMP\rubydevkit.exe c:\DevKit
 Start-Process -FilePath "C:\DevKit\rubydevkit.exe" '-y' -Wait
-
 $ENV:PATH = "$ENV:PATH;C:\ruby\bin;C:\git\cmd"
-
 Start-Process -FilePath "ruby.exe" 'C:\DevKit\dk.rb init' -Wait
 Start-Process -FilePath "ruby.exe" 'C:\DevKit\dk.rb install' -Wait
 
@@ -246,7 +246,10 @@ cookbook_path "C:/omnibus/chef-repo/cookbooks"
 
 $config | Out-File -Encoding ASCII C:\chef\solo.rb
 
+# check out omnibus code
 Start-Process -FilePath "git" 'clone git://github.com/schisamo/omnibus.git C:\omnibus' -Wait -NoNewWindow
+
+p. 
 
 h2. Bundled software and licensing
 
