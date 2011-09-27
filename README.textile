@@ -209,7 +209,7 @@ h3. FreeBSD 8.2
 bc. portsnap fetch update
 cd /usr/ports/ports-mgmt/portupgrade && make && make install # Be sure that BATCH=yes
 portupgrade -a -m BATCH=yes # Upgrade all ports
-portinstall lang/python26 devel/autoconf textproc/flex devel/bison devel/git java/openjdk6 lang/ruby19
+portinstall lang/python26 devel/autoconf textproc/flex devel/bison devel/git java/openjdk6 lang/ruby19 devel/gmake
 gem update
 gem install ohai
 gem install fpm
