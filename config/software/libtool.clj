@@ -24,7 +24,7 @@
 	     :command "./configure"
 	     :args ["--prefix=/opt/opscode/embedded"]
 	     }
-	    { :command (if (is-os? "solaris2") "gmake" "make") }
-	    { :command (if (is-os? "solaris2") "gmake" "make") :args ["install"]}
+	    { :command (if (or (is-os? "solaris2") (is-os? "freebsd")) "gmake" "make") }
+	    { :command (if (or (is-os? "solaris2") (is-os? "freebsd")) "gmake" "make") :args ["install"]}
 	    ])
 
