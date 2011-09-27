@@ -24,12 +24,18 @@ embedded_dir = "#{node['chef-full']['home']}\\embedded"
 case node['platform']
 when 'windows'
 
+  # ensure cache directory exists
+  directory Chef::Config[:file_cache_path] do
+    mode "0755"
+    action :nothing
+  end.run_action(:create)
+
   directory node['omnibus']['home'] do
     mode "0755"
     action :create
   end
 
-  %w{ bin source pkg }.each do |dir|
+  %w{ source pkg }.each do |dir|
     directory "#{node['omnibus']['home']}/#{dir}" do
       mode "0755"
       action :create
