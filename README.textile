@@ -251,6 +251,9 @@ $config | Out-File -Encoding ASCII C:\chef-solo\solo.rb
 # check out omnibus code
 Start-Process -FilePath "git" 'clone git://github.com/schisamo/omnibus.git C:\omnibus' -Wait -NoNewWindow
 
+# this will allow execution of local scripts (.ps1 files)
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+
 p. 
 
 h2. Bundled software and licensing
