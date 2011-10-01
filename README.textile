@@ -219,6 +219,54 @@ cd omnibus
 mkdir build
 lein deps
 
+h3. Windows
+
+Run in PowerShell 2.0+.  "*Set-ExecutionPolicy RemoteSigned*" must be set on the target machine if run as a 'ps1' script (vs pasted into PowerShell).
+
+bc.. $client = new-object System.Net.WebClient
+
+# download/install Git
+$client.DownloadFile("http://msysgit.googlecode.com/files/Git-1.7.6-preview20110708.exe","$ENV:TEMP\gitinstaller.exe")
+Start-Process -FilePath "$ENV:TEMP\gitinstaller.exe" '/verysilent /dir="C:\git"' -Wait
+[Environment]::SetEnvironmentVariable( "Path", "$ENV:PATH;C:\git\cmd", [System.EnvironmentVariableTarget]::Machine )
+
+# download/install Ruby
+$client.DownloadFile("http://files.rubyforge.vm.bytemark.co.uk/rubyinstaller/rubyinstaller-1.8.7-p334.exe","$ENV:TEMP\rubyinstaller.exe")
+Start-Process -FilePath "$ENV:TEMP\rubyinstaller.exe" '/verysilent /dir="C:\ruby" /tasks="assocfiles,modpath"' -Wait
+
+# download/install Ruby DevKit
+$client.DownloadFile("http://cloud.github.com/downloads/oneclick/rubyinstaller/DevKit-tdm-32-4.5.1-20101214-1400-sfx.exe","$ENV:TEMP\rubydevkit.exe")
+New-Item C:\DevKit -type directory
+Copy-Item $ENV:TEMP\rubydevkit.exe c:\DevKit
+Start-Process -FilePath "C:\DevKit\rubydevkit.exe" '-y' -Wait
+$ENV:PATH = "$ENV:PATH;C:\ruby\bin;C:\git\cmd"
+Start-Process -FilePath "ruby.exe" 'C:\DevKit\dk.rb init' -Wait
+Start-Process -FilePath "ruby.exe" 'C:\DevKit\dk.rb install' -Wait
+
+# install required gems
+Start-Process -FilePath "gem" 'install win32-api win32-service --platform=mswin32 --no-rdoc --no-ri' -Wait
+Start-Process -FilePath "gem" 'install win32-open3 rdp-ruby-wmi windows-api windows-pr --no-rdoc --no-ri' -Wait
+Start-Process -FilePath "gem" 'install ohai chef --no-rdoc --no-ri --verbose' -Wait
+
+# create chef-solo config
+New-Item C:\chef-solo -type directory
+$config = @"
+file_cache_path "C:/chef-solo/cache"
+file_backup_path "C:/chef-solo/backup"
+cache_options     ({:path => "c:/chef-solo/cache/checksums", :skip_expires => true})
+cookbook_path "C:/omnibus/chef-repo/cookbooks"
+"@
+
+$config | Out-File -Encoding ASCII C:\chef-solo\solo.rb
+
+# check out omnibus code
+Start-Process -FilePath "git" 'clone git://github.com/schisamo/omnibus.git C:\omnibus' -Wait -NoNewWindow
+
+# this will allow execution of local scripts (.ps1 files)
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+
+p. 
+
 h2. Bundled software and licensing
 
 All software under the "source" directory retains the license by which it was originally distributed.
