@@ -20,9 +20,7 @@
 (defproject omnibus "0.1.0"
   :description "Builds 'omnibus' binaries, with all their dependencies, into tarballs and self-installing shell scripts."
   :main omnibus.core
-  :shell-wrapper true 
-  :dev-dependencies [[vimclojure/server "2.2.0-SNAPSHOT"]
-                     [swank-clojure "1.3.0-SNAPSHOT"]]
+  :shell-wrapper true
   :dependencies [[org.clojure/clojure "1.2.0"]
                  [org.clojure/clojure-contrib "1.2.0"]
                  [net.java.dev.jets3t/jets3t "0.8.1"]
