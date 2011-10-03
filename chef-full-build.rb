@@ -12,7 +12,7 @@ S3_ACCESS_KEY = ARGV[2]
 S3_SECRET_KEY = ARGV[3]
 SPECIFIC_HOSTS = ARGV[4..-1] || []
 
-Dir.mkdir "#{BASE_PATH}/build-output"
+Dir.mkdir "#{BASE_PATH}/build-output" unless File.directory?("#{BASE_PATH}/build-output")
 
 hosts_to_build = {
   'debian-6-i686' => "debian-6-i386.opscode.us",
