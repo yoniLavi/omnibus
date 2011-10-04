@@ -18,12 +18,11 @@
 ;;
 
 (ns omnibus.ohai
-  (:use [omnibus.log]
-        [clojure.contrib.json]
-        [clojure.contrib.logging :only [log]]
-        [clojure.contrib.io :only [make-parents file-str]]
-        [clojure.java.shell :only [sh]])
-  (:require [clojure.contrib.string :as str])
+  (:use (omnibus (log :only []))
+        (clojure.contrib (json :only [read-json])
+                         (logging :only [log])
+                         (io :only [make-parents file-str])
+                         (shell :only [sh])))
   (:gen-class))
 
 (defn ohai
