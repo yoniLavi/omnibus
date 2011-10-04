@@ -18,17 +18,16 @@
 ;;
 
 (ns omnibus.core
-  (:use [omnibus.ohai]
-        [omnibus.steps]
-        [omnibus.log]
-        [omnibus.util]
-        [omnibus.s3]
-        [clojure.java.shell :only [sh]]
-        [clojure.contrib.logging :only [log]]        
-        [clojure.contrib.json]
-        [clojure.contrib.command-line]
-        [clojure.contrib.io :only [make-parents file-str]])
-  (:require [clojure.contrib.string :as str])
+  (:use (omnibus (ohai :only [os-and-machine])
+                 (steps :only [run-steps])
+                 (log :only [log-sh-result])
+                 (util :only [clean prep])
+                 (s3 :only [put-in-bucket]))
+        (clojure.java (shell :only [sh]))
+        (clojure.contrib (logging :only [log])
+                         (json :only [])
+                         (command-line :only [with-command-line])
+                         (io :only [make-parents file-str])))
   (:gen-class))
 
 (def *omnibus-home-dir* (. System getProperty "user.dir"))
