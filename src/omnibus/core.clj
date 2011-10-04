@@ -7,9 +7,9 @@
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
 ;; You may obtain a copy of the License at
-;; 
+;;
 ;;     http://www.apache.org/licenses/LICENSE-2.0
-;; 
+;;
 ;; Unless required by applicable law or agreed to in writing, software
 ;; distributed under the License is distributed on an "AS IS" BASIS,
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,15 +29,15 @@
                          (io :only [file-str])))
   (:gen-class))
 
-(def *omnibus-home-dir* (. System getProperty "user.dir"))
-(def *omnibus-source-dir* (file-str *omnibus-home-dir* "/source"))
-(def *omnibus-software-dir* (file-str *omnibus-home-dir* "/config/software"))
-(def *omnibus-projects-dir* (file-str *omnibus-home-dir* "/config/projects"))
-(def *omnibus-build-dir* (file-str *omnibus-home-dir* "/build"))
-(def *omnibus-pkg-dir* (file-str *omnibus-home-dir* "/pkg"))
-(def *omnibus-makeself-dir* (file-str *omnibus-home-dir* "/makeself"))
-(def *omnibus-bin-dir* (file-str *omnibus-home-dir* "/bin"))
 
+(def OMNIBUS-HOME-DIR (. System getProperty "user.dir"))
+(def OMNIBUS-SOURCE-DIR (file-str OMNIBUS-HOME-DIR "/source"))
+(def OMNIBUS-SOFTWARE-DIR (file-str OMNIBUS-HOME-DIR "/config/software"))
+(def OMNIBUS-PROJECTS-DIR (file-str OMNIBUS-HOME-DIR "/config/projects"))
+(def OMNIBUS-BUILD-DIR (file-str OMNIBUS-HOME-DIR "/build"))
+(def OMNIBUS-PKG-DIR (file-str OMNIBUS-HOME-DIR "/pkg"))
+(def OMNIBUS-MAKESELF-DIR (file-str OMNIBUS-HOME-DIR "/makeself"))
+(def *omnibus-bin-dir* (file-str OMNIBUS-HOME-DIR "/bin"))
 (def *bucket-name* (atom ""))
 (def *s3-access-key* (atom ""))
 (def *s3-secret-key* (atom ""))
@@ -53,7 +53,7 @@
   :version
   :iteration
   :build-order)
- 
+
 (defn software
   "Create a new software description"
   [software-name & instruction-map]
@@ -80,16 +80,16 @@
   "Build a software package - runs prep for you"
   [soft]
   (do
-    (clean *omnibus-build-dir* soft)
-    (prep *omnibus-build-dir* *omnibus-source-dir* soft)
-    (run-steps *omnibus-build-dir* soft)))
+    (clean OMNIBUS-BUILD-DIR soft)
+    (prep OMNIBUS-BUILD-DIR OMNIBUS-SOURCE-DIR soft)
+    (run-steps OMNIBUS-BUILD-DIR soft)))
 
 (defn build-software-by-name
   "Build a software package by name, rather than by clojure form"
   [software-name]
   (log :info (str "Building " software-name))
   (let [mapper #(assoc %1 (%2 :name) %2)
-        software-descs (reduce mapper  {}  (load-forms *omnibus-software-dir*))]
+        software-descs (reduce mapper  {}  (load-forms OMNIBUS-SOFTWARE-DIR))]
     (build-software (software-descs software-name))))
 
 (defn build-deb
@@ -97,11 +97,11 @@
   [project-name version iteration os-data]
   (let [
         asset-name (str project-name "_" version "-" iteration "_" (if (= (os-data :machine) "x86_64") "amd64" "i386") ".deb")
-        asset-path (.toString (file-str *omnibus-pkg-dir* "/" asset-name))
-        status (sh "fpm" "-s" "dir" "-t" "deb" "-v" version "--iteration" iteration "-n" project-name "/opt/opscode" "-m" "Opscode, Inc." "--post-install" (str *omnibus-source-dir* "/postinst") "--post-uninstall" (str *omnibus-source-dir* "/postrm") "--description" "The full stack install of Opscode Chef" "--url" "http://www.opscode.com" :dir "./pkg") ]
+        asset-path (.toString (file-str OMNIBUS-PKG-DIR "/" asset-name))
+        status (sh "fpm" "-s" "dir" "-t" "deb" "-v" version "--iteration" iteration "-n" project-name "/opt/opscode" "-m" "Opscode, Inc." "--post-install" (str OMNIBUS-SOURCE-DIR "/postinst") "--post-uninstall" (str OMNIBUS-SOURCE-DIR "/postrm") "--description" "The full stack install of Opscode Chef" "--url" "http://www.opscode.com" :dir "./pkg") ]
     (log-sh-result status
                    (do
-                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*) 
+                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*)
                      (str "Created debian package"))
                    (str "Failed to create debian package"))))
 
@@ -110,11 +110,11 @@
   [project-name version iteration os-data]
   (let [
         asset-name (str project-name "-" version "-" iteration "." (os-data :machine) ".rpm")
-        asset-path (.toString (file-str *omnibus-pkg-dir* "/" asset-name))
-        status (sh "fpm" "-s" "dir" "-t" "rpm" "-v" version "--iteration" iteration "-n" project-name "/opt/opscode" "-m" "Opscode, Inc." "--post-install" (str *omnibus-source-dir* "/postinst") "--post-uninstall" (str *omnibus-source-dir* "/postrm") "--description" "The full stack install of Opscode Chef" "--url" "http://www.opscode.com" :dir "./pkg")]
+        asset-path (.toString (file-str OMNIBUS-PKG-DIR "/" asset-name))
+        status (sh "fpm" "-s" "dir" "-t" "rpm" "-v" version "--iteration" iteration "-n" project-name "/opt/opscode" "-m" "Opscode, Inc." "--post-install" (str OMNIBUS-SOURCE-DIR "/postinst") "--post-uninstall" (str OMNIBUS-SOURCE-DIR "/postrm") "--description" "The full stack install of Opscode Chef" "--url" "http://www.opscode.com" :dir "./pkg")]
     (log-sh-result status
                    (do
-                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*) 
+                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*)
                      (str "Created rpm package"))
                    (str "Failed to create rpm package"))))
 
@@ -123,29 +123,29 @@
   [project-name version iteration os-data]
   (let [
         asset-name (str project-name "-" version "-" iteration "-" (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) ".tar.gz")
-        asset-path (.toString (file-str *omnibus-pkg-dir* "/" asset-name))
+        asset-path (.toString (file-str OMNIBUS-PKG-DIR "/" asset-name))
         status (sh "tar" "czf" asset-path "opscode" :dir "/opt")]
     (log-sh-result status
                    (do
-                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*) 
+                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*)
                      (str "Created tarball package for " project-name " on " (os-data :platform) " " (os-data :platform_version) " " (os-data :machine)))
                    (str "Failed to create tarball package for " project-name " on " (os-data :os) " " (os-data :machine)))))
 
 (defn build-makeself
   [project-name version iteration os-data]
-  (let [ 
+  (let [
         asset-name (str project-name "-" version "-" iteration "-" (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) ".sh")
-        asset-path (.toString (file-str *omnibus-pkg-dir* "/" asset-name))
-        status (sh (.toString (file-str *omnibus-makeself-dir* "/makeself.sh")) 
-                   "--gzip" 
-                   "/opt/opscode" 
+        asset-path (.toString (file-str OMNIBUS-PKG-DIR "/" asset-name))
+        status (sh (.toString (file-str OMNIBUS-MAKESELF-DIR "/makeself.sh"))
+                   "--gzip"
+                   "/opt/opscode"
                    asset-path
                    (str "'Opscode " project-name " " version "'")
                    "./setup.sh"
-                   :dir *omnibus-home-dir*)]
+                   :dir OMNIBUS-HOME-DIR)]
     (log-sh-result status
                    (do
-                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*) 
+                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*)
                      (str "Created shell archive for " project-name " on " (os-data :platform) " " (os-data :platform_version) " " (os-data :machine)))
                    (str "Failed to create shell archive for " project-name " on " (os-data :platform) " " (os-data :platform_version) " " (os-data :machine)))))
 
@@ -163,8 +163,8 @@
   "Build a fat binary"
   [project-name]
   (let [mapper #(assoc %1 (%2 :name) %2)
-        software-descs (reduce mapper  {}  (load-forms *omnibus-software-dir*))
-        projects  (reduce mapper {} (load-forms *omnibus-projects-dir*))]
+        software-descs (reduce mapper  {}  (load-forms OMNIBUS-SOFTWARE-DIR))
+        projects  (reduce mapper {} (load-forms OMNIBUS-PROJECTS-DIR))]
     (do
       (try
         (build-project (projects project-name) software-descs)
@@ -193,4 +193,3 @@
     (reset! *s3-secret-key* s3-secret-key)
 
     (build-fat-binary project-name)))
-
