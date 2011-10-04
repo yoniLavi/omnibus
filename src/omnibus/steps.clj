@@ -18,12 +18,11 @@
 ;;
 
 (ns omnibus.steps
-  (:use [omnibus.log]
-        [clojure.contrib.logging :only [log]]
-        [clojure.contrib.io :only [make-parents file-str]]
-        [clojure.contrib.str-utils :only [str-join]]
-        [clojure.java.shell :only [sh with-sh-env with-sh-dir]])
-  (:require [clojure.contrib.string :as str])
+  (:use (omnibus (log :only [log-sh-result]))
+        (clojure.contrib (io :only [file-str])
+                         (logging :only [log])
+                         (str-utils :only [str-join]))
+        (clojure.java (shell :only [sh with-sh-env with-sh-dir])))
   (:gen-class))
 
 (defn run-shell
