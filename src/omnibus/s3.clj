@@ -18,13 +18,11 @@
 ;;
 
 (ns omnibus.s3
-  (:use [omnibus.log]
-        [clojure.contrib.logging :only [log]])
-  (:import [org.jets3t.service.security AWSCredentials]
-           [org.jets3t.service.impl.rest.httpclient RestS3Service]
+  (:import [java.io File]
            [org.jets3t.service.acl AccessControlList]
-           [java.io File]
-           [org.jets3t.service.model S3Object])
+           [org.jets3t.service.impl.rest.httpclient RestS3Service]
+           [org.jets3t.service.model S3Object]
+           [org.jets3t.service.security AWSCredentials])
   (:gen-class))
 
 (defn put-in-bucket
