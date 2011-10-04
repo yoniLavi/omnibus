@@ -18,8 +18,7 @@
 ;;
 
 (ns omnibus.log
-  (:use [clojure.contrib.logging :only [log]])
-  (:require [clojure.contrib.string :as str])
+  (:use (clojure.contrib (logging :only [log])))
   (:gen-class))
 
 (defn log-sh-result
