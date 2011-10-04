@@ -24,8 +24,8 @@
                  (util :only [clean prep])
                  (s3 :only [put-in-bucket]))
         (clojure.java (shell :only [sh]))
-        (clojure.contrib (logging :only [log])
-                         (command-line :only [with-command-line])
+        (clojure.tools (logging :only [log]))
+        (clojure.contrib (command-line :only [with-command-line])
                          (io :only [make-parents file-str])))
   (:gen-class))
 

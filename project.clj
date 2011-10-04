@@ -24,6 +24,7 @@
   :dependencies [[org.clojure/clojure "1.2.0"]
                  [org.clojure/clojure-contrib "1.2.0"]
                  [org.clojure/data.json "0.1.1"]
+                 [org.clojure/tools.logging "0.2.3"]
                  [net.java.dev.jets3t/jets3t "0.8.1"]
                  [log4j "1.2.15" :exclusions [javax.mail/mail
                                               javax.jms/jms

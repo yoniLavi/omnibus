@@ -18,10 +18,8 @@
 ;;
 
 (ns omnibus.ohai
-  (:use (omnibus (log :only []))
-        (clojure.data (json :only [read-json]))
-        (clojure.contrib (logging :only [log])
-                         (io :only [make-parents file-str])
+  (:use (clojure.data (json :only [read-json]))
+        (clojure.contrib (io :only [make-parents file-str])
                          (shell :only [sh])))
   (:gen-class))
 

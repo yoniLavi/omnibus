@@ -7,9 +7,9 @@
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
 ;; You may obtain a copy of the License at
-;; 
+;;
 ;;     http://www.apache.org/licenses/LICENSE-2.0
-;; 
+;;
 ;; Unless required by applicable law or agreed to in writing, software
 ;; distributed under the License is distributed on an "AS IS" BASIS,
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,8 +19,8 @@
 
 (ns omnibus.steps
   (:use (omnibus (log :only [log-sh-result]))
+        (clojure.tools (logging :only [log]))
         (clojure.contrib (io :only [file-str])
-                         (logging :only [log])
                          (str-utils :only [str-join]))
         (clojure.java (shell :only [sh with-sh-env with-sh-dir])))
   (:gen-class))
@@ -47,7 +47,7 @@
   "Run the steps for a given piece of software"
   [build-root soft]
   (log :info (str "Building " (soft :source)))
-  (dorun (for [step (soft :steps)] 
+  (dorun (for [step (soft :steps)]
     (execute-step step (.getPath (if (= (soft :source) nil)
                                    (file-str build-root)
                                    (if (= (soft :build-subdir) nil)
