@@ -25,7 +25,6 @@
                  (s3 :only [put-in-bucket]))
         (clojure.java (shell :only [sh]))
         (clojure.contrib (logging :only [log])
-                         (json :only [])
                          (command-line :only [with-command-line])
                          (io :only [make-parents file-str])))
   (:gen-class))
