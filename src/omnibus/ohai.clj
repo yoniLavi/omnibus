@@ -19,8 +19,7 @@
 
 (ns omnibus.ohai
   (:use (clojure.data (json :only [read-json]))
-        (clojure.contrib (io :only [make-parents file-str])
-                         (shell :only [sh])))
+        (clojure.contrib (shell :only [sh])))
   (:gen-class))
 
 (defn ohai

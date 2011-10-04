@@ -26,7 +26,7 @@
         (clojure.java (shell :only [sh]))
         (clojure.tools (logging :only [log]))
         (clojure.contrib (command-line :only [with-command-line])
-                         (io :only [make-parents file-str])))
+                         (io :only [file-str])))
   (:gen-class))
 
 (def *omnibus-home-dir* (. System getProperty "user.dir"))
