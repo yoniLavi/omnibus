@@ -18,10 +18,9 @@
 ;;
 
 (ns omnibus.util
-  (:use [omnibus.log]
-        [clojure.java.shell :only [sh]]
-        [clojure.contrib.io :only [make-parents file-str]] )
-  (:require [clojure.contrib.string :as str])
+  (:use (omnibus (log :only [log-sh-result]))
+        (clojure.java (shell :only [sh]))
+        (clojure.contrib (io :only [make-parents file-str])))
   (:gen-class))
   
 (defn- copy-source-to-build
