@@ -37,7 +37,6 @@
 (def OMNIBUS-BUILD-DIR (file-str OMNIBUS-HOME-DIR "/build"))
 (def OMNIBUS-PKG-DIR (file-str OMNIBUS-HOME-DIR "/pkg"))
 (def OMNIBUS-MAKESELF-DIR (file-str OMNIBUS-HOME-DIR "/makeself"))
-(def *omnibus-bin-dir* (file-str OMNIBUS-HOME-DIR "/bin"))
 (def *bucket-name* (atom ""))
 (def *s3-access-key* (atom ""))
 (def *s3-secret-key* (atom ""))
