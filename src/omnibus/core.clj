@@ -30,7 +30,7 @@
   (:gen-class))
 
 
-(def OMNIBUS-HOME-DIR (. System getProperty "user.dir"))
+(def OMNIBUS-HOME-DIR (System/getProperty "user.dir"))
 (def OMNIBUS-SOURCE-DIR (file-str OMNIBUS-HOME-DIR "/source"))
 (def OMNIBUS-SOFTWARE-DIR (file-str OMNIBUS-HOME-DIR "/config/software"))
 (def OMNIBUS-PROJECTS-DIR (file-str OMNIBUS-HOME-DIR "/config/projects"))

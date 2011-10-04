@@ -30,7 +30,7 @@
   [filename bucket-name file-key access-key secret-access-key]
   (let [s3 (RestS3Service. (AWSCredentials. access-key secret-access-key))
        s3obj (S3Object. (File. filename))
-       s3bucket (. s3 getBucket bucket-name)]
-    (. s3obj setAcl AccessControlList/REST_CANNED_PUBLIC_READ)
-    (. s3obj setKey file-key)
-    (. s3 putObject s3bucket s3obj)))
+       s3bucket (.getBucket s3 bucket-name)]
+    (.setAcl s3obj AccessControlList/REST_CANNED_PUBLIC_READ)
+    (.setKey s3obj file-key)
+    (.putObject s3 s3bucket s3obj)))
