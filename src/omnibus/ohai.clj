@@ -19,7 +19,7 @@
 
 (ns omnibus.ohai
   (:use (clojure.data (json :only [read-json]))
-        (clojure.contrib (shell :only [sh])))
+        (clojure.java (shell :only [sh])))
   (:gen-class))
 
 (defn ohai
