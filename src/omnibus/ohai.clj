@@ -25,7 +25,7 @@
 (defn ohai
   "Use Ohai to get our Operating System and Machine Architecture"
   []
-  (let [ohai-data (read-json ((sh "ohai") :out))]
+  (let [ohai-data (read-json (:out (sh "ohai")))]
     {:os (get ohai-data :os),
      :machine (get-in ohai-data [:kernel :machine]),
      :platform (let [ohai-platform (get ohai-data :platform)]
