@@ -91,62 +91,6 @@
         software-descs (reduce mapper  {}  (load-forms OMNIBUS-SOFTWARE-DIR))]
     (build-software (software-descs software-name))))
 
-(defn build-deb
-  "Builds a deb"
-  [project-name version iteration os-data]
-  (let [
-        asset-name (str project-name "_" version "-" iteration "_" (if (= (os-data :machine) "x86_64") "amd64" "i386") ".deb")
-        asset-path (.toString (file-str OMNIBUS-PKG-DIR "/" asset-name))
-        status (sh "fpm" "-s" "dir" "-t" "deb" "-v" version "--iteration" iteration "-n" project-name "/opt/opscode" "-m" "Opscode, Inc." "--post-install" (str OMNIBUS-SOURCE-DIR "/postinst") "--post-uninstall" (str OMNIBUS-SOURCE-DIR "/postrm") "--description" "The full stack install of Opscode Chef" "--url" "http://www.opscode.com" :dir "./pkg") ]
-    (log-sh-result status
-                   (do
-                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*)
-                     (str "Created debian package"))
-                   (str "Failed to create debian package"))))
-
-(defn build-rpm
-  "Builds a rpm"
-  [project-name version iteration os-data]
-  (let [
-        asset-name (str project-name "-" version "-" iteration "." (os-data :machine) ".rpm")
-        asset-path (.toString (file-str OMNIBUS-PKG-DIR "/" asset-name))
-        status (sh "fpm" "-s" "dir" "-t" "rpm" "-v" version "--iteration" iteration "-n" project-name "/opt/opscode" "-m" "Opscode, Inc." "--post-install" (str OMNIBUS-SOURCE-DIR "/postinst") "--post-uninstall" (str OMNIBUS-SOURCE-DIR "/postrm") "--description" "The full stack install of Opscode Chef" "--url" "http://www.opscode.com" :dir "./pkg")]
-    (log-sh-result status
-                   (do
-                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*)
-                     (str "Created rpm package"))
-                   (str "Failed to create rpm package"))))
-
-(defn build-tarball
-  "Builds a tarball of the entire mess"
-  [project-name version iteration os-data]
-  (let [
-        asset-name (str project-name "-" version "-" iteration "-" (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) ".tar.gz")
-        asset-path (.toString (file-str OMNIBUS-PKG-DIR "/" asset-name))
-        status (sh "tar" "czf" asset-path "opscode" :dir "/opt")]
-    (log-sh-result status
-                   (do
-                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*)
-                     (str "Created tarball package for " project-name " on " (os-data :platform) " " (os-data :platform_version) " " (os-data :machine)))
-                   (str "Failed to create tarball package for " project-name " on " (os-data :os) " " (os-data :machine)))))
-
-(defn build-makeself
-  [project-name version iteration os-data]
-  (let [
-        asset-name (str project-name "-" version "-" iteration "-" (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) ".sh")
-        asset-path (.toString (file-str OMNIBUS-PKG-DIR "/" asset-name))
-        status (sh (.toString (file-str OMNIBUS-MAKESELF-DIR "/makeself.sh"))
-                   "--gzip"
-                   "/opt/opscode"
-                   asset-path
-                   (str "'Opscode " project-name " " version "'")
-                   "./setup.sh"
-                   :dir OMNIBUS-HOME-DIR)]
-    (log-sh-result status
-                   (do
-                     (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*)
-                     (str "Created shell archive for " project-name " on " (os-data :platform) " " (os-data :platform_version) " " (os-data :machine)))
-                   (str "Failed to create shell archive for " project-name " on " (os-data :platform) " " (os-data :platform_version) " " (os-data :machine)))))
 (defn fork-on-type
   "Multimethod dispatch function; just returns the first argument."
   [type & _]
@@ -271,22 +215,38 @@
 (defn build-fat-binary
   "Build a fat binary"
   [project-name]
-  (let [mapper #(assoc %1 (%2 :name) %2)
-        software-descs (reduce mapper  {}  (load-forms OMNIBUS-SOFTWARE-DIR))
-        projects  (reduce mapper {} (load-forms OMNIBUS-PROJECTS-DIR))]
-    (do
-      (try
-        (build-project (projects project-name) software-descs)
-        (catch NullPointerException e
-          (do
-            (println (str "Can't find project '" project-name "'!"))
-            (System/exit -2))))
-      (build-tarball project-name ((projects project-name) :version) ((projects project-name) :iteration) os-and-machine)
-      (build-makeself project-name ((projects project-name) :version) ((projects project-name) :iteration) os-and-machine)
-      (if (or (= (os-and-machine :platform) "debian") (= (os-and-machine :platform) "ubuntu"))
-        (build-deb project-name ((projects project-name) :version) ((projects project-name) :iteration) os-and-machine))
-      (if (or (= (os-and-machine :platform) "el") (= (os-and-machine :platform) "fedora"))
-        (build-rpm project-name ((projects project-name) :version) ((projects project-name) :iteration) os-and-machine)))))
+  (let [loader (fn [dir] ; create a map of software-name to DSL recipe form
+                 (reduce (fn [m spec]
+                           (assoc m (:name spec) spec))
+                         {}
+                         (load-forms dir)))
+
+        software-descs (loader OMNIBUS-SOFTWARE-DIR)
+        projects (loader OMNIBUS-PROJECTS-DIR)
+
+        {:keys [version iteration] :as the-project} (get projects project-name)
+        project-spec {:project-name project-name
+                      :version version
+                      :iteration iteration
+                      :os-data (os-and-machine)}
+
+        platform (get-in project-spec [:os-data :platform])]
+
+    (try (build-project the-project software-descs)
+         (catch NullPointerException e
+           (do
+             (println (str "Can't find project '" project-name "'!"))
+             (System/exit -2))))
+
+    ;; Build these always, regardless of platform
+    (doseq [type [::tarball ::makeself]]
+      (build-and-bucket-package type project-spec))
+
+    ;; If we're on a Linux platform, build the appropriate kind of package
+    (cond (contains? #{"debian" "ubuntu"} platform)
+          (build-and-bucket-package ::deb project-spec)
+          (contains? #{"el" "fedora"} platform)
+          (build-and-bucket-package ::rpm project-spec))))
 
 (defn -main
   "Main entry point when run from command line"
