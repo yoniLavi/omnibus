@@ -188,6 +188,51 @@
   (str OMNIBUS-PKG-DIR
        (System/getProperty "file.separator")
        (asset-name type project)))
+
+(defmulti command-line
+  "Generate a vector representing a command line program invocation to build a software bundle.
+
+  The first item is the command, while subsequent items are options, arguments, etc.  It will be
+  passed into `clojure.java.shell/sh`."
+  fork-on-type)
+
+(derive ::rpm ::linux-package)
+(derive ::deb ::linux-package)
+
+(defmethod command-line ::linux-package
+  [package-type {:keys [project-name version iteration]}]
+  ["fpm"
+   "-s" "dir" "-t" (name package-type)
+    "-v" version
+    "--iteration" iteration
+    " -n" project-name
+    "/opt/opscode"
+    "-m"
+    "Opscode, Inc."
+    "--post-install"
+    (str OMNIBUS-SOURCE-DIR "/postinst")
+    "--post-uninstall"
+    (str OMNIBUS-SOURCE-DIR "/postrm")
+    "--description"
+    "The full stack install of Opscode Chef"
+    "--url"
+    "http://www.opscode.com"
+    :dir
+    "./pkg" ;; Shouldn't this be OMNIBUS-PKG-DIR?
+    ])
+
+(defmethod command-line ::tarball [type project]
+  ["tar" "czf" (asset-path type project) "opscode" :dir "/opt"])
+
+(defmethod command-line ::makeself
+  [type {:keys [project-name version] :as project}]
+  [(str (file-str OMNIBUS-MAKESELF-DIR "/makeself.sh"))
+   "--gzip"
+   "/opt/opscode"
+   (asset-path type project)
+   (str "'Opscode " project-name " " version "'")
+   "./setup.sh"
+   :dir OMNIBUS-HOME-DIR])
 (defn build-project
   "Build a project by building all the software in the appropriate build order"
   [project software-descs]
