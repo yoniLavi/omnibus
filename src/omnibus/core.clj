@@ -233,6 +233,31 @@
    (str "'Opscode " project-name " " version "'")
    "./setup.sh"
    :dir OMNIBUS-HOME-DIR])
+
+(defn build-and-bucket-package
+  "Builds a software bundle of `package-type` of the software described in `project` and subsequently stashes it in S3."
+  [package-type {:keys [project-name]
+                 {:keys [platform platform_version machine]} :os-data
+                 :as project}]
+  (let [name (asset-name package-type project)
+        path (asset-path package-type project)
+        status (apply sh (command-line package-type project))]
+    (log-sh-result
+     status
+     (do
+       (put-in-bucket path
+                      @*bucket-name*
+                      (str platform "-" platform_version "-" machine "/" name)
+                      @*s3-access-key*
+                      @*s3-secret-key*)
+       (str "Created " (name package-type) " package for "
+            project-name " on " platform " "
+            platform_version " "
+            machine))
+     (str "Failed to create " (name package-type) " package for "
+          project-name " on " platform
+          " " platform_version " "
+          machine))))
 (defn build-project
   "Build a project by building all the software in the appropriate build order"
   [project software-descs]
