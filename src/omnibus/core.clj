@@ -180,6 +180,14 @@
   (str project-name "-" version "-" iteration "-" platform "-" platform_version "-" machine ".sh"))
 
 
+(defmulti asset-path
+  "Generate the path to the generated software bundle."
+  fork-on-type)
+
+(defmethod asset-path :default [type project]
+  (str OMNIBUS-PKG-DIR
+       (System/getProperty "file.separator")
+       (asset-name type project)))
 (defn build-project
   "Build a project by building all the software in the appropriate build order"
   [project software-descs]
