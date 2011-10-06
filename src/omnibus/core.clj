@@ -147,6 +147,38 @@
                      (put-in-bucket asset-path @*bucket-name* (str (os-data :platform) "-" (os-data :platform_version) "-" (os-data :machine) "/" asset-name) @*s3-access-key* @*s3-secret-key*)
                      (str "Created shell archive for " project-name " on " (os-data :platform) " " (os-data :platform_version) " " (os-data :machine)))
                    (str "Failed to create shell archive for " project-name " on " (os-data :platform) " " (os-data :platform_version) " " (os-data :machine)))))
+(defn fork-on-type
+  "Multimethod dispatch function; just returns the first argument."
+  [type & _]
+  type)
+
+(defmulti asset-name
+  "Generate the name of the software bundle to be created, based on the type of bundle being built."
+  fork-on-type)
+
+(defmethod asset-name ::deb
+  [type {:keys [project-name version iteration os-data]}]
+  (str project-name "_" version "-" iteration "_"
+       (if (= (:machine os-data)
+              "x86_64")
+         "amd64"
+         "i386")
+       ".deb"))
+
+(defmethod asset-name ::rpm
+  [type {:keys [project-name version iteration os-data]}]
+  (str project-name "-" version "-" iteration "." (:machine os-data) ".rpm"))
+
+(defmethod asset-name ::tarball
+  [type {:keys [project-name version iteration]
+         {:keys [platform platform_version machine]} :os-data}]
+  (str project-name "-" version "-" iteration "-" platform "-" platform_version "-" machine ".tar.gz"))
+
+(defmethod asset-name ::makeself
+  [type {:keys [project-name version iteration]
+         {:keys [platform platform_version machine]} :os-data}]
+  (str project-name "-" version "-" iteration "-" platform "-" platform_version "-" machine ".sh"))
+
 
 (defn build-project
   "Build a project by building all the software in the appropriate build order"
