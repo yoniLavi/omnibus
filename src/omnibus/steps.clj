@@ -18,10 +18,10 @@
 ;;
 
 (ns omnibus.steps
-(:use (omnibus (log :only [log-sh-result])
-               (util :only [file-str]))
+  (:use (omnibus (log :only [log-sh-result])
+                 (util :only [file-str]))
+        (clojure (string :only [join]))
         (clojure.tools (logging :only [log]))
-        (clojure.contrib (str-utils :only [str-join]))
         (clojure.java (shell :only [sh with-sh-env with-sh-dir])))
   (:gen-class))
 
@@ -36,7 +36,7 @@
 (defn- execute-step
   "Run a build step"
   [step path]
-  (let [step-info (str-join " " (cons (step :command) (step :args)))]
+  (let [step-info (join " " (cons (step :command) (step :args)))]
     (log :info (str "Running step: " step-info ))
     (with-sh-dir path
       (log-sh-result (run-shell step)
