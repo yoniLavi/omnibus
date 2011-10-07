@@ -22,8 +22,6 @@
   :main omnibus.core
   :shell-wrapper true
   :dependencies [[org.clojure/clojure "1.2.0"]
-                 [org.clojure/clojure-contrib "1.2.0"]
-
                  [org.clojure/tools.cli "0.1.0"]
                  [org.clojure/data.json "0.1.1"]
                  [org.clojure/tools.logging "0.2.3"]
