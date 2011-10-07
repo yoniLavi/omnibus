@@ -24,8 +24,8 @@
                  (util :only [clean prep file-str])
                  (s3 :only [put-in-bucket]))
         (clojure.java (shell :only [sh]))
-        (clojure.tools (logging :only [log]))
-        (clojure.contrib (command-line :only [with-command-line])))
+        (clojure.tools (cli :only [cli required])
+                       (logging :only [log])))
   (:gen-class))
 
 
@@ -250,13 +250,13 @@
 (defn -main
   "Main entry point when run from command line"
   [& args]
-  (with-command-line args
-    "Specify the project you'd like me to build..."
-    [[project-name "The name of the project to build"]
-     [bucket-name "The S3 Bucket Name"]
-     [s3-access-key "The S3 Access Key"]
-     [s3-secret-key "The S3 Secret Key"]]
-    (reset! *bucket-name* bucket-name)
+  (let [{:keys [project-name bucket-name s3-access-key s3-secret-key]}
+        (cli args
+             (required ["-p" "--project-name" "The name of the project to build"])
+             (required ["-b" "--bucket-name" "The S3 bucket name"])
+             (required ["-a" "--s3-access-key" "The S3 access key"])
+             (required ["-s" "--s3-secret-key" "The S3 secret key"]))]
+    (reset! *bucket-name* bucket-name )
     (reset! *s3-access-key* s3-access-key)
     (reset! *s3-secret-key* s3-secret-key)
 
