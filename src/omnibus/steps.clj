@@ -18,10 +18,10 @@
 ;;
 
 (ns omnibus.steps
-  (:use (omnibus (log :only [log-sh-result]))
+(:use (omnibus (log :only [log-sh-result])
+               (util :only [file-str]))
         (clojure.tools (logging :only [log]))
-        (clojure.contrib (io :only [file-str])
-                         (str-utils :only [str-join]))
+        (clojure.contrib (str-utils :only [str-join]))
         (clojure.java (shell :only [sh with-sh-env with-sh-dir])))
   (:gen-class))
 

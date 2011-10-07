@@ -21,12 +21,11 @@
   (:use (omnibus (ohai :only [os-and-machine])
                  (steps :only [run-steps])
                  (log :only [log-sh-result])
-                 (util :only [clean prep])
+                 (util :only [clean prep file-str])
                  (s3 :only [put-in-bucket]))
         (clojure.java (shell :only [sh]))
         (clojure.tools (logging :only [log]))
-        (clojure.contrib (command-line :only [with-command-line])
-                         (io :only [file-str])))
+        (clojure.contrib (command-line :only [with-command-line])))
   (:gen-class))
 
 

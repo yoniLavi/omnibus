@@ -19,9 +19,24 @@
 
 (ns omnibus.util
   (:use (omnibus (log :only [log-sh-result]))
-        (clojure.java (shell :only [sh]))
-        (clojure.contrib (io :only [file-str])))
+        (clojure.java (shell :only [sh])))
+  (:import (java.io File))
   (:gen-class))
+
+;; pulled in from clojure.contrib.io/file-str
+(defn ^java.io.File file-str
+  "Concatenates args as strings and returns a java.io.File.  Replaces
+  all / and \\ with File/separatorChar.  Replaces ~ at the start of
+  the path with the user.home system property."
+  [& args]
+  (let [^String s (apply str args)
+        s (.replace s \\ File/separatorChar)
+        s (.replace s \/ File/separatorChar)
+        s (if (.startsWith s "~")
+            (str (System/getProperty "user.home")
+                 File/separator (subs s 1))
+            s)]
+    (File. s)))
 
 (defn- copy-source-to-build
   "Copy the source directory to the build directory"
