@@ -45,7 +45,7 @@ EOP
   if [ "" != "$chef_url" ]; then
     echo "chef_server_url '${chef_url}'" >> /etc/chef/client.rb
   fi
-  if [ "" != $organization ]; then
+  if [ "" != "$organization" ]; then
     echo "validation_client_name '${organization}-validator'" >> /etc/chef/client.rb
   fi
   chmod 644 /etc/chef/client.rb
