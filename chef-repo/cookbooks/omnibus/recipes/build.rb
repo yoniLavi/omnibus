@@ -58,7 +58,7 @@ when 'windows'
   end
 
   # the rest
-  %w{ win32-open3 rdp-ruby-wmi windows-api windows-pr win32-dir win32-event win32-mutex }.each do |win_gem|
+  %w{ win32-open3 rdp-ruby-wmi windows-api windows-pr win32-dir win32-event win32-mutex win32-process }.each do |win_gem|
     gem_package win_gem do
       gem_binary "#{embedded_dir}\\bin\\gem"
       options "-n '#{node['chef-full']['home']}\\bin' --no-rdoc --no-ri"

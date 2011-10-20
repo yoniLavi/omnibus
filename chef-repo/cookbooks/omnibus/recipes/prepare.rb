@@ -57,7 +57,7 @@ when 'windows'
 
   include_recipe '7-zip'
 
-  # Ruby 1.8
+  # Ruby 1.9
   ruby_file_name = ::File.basename(node['chef-full']['ruby']['url'])
   remote_file "#{node['omnibus']['home']}/source/#{ruby_file_name}" do
     source node['chef-full']['ruby']['url']
