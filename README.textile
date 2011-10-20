@@ -1,4 +1,4 @@
-h2. Introduction 
+h2. Introduction
 
 omnibus helps you build self-installing, full-stack software builds.  For
 example, we want to distribute the Chef client pre-bundled with its
@@ -9,7 +9,7 @@ configuring it.
 omnibus starts with the idea of a "project", which is comprised of a name,
 version, and a build order.  The build order references various "software"
 packages, which are compiled and installed to a specific path on the
-filesystem. (For the chef-full project, this would be /opt/opscode).  
+filesystem. (For the chef-full project, this would be /opt/opscode).
 
 h2. Using omnibus
 
@@ -50,16 +50,16 @@ bc. (software "gdbm" :source "gdbm-1.8.3"
                          (if (is-os? "darwin") ["perl" "-pi" "-e" "s/BINGRP = bin/BINGRP = wheel/g" "Makefile"])
                          ["make"]
                          ["sudo" "make" "install"]])
-  
+
 The :source field should be the name of the directory created by unpacking the tarball.  The steps are a vector of vectors, each of which corresponds to a build step.  These steps are passed directly to clojure.java.sh/sh, which will execute them directly. You can use two handy functions to make the build be different based on operating system or machine architecture: is-os? and is-machine?.
 
 h2. Adding software to a project
 
 In config/projects, you will find the actual project definitions themselves.  These contain a name for the project, a version number, and the build order.  For the chef client:
 
-bc. (project 
-  "chef-full" 
-  "0.9.8" 
+bc. (project
+  "chef-full"
+  "0.9.8"
   [ "zlib" "libiconv" "db" "gdbm" "ncurses" "openssl" "libxml2" "libxslt" "ree" "rubygems" "rsync" "chef" ])
 
 The build order will run in order.
@@ -70,7 +70,7 @@ h2. The full build process
 
 If you want to kick off a full build, the easiest way is with:
 
-bc. $ sudo lein run --project-name "chef-full" --bucket-name FULL_STACK --s3-access-key "ACCESS_KEY" --s3-secret-key "SECRET_KEY"                                             
+bc. $ sudo lein run --project-name "chef-full" --bucket-name FULL_STACK --s3-access-key "ACCESS_KEY" --s3-secret-key "SECRET_KEY"
 
 The resulting build artifact will be dropped off in the S3 bucket named above. If you want to submit a build to us, drop it off in your own bucket, and let us know where and how to test the final product.
 
@@ -98,7 +98,7 @@ cd omnibus
 mkdir build
 lein deps
 
-h3. CentOS 5 
+h3. CentOS 5
 
 bc. wget http://download.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
 rpm -Uvh epel-release-5-4.noarch.rpm
@@ -239,7 +239,7 @@ $client.DownloadFile("http://cloud.github.com/downloads/oneclick/rubyinstaller/D
 New-Item C:\DevKit -type directory
 Copy-Item $ENV:TEMP\rubydevkit.exe c:\DevKit
 Start-Process -FilePath "C:\DevKit\rubydevkit.exe" '-y' -Wait
-$ENV:PATH = "$ENV:PATH;C:\ruby\bin;C:\git\cmd"
+[environment]::SetEnvironmentVariable('PATH',"$ENV:PATH;C:\ruby\bin;C:\git\cmd",'Machine')
 Start-Process -FilePath "ruby.exe" 'C:\DevKit\dk.rb init' -Wait
 Start-Process -FilePath "ruby.exe" 'C:\DevKit\dk.rb install' -Wait
 
@@ -260,12 +260,12 @@ cookbook_path "C:/omnibus/chef-repo/cookbooks"
 $config | Out-File -Encoding ASCII C:\chef-solo\solo.rb
 
 # check out omnibus code
-Start-Process -FilePath "git" 'clone git://github.com/schisamo/omnibus.git C:\omnibus' -Wait -NoNewWindow
+Start-Process -FilePath "git" 'clone git://github.com/opscode/omnibus.git C:\omnibus' -Wait -NoNewWindow
 
 # this will allow execution of local scripts (.ps1 files)
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
 
-p. 
+p.
 
 h2. Bundled software and licensing
 
