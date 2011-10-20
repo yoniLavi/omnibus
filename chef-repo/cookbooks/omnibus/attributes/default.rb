@@ -19,7 +19,7 @@
 #
 
 default['chef-full']['version']     = "0.10.4"
-default['chef-full']['iteration']   = "2"
+default['chef-full']['iteration']   = "1"
 
 default['chef-full']['bucket_name'] = "opscode-full-stack"
 
