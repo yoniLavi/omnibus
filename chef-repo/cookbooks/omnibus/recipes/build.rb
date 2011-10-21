@@ -33,8 +33,7 @@ when 'windows'
    "libexpat-1.dll" => "libexpat-1.dll",
    "liblzma-1.dll" => "liblzma-1.dll",
    "libbz2-2.dll" => "libbz2-2.dll",
-   "libz-1.dll" => "libz-1.dll",
-   "ruby.exe" => "ruby.exe" # dirty hack until CHEF-2681 is fixed
+   "libz-1.dll" => "libz-1.dll"
    }.each do |target, to|
      # TODO we need windows support in the link provider
     execute "mklink #{node['chef-full']['home']}\\bin\\#{target} #{embedded_dir}\\mingw\\bin\\#{to}" do
