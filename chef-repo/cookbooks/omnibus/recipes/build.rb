@@ -41,7 +41,14 @@ when 'windows'
     end
   end
 
-  # Chef & Ohai
+  # Ohai
+  gem_package "ohai" do
+    version node['chef-full']['version']
+    gem_binary "#{embedded_dir}\\bin\\gem"
+    options "-n '#{node['chef-full']['home']}\\bin' --no-rdoc --no-ri --pre"
+  end
+
+  # Chef
   gem_package "chef" do
     version node['chef-full']['version']
     gem_binary "#{embedded_dir}\\bin\\gem"
