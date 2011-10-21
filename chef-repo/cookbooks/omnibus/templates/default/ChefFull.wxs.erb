@@ -33,11 +33,9 @@
         <Directory Id="INSTALLLOCATION" Name="opscode">
           <Directory Id="CHEFLOCATION" Name="chef" >
             <Component Id="ChefFullBin" Guid="{7F663F88-55A2-4E20-82BF-8BD2E60BB83A}" >
+              <!-- TODO remove [CHEFLOCATION]\embedded\bin once CHEF-2681 is fixed -->
               <Environment Id="Environment"
-                Name="PATH" Action="set" Part="last" System="yes" Value="[CHEFLOCATION]bin" />
-              <!-- TODO remove once CHEF-2681 is fixed -->
-              <Environment Id="Environment"
-                Name="PATH" Action="set" Part="last" System="yes" Value="[CHEFLOCATION]\embedded\bin" />
+                Name="PATH" Action="set" Part="last" System="yes" Value="[CHEFLOCATION]bin;[CHEFLOCATION]\embedded\bin" />
             </Component>
           </Directory>
         </Directory>
