@@ -50,7 +50,7 @@ when 'windows'
       :guid => node['chef-full']['package_guid'],
       :major_version => version[1],
       :minor_version => version[2],
-      :build_version => node['chef-full']['iteration'],
+      :build_version => node['chef-full']['iteration']
     )
   end
 
