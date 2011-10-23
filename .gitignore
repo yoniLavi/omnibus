@@ -8,6 +8,3 @@ pom.xml
 /redhat/BUILDROOT/
 /build-output/*
 /chef-repo/build-output/*
-
-.lein-failures
-docs/

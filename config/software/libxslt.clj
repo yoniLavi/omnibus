@@ -7,9 +7,9 @@
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
 ;; You may obtain a copy of the License at
-;;
+;; 
 ;;     http://www.apache.org/licenses/LICENSE-2.0
-;;
+;; 
 ;; Unless required by applicable law or agreed to in writing, software
 ;; distributed under the License is distributed on an "AS IS" BASIS,
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,8 +29,8 @@
                           "--with-libxml-libs-prefix=/opt/opscode/embedded/lib"]}
                   {:command (if (is-os? "solaris2") "perl" "true")
                    :args [ "-pi" "-e" "s/^(LIBXSLT_VERSION_SCRIPT = \\$.+)/\\# Woof/g"
-                           (str OMNIBUS-BUILD-DIR "/libxslt-1.1.26/libxslt/Makefile") ]}
+                           (str *omnibus-build-dir* "/libxslt-1.1.26/libxslt/Makefile") ]}
                   {:command (if (is-os? "solaris2") "perl" "true")
-                   :args [ "-pi" "-e" "s/^(#LIBXSLT_VERSION_SCRIPT.+)/LIBXSLT_VERSION_SCRIPT =/g"
-                           (str OMNIBUS-BUILD-DIR "/libxslt-1.1.26/libxslt/Makefile") ]}
+                   :args [ "-pi" "-e" "s/^(#LIBXSLT_VERSION_SCRIPT.+)/LIBXSLT_VERSION_SCRIPT =/g" 
+                           (str *omnibus-build-dir* "/libxslt-1.1.26/libxslt/Makefile") ]}
                   {:command "make" :args ["install"]}])
