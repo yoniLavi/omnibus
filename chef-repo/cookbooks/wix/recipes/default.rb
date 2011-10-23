@@ -20,9 +20,14 @@
 
 file_name = ::File.basename(node['wix']['url'])
 
-remote_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
-  source node['wix']['url']
-  checksum node['wix']['checksum']
+# remote_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
+#   source node['wix']['url']
+#   checksum node['wix']['checksum']
+#   notifies :unzip, "windows_zipfile[wix]", :immediately
+# end
+
+cookbook_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
+  source file_name
   notifies :unzip, "windows_zipfile[wix]", :immediately
 end
 
