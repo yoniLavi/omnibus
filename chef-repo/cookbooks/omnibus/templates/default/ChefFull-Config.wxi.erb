@@ -10,7 +10,8 @@
   <?define Revision="<%= @revision %>" ?>
   <!-- Full version number to display -->
   <?define VersionNumber="$(var.MajorVersion).$(var.MinorVersion).$(var.BuildVersion).$(var.Revision)" ?>
-
+  <!-- Full version number minus Revision -->
+  <?define VersionNumberFriendly="$(var.MajorVersion).$(var.MinorVersion).$(var.BuildVersion)" ?>
   <!--
     Upgrade code HAS to be the same for all updates.
     Once you've chosen it don't change it.
