@@ -41,13 +41,6 @@ when 'windows'
     end
   end
 
-  # Ohai
-  # TODO remove this once final Ohai is released
-  gem_package "ohai" do
-    gem_binary "#{embedded_dir}\\bin\\gem"
-    options "-n '#{node['chef-full']['home']}\\bin' --no-rdoc --no-ri --pre"
-  end
-
   # Chef
   gem_package "chef" do
     version node['chef-full']['version']
