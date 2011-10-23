@@ -48,10 +48,9 @@ when 'windows'
     variables(
       :product_name => "Chef Full-Stack Installer",
       :guid => node['chef-full']['package_guid'],
-      :major_version => version[0],
-      :minor_version => version[1],
-      :build_version => version[2],
-      :revision => node['chef-full']['iteration']
+      :major_version => version[1],
+      :minor_version => version[2],
+      :build_version => node['chef-full']['iteration'],
     )
   end
 
@@ -107,7 +106,7 @@ dir \"#{node['chef-full']['home']}\" ^
     EOH
     returns [0,204]
   end
-  
+
   log "Created MSI package for Chef-Full on #{node[:platform]} #{node[:platform_version]} #{node[:kernel][:machine]}"
 
 else
@@ -116,7 +115,7 @@ else
 
 end
 
-# save asset_name and asset_path in 
+# save asset_name and asset_path in
 # node.run_state for 'omnibus::release'
 node.run_state[:asset_name] = asset_name
 node.run_state[:asset_path] = asset_path
