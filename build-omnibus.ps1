@@ -17,7 +17,7 @@ $json_attribs = @"
   },
   "$project_name": {
     "version": "0.10.4",
-    "iteration": "1",
+    "iteration": "6",
     "bucket_name": "$bucket_name"
   },
   "run_list": [
