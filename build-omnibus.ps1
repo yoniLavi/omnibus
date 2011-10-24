@@ -38,10 +38,11 @@ $json_attribs | Out-File -Encoding ASCII $current_dir\chef-repo\.chef\omnibus.js
 # (FU) MS - we have to use a script block since Write-Host output doesn't go to STDERR or STDOUT
 # https://connect.microsoft.com/PowerShell/feedback/details/283088/script-logging-needs-to-be-improved
 $script = {
+  param([string] $solo_path)
   Start-Process -FilePath 'git' 'pull' -WorkingDirectory "C:\omnibus" -Wait -NoNewWindow
-  Start-Process -FilePath 'chef-solo' -c "$current_dir\chef-repo\.chef\solo.rb -j $current_dir\chef-repo\.chef\omnibus.json" -Wait -NoNewWindow
+  Start-Process -FilePath 'chef-solo' "-c $solo_path\solo.rb -j $solo_path\omnibus.json" -Wait -NoNewWindow
 }
 
-PowerShell $script >> $ENV:TEMP\omnibus.out 2>&1
+PowerShell -Command $script -args "$current_dir\chef-repo\.chef" >> $ENV:TEMP\omnibus.out 2>&1
 
 Write-Output "Finished build of $project_name"
