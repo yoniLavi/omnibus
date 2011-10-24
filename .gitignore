@@ -9,3 +9,4 @@ pom.xml
 /chef-repo/build-output/*
 /chef-repo/.chef/cache/*
 /chef-repo/.chef/backup/*
+/chef-repo/.chef/omnibus.json
