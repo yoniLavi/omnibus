@@ -10,10 +10,10 @@ if ($args[0] -eq "chef-full") {
 $bucket_name = $args[1]
 $s3_access_key = $args[2]
 $s3_secret_key = $args[3]
+$current_dir = (Split-Path ((Get-Variable MyInvocation -Scope 0).Value).MyCommand.Path) -replace "\\$", ""
 
 Write-Output "Starting omnibus build of $project_name"
 
-New-Item C:\chef-solo -type directory > $ENV:TEMP\omnibus.out 2>&1
 $json_attribs = @"
 {
   "aws": {
@@ -33,13 +33,13 @@ $json_attribs = @"
 }
 "@
 
-$json_attribs | Out-File -Encoding ASCII C:\chef-solo\omnibus.json
+$json_attribs | Out-File -Encoding ASCII $current_dir\chef-repo\.chef\omnibus.json
 
 # (FU) MS - we have to use a script block since Write-Host output doesn't go to STDERR or STDOUT
 # https://connect.microsoft.com/PowerShell/feedback/details/283088/script-logging-needs-to-be-improved
 $script = {
   Start-Process -FilePath 'git' 'pull' -WorkingDirectory "C:\omnibus" -Wait -NoNewWindow
-  Start-Process -FilePath 'chef-solo' '-c c:/chef-solo/solo.rb -j c:/chef-solo/omnibus.json' -Wait -NoNewWindow
+  Start-Process -FilePath 'chef-solo' -c "$current_dir\chef-repo\.chef\solo.rb -j $current_dir\chef-repo\.chef\omnibus.json" -Wait -NoNewWindow
 }
 
 PowerShell $script >> $ENV:TEMP\omnibus.out 2>&1

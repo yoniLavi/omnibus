@@ -251,17 +251,6 @@ Start-Process -FilePath "gem" 'install win32-api win32-service --platform=mswin3
 Start-Process -FilePath "gem" 'install win32-open3 rdp-ruby-wmi windows-api windows-pr --no-rdoc --no-ri' -Wait
 Start-Process -FilePath "gem" 'install ohai chef --no-rdoc --no-ri --verbose' -Wait
 
-# create chef-solo config
-New-Item C:\chef-solo -type directory
-$config = @"
-file_cache_path "C:/chef-solo/cache"
-file_backup_path "C:/chef-solo/backup"
-cache_options     ({:path => "c:/chef-solo/cache/checksums", :skip_expires => true})
-cookbook_path "C:/omnibus/chef-repo/cookbooks"
-"@
-
-$config | Out-File -Encoding ASCII C:\chef-solo\solo.rb
-
 # check out omnibus code
 Start-Process -FilePath "git" 'clone git://github.com/opscode/omnibus.git C:\omnibus' -Wait -NoNewWindow
 
