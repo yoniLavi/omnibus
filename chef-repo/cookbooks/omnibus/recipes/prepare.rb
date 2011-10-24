@@ -19,7 +19,7 @@
 #
 
 source_dir = "#{node['omnibus']['home']}\\source"
-embedded_dir = "#{node['chef-full']['home']}\\embedded"
+embedded_dir = "#{node['omnibus']['chef-client']['home']}\\embedded"
 
 case node['platform']
 when 'windows'
@@ -42,14 +42,14 @@ when 'windows'
     end
   end
 
-  directory node['chef-full']['home'] do
+  directory node['omnibus']['chef-client']['home'] do
     recursive true
     mode "0755"
     action :create
   end
 
   %w{ bin embedded }.each do |dir|
-    directory "#{node['chef-full']['home']}/#{dir}" do
+    directory "#{node['omnibus']['chef-client']['home']}/#{dir}" do
       mode "0755"
       action :create
     end
@@ -57,11 +57,11 @@ when 'windows'
 
   include_recipe '7-zip'
 
-  # Ruby 1.8
-  ruby_file_name = ::File.basename(node['chef-full']['ruby']['url'])
+  # Ruby 1.9
+  ruby_file_name = ::File.basename(node['omnibus']['chef-client']['ruby_url'])
   remote_file "#{node['omnibus']['home']}/source/#{ruby_file_name}" do
-    source node['chef-full']['ruby']['url']
-    checksum node['chef-full']['ruby']['checksum']
+    source node['omnibus']['chef-client']['ruby_url']
+    checksum node['omnibus']['chef-client']['ruby_checksum']
     notifies :run, "windows_batch[unzip_and_move_ruby]", :immediately
   end
   unzip_dir_name =  "#{source_dir}\\" << File.basename(ruby_file_name, ".7z")
@@ -74,14 +74,14 @@ when 'windows'
   end
 
   # Ruby DevKit
-  devkit_file_name = ::File.basename(node['chef-full']['ruby_dev_kit']['url'])
+  devkit_file_name = ::File.basename(node['omnibus']['chef-client']['ruby_dev_kit_url'])
   template "#{embedded_dir}/config.yml" do
     source "config.yml.erb"
     variables(:ruby_path => "#{embedded_dir}")
   end
   remote_file "#{source_dir}/#{devkit_file_name}" do
-    source node['chef-full']['ruby_dev_kit']['url']
-    checksum node['chef-full']['ruby_dev_kit']['checksum']
+    source node['omnibus']['chef-client']['ruby_dev_kit_url']
+    checksum node['omnibus']['chef-client']['ruby_dev_kit_checksum']
     notifies :run, "windows_batch[install_devkit_and_enhance_ruby]", :immediately
     not_if { ::File.exists?("#{embedded_dir}/dk.rb") }
   end

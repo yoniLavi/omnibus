@@ -26,7 +26,8 @@ gem_package 'fog'
 
 asset_name = node.run_state[:asset_name]
 asset_path = node.run_state[:asset_path]
-s3_file_key = "#{node[:platform]}-#{node[:kernel][:machine]}/#{asset_name}"
+#s3_file_key = "#{node[:platform]}-#{node[:kernel][:machine]}/#{asset_name}"
+s3_file_key = "#{node[:platform]}/#{asset_name}"
 
 begin
   access_key = node['aws']['access_key']
@@ -38,6 +39,6 @@ end
 
 ruby_block 'push packages to s3' do
   block do
-    put_in_bucket(asset_path, node['chef-full']['bucket_name'], s3_file_key, access_key, secret_access_key)
+    put_in_bucket(asset_path, node['omnibus']['chef-client']['bucket_name'], s3_file_key, access_key, secret_access_key)
   end
 end

@@ -1,7 +1,12 @@
 # can be called form SSH like so:
-# powershell C:\omnibus\build-omnibus.ps1 'chef-full' 'opscode-full-stack' 'ACCESS_KEY' 'SECRET_KEY'
+# powershell C:\omnibus\build-omnibus.ps1 'chef-client' 'opscode-full-stack' 'ACCESS_KEY' 'SECRET_KEY'
 
-$project_name = $args[0]
+# legacy chef-full name should be chef-client
+if ($args[0] -eq "chef-full") {
+  $project_name = "chef-client"
+} else {
+  $project_name = $args[0]
+}
 $bucket_name = $args[1]
 $s3_access_key = $args[2]
 $s3_secret_key = $args[3]
@@ -15,10 +20,12 @@ $json_attribs = @"
     "access_key": "$s3_access_key",
     "secret_access_key": "$s3_secret_key"
   },
-  "$project_name": {
-    "version": "0.10.4",
-    "iteration": "1",
-    "bucket_name": "$bucket_name"
+  "omnibus": {
+    "$project_name": {
+      "version": "0.10.4",
+      "iteration": "6",
+      "bucket_name": "$bucket_name"
+    }
   },
   "run_list": [
     "recipe[omnibus::default]"

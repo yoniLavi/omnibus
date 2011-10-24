@@ -24,14 +24,15 @@ include_recipe 'wix'
 case node['platform']
 when 'windows'
   pkg_dir = "#{node['omnibus']['home']}\\pkg"
-  asset_name = "chef-full-#{node['chef-full']['version']}-#{node['chef-full']['iteration']}-#{node['kernel']['machine']}.msi"
+  #asset_name = "chef-client-#{node['omnibus']['chef-client']['version']}-#{node['omnibus']['chef-client']['iteration']}-#{node['kernel']['machine']}.msi"
+  asset_name = "chef-client-#{node['omnibus']['chef-client']['version']}-#{node['omnibus']['chef-client']['iteration']}.msi"
   asset_path = "#{pkg_dir}\\#{asset_name}"
 
-  version = node['chef-full']['version'].split('.')
+  version = node['omnibus']['chef-client']['version'].split('.')
 
   # package localization template
-  template "#{pkg_dir}/ChefFull-en-us.wxl" do
-    source "ChefFull-en-us.wxl.erb"
+  template "#{pkg_dir}/ChefClient-en-us.wxl" do
+    source "ChefClient-en-us.wxl.erb"
     mode "0755"
   end
 
@@ -42,41 +43,39 @@ when 'windows'
   end
 
   # package global config
-  template "#{pkg_dir}/ChefFull-Config.wxi" do
-    source "ChefFull-Config.wxi.erb"
+  template "#{pkg_dir}/ChefClient-Config.wxi" do
+    source "ChefClient-Config.wxi.erb"
     mode "0755"
     variables(
-      :product_name => "Chef Full-Stack Installer",
-      :guid => node['chef-full']['package_guid'],
-      :major_version => version[0],
-      :minor_version => version[1],
-      :build_version => version[2],
-      :revision => node['chef-full']['iteration']
+      :guid => node['omnibus']['chef-client']['package_guid'],
+      :major_version => version[1],
+      :minor_version => version[2],
+      :build_version => node['omnibus']['chef-client']['iteration']
     )
   end
 
   # package main WXS
-  template "#{pkg_dir}/ChefFull.wxs" do
-    source "ChefFull.wxs.erb"
+  template "#{pkg_dir}/ChefClient.wxs" do
+    source "ChefClient.wxs.erb"
     mode "0755"
     variables(
-      :global_config => "#{pkg_dir}\\ChefFull-Config.wxi",
-      :files_component_group => "ChefFullDir",
+      :global_config => "#{pkg_dir}\\ChefClient-Config.wxi",
+      :files_component_group => "ChefClientDir",
       :assets_dir => "#{pkg_dir}\\assets"
     )
   end
 
   # harvest with heat.exe
-  # recursively generate fragment for node['chef-full']['home']
+  # recursively generate fragment for node['omnibus']['chef-client']['home']
   windows_batch 'harvest package' do
     code <<-EOH
 #{node['wix']['home']}\\heat.exe ^
-dir \"#{node['chef-full']['home']}\" ^
+dir \"#{node['omnibus']['chef-client']['home']}\" ^
 -nologo -srd -gg ^
--cg ChefFullDir ^
+-cg ChefClientDir ^
 -dr CHEFLOCATION ^
--var var.ChefFullSourceDir ^
--out #{pkg_dir}\\ChefFull-Files.wxs
+-var var.ChefClientSourceDir ^
+-out #{pkg_dir}\\ChefClient-Files.wxs
     EOH
   end
 
@@ -86,10 +85,10 @@ dir \"#{node['chef-full']['home']}\" ^
 #{node['wix']['home']}\\candle.exe ^
 -nologo ^
 -I#{pkg_dir} ^
--dChefFullSourceDir=\"#{node['chef-full']['home']}\" ^
+-dChefClientSourceDir=\"#{node['omnibus']['chef-client']['home']}\" ^
 -out #{pkg_dir}\\ ^
-#{pkg_dir}\\ChefFull-Files.wxs ^
-#{pkg_dir}\\ChefFull.wxs
+#{pkg_dir}\\ChefClient-Files.wxs ^
+#{pkg_dir}\\ChefClient.wxs
     EOH
   end
 
@@ -100,15 +99,15 @@ dir \"#{node['chef-full']['home']}\" ^
 #{node['wix']['home']}\\light.exe ^
 -nologo ^
 -ext WixUIExtension ^
--cultures:en-us -loc #{pkg_dir}\\ChefFull-en-us.wxl ^
+-cultures:en-us -loc #{pkg_dir}\\ChefClient-en-us.wxl ^
 -out #{asset_path} ^
-#{pkg_dir}\\ChefFull-Files.wixobj ^
-#{pkg_dir}\\ChefFull.wixobj
+#{pkg_dir}\\ChefClient-Files.wixobj ^
+#{pkg_dir}\\ChefClient.wixobj
     EOH
     returns [0,204]
   end
-  
-  log "Created MSI package for Chef-Full on #{node[:platform]} #{node[:platform_version]} #{node[:kernel][:machine]}"
+
+  log "Created MSI package for chef-client on #{node[:platform]} #{node[:platform_version]} #{node[:kernel][:machine]}"
 
 else
 
@@ -116,7 +115,7 @@ else
 
 end
 
-# save asset_name and asset_path in 
+# save asset_name and asset_path in
 # node.run_state for 'omnibus::release'
 node.run_state[:asset_name] = asset_name
 node.run_state[:asset_path] = asset_path
