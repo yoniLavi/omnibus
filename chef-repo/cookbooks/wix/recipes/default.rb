@@ -35,6 +35,7 @@ windows_zipfile "wix" do
   path node['wix']['home']
   source "#{Chef::Config[:file_cache_path]}/#{file_name}"
   action :nothing
+  not_if { ::File.exists?("#{node['wix']['home']}/heat.exe") }
 end
 
 # update path
