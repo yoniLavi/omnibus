@@ -24,7 +24,8 @@ include_recipe 'wix'
 case node['platform']
 when 'windows'
   pkg_dir = "#{node['omnibus']['home']}\\pkg"
-  asset_name = "chef-full-#{node['chef-full']['version']}-#{node['chef-full']['iteration']}-#{node['kernel']['machine']}.msi"
+  #asset_name = "chef-full-#{node['chef-full']['version']}-#{node['chef-full']['iteration']}-#{node['kernel']['machine']}.msi"
+  asset_name = "chef-full-#{node['chef-full']['version']}-#{node['chef-full']['iteration']}.msi"
   asset_path = "#{pkg_dir}\\#{asset_name}"
 
   version = node['chef-full']['version'].split('.')

@@ -26,7 +26,8 @@ gem_package 'fog'
 
 asset_name = node.run_state[:asset_name]
 asset_path = node.run_state[:asset_path]
-s3_file_key = "#{node[:platform]}-#{node[:kernel][:machine]}/#{asset_name}"
+#s3_file_key = "#{node[:platform]}-#{node[:kernel][:machine]}/#{asset_name}"
+s3_file_key = "#{node[:platform]}/#{asset_name}"
 
 begin
   access_key = node['aws']['access_key']
