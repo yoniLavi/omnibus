@@ -18,7 +18,7 @@
     <Package InstallerVersion="200" InstallPrivileges="elevated"
              Compressed="yes" InstallScope="perMachine" />
 
-    <Media Id="1" Cabinet="ChefFull.cab" EmbedCab="yes" CompressionLevel="high" />
+    <Media Id="1" Cabinet="ChefClient.cab" EmbedCab="yes" CompressionLevel="high" />
 
     <!-- Upgrade settings. -->
     <!--
@@ -32,7 +32,7 @@
       <Directory Id="WindowsVolume">
         <Directory Id="INSTALLLOCATION" Name="opscode">
           <Directory Id="CHEFLOCATION" Name="chef" >
-            <Component Id="ChefFullBin" Guid="{7F663F88-55A2-4E20-82BF-8BD2E60BB83A}" >
+            <Component Id="ChefClientBin" Guid="{7F663F88-55A2-4E20-82BF-8BD2E60BB83A}" >
               <!-- TODO remove [CHEFLOCATION]\embedded\bin once CHEF-2681 is fixed -->
               <Environment Id="Environment"
                 Name="PATH" Action="set" Part="last" System="yes" Value="[CHEFLOCATION]bin;[CHEFLOCATION]\embedded\bin" />
@@ -43,9 +43,9 @@
     </Directory>
 
     <!-- Set the components defined in our fragment files that will be used for our feature  -->
-    <Feature Id="ChefFullFeature" Title="!(loc.ProductName)" Level="1">
+    <Feature Id="ChefClientFeature" Title="!(loc.ProductName)" Level="1">
       <ComponentGroupRef Id="<%= @files_component_group %>" />
-      <ComponentRef Id="ChefFullBin" />
+      <ComponentRef Id="ChefClientBin" />
     </Feature>
 
     <!--
@@ -65,8 +65,8 @@
     <Property Id="ARPHELPLINK" Value="http://help.opscode.com/" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
 
-    <UIRef Id="ChefFullUI_InstallDir"/>
-    <UI Id="ChefFullUI_InstallDir">
+    <UIRef Id="ChefClientUI_InstallDir"/>
+    <UI Id="ChefClientUI_InstallDir">
       <UIRef Id="WixUI_InstallDir"/>
       <TextStyle Id="WixUI_Font_Normal_White" FaceName="Tahoma" Size="8" Red="255" Green="255" Blue="255" />
       <TextStyle Id="WixUI_Font_Bigger_White" FaceName="Tahoma" Size="12" Red="255" Green="255" Blue="255" />

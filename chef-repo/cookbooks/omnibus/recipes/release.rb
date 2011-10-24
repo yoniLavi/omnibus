@@ -39,6 +39,6 @@ end
 
 ruby_block 'push packages to s3' do
   block do
-    put_in_bucket(asset_path, node['chef-full']['bucket_name'], s3_file_key, access_key, secret_access_key)
+    put_in_bucket(asset_path, node['omnibus']['chef-client']['bucket_name'], s3_file_key, access_key, secret_access_key)
   end
 end

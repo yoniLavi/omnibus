@@ -21,7 +21,7 @@
 include_recipe 'omnibus::prepare'
 
 source_dir = "#{node['omnibus']['home']}\\source"
-embedded_dir = "#{node['chef-full']['home']}\\embedded"
+embedded_dir = "#{node['omnibus']['chef-client']['home']}\\embedded"
 
 case node['platform']
 when 'windows'
@@ -36,23 +36,23 @@ when 'windows'
    "libz-1.dll" => "libz-1.dll"
    }.each do |target, to|
      # TODO we need windows support in the link provider
-    execute "mklink #{node['chef-full']['home']}\\bin\\#{target} #{embedded_dir}\\mingw\\bin\\#{to}" do
-      not_if{ ::File.exists?("#{node['chef-full']['home']}\\bin\\#{target}") }
+    execute "mklink #{node['omnibus']['chef-client']['home']}\\bin\\#{target} #{embedded_dir}\\mingw\\bin\\#{to}" do
+      not_if{ ::File.exists?("#{node['omnibus']['chef-client']['home']}\\bin\\#{target}") }
     end
   end
 
   # Chef
   gem_package "chef" do
-    version node['chef-full']['version']
+    version node['omnibus']['chef-client']['version']
     gem_binary "#{embedded_dir}\\bin\\gem"
-    options "-n '#{node['chef-full']['home']}\\bin' --no-rdoc --no-ri"
+    options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
   end
 
   # gems with precompiled binaries
   %w{ win32-api win32-service }.each do |win_gem|
     gem_package win_gem do
       gem_binary "#{embedded_dir}\\bin\\gem"
-      options "-n '#{node['chef-full']['home']}\\bin' --no-rdoc --no-ri --platform=mswin32"
+      options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri --platform=mswin32"
       action :install
     end
   end
@@ -61,24 +61,24 @@ when 'windows'
   %w{ rdp-ruby-wmi windows-api windows-pr win32-dir win32-event win32-mutex win32-process }.each do |win_gem|
     gem_package win_gem do
       gem_binary "#{embedded_dir}\\bin\\gem"
-      options "-n '#{node['chef-full']['home']}\\bin' --no-rdoc --no-ri"
+      options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
       action :install
     end
   end
 
-  if node['chef-full']['ruby']['url'] =~ /ruby-1.8/
+  if node['omnibus']['chef-client']['ruby_url'] =~ /ruby-1.8/
     gem_package "win32-open3" do
       gem_binary "#{embedded_dir}\\bin\\gem"
-      options "-n '#{node['chef-full']['home']}\\bin' --no-rdoc --no-ri"
+      options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
       action :install
     end
   end
 
   # create bin bat files with *relative* paths to ruby.exe
   executables = gem_executables('ohai')
-  executables << gem_executables('chef', node['chef-full']['version'])
+  executables << gem_executables('chef', node['omnibus']['chef-client']['version'])
   executables.flatten.reject{|g| g =~ /.rb/}.each do |bin|
-    template "#{node['chef-full']['home']}\\bin\\#{bin}.bat" do
+    template "#{node['omnibus']['chef-client']['home']}\\bin\\#{bin}.bat" do
       source 'relative_path_bin_wrapper.bat.erb'
       mode "0755"
       variables :bin => bin
