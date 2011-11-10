@@ -23,6 +23,15 @@
                           "--no-rdoc" "--no-ri"
                           "--" "--with-xml2-include=/opt/opscode/embedded/include/libxml2"
                           "--with-xml2-lib=/opt/opscode/embedded/lib"]}
+                  {:command "/opt/opscode/embedded/bin/gem"
+                   :args ["install" "merb-core" "merb-assets" "merb-helpers" "merb-param-protection"                                                              ;; base common
+                          "mixlib-authentication" "dep_selector" "uuidtools" "thin" "json" "treetop"                                                              ;; + chef-server-api
+                          "merb-haml" "haml" "ruby-openid" "coderay"                                                                                              ;; + chef-server-webui
+                          "mixlib-log" "amqp" "eventmachine" "em-http-request" "yajl-ruby" "bunny" "fast_xs"                                                      ;; + chef-expander
+                          "-n" "/opt/opscode/bin"
+                          "--no-rdoc" "--no-ri"
+                          "--" "--with-xml2-include=/opt/opscode/embedded/include/libxml2"
+                          "--with-xml2-lib=/opt/opscode/embedded/lib"]}
                   {:command "chown"
                    :args ["-R" (cond
                                 (is-os? "darwin")
