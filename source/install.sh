@@ -77,6 +77,11 @@ then
   elif [ "$platform" = "scientific linux" ];
   then
     platform="el"
+  elif [ "$platform" = "fedora" ];
+  then
+    platform="el"
+    # Change platform version for use below.
+    platform_version="6.0"
   fi
 elif [ -f "/etc/system-release" ];
 then
