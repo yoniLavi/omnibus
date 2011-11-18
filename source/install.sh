@@ -65,24 +65,15 @@ elif [ -f "/etc/redhat-release" ];
 then
   platform=$(sed 's/^\(.\+\) release.*/\1/' /etc/redhat-release | tr '[A-Z]' '[a-z]')
   platform_version=$(sed 's/^.\+ release \([.0-9]\+\).*/\1/' /etc/redhat-release)
-  if [ "$platform" = "redhat enterprise linux server" ];
+
+  # If /etc/redhat-release exists, we act like RHEL by default
+  if [ "$platform" = "fedora" ];
   then
-    platform="el"
-  elif [ "$platform" = "centos" ];
-  then
-    platform="el"
-  elif [ "$platform" = "centos linux" ];
-  then
-    platform="el"
-  elif [ "$platform" = "scientific linux" ];
-  then
-    platform="el"
-  elif [ "$platform" = "fedora" ];
-  then
-    platform="el"
     # Change platform version for use below.
     platform_version="6.0"
   fi
+  platform="el"
+
 elif [ -f "/etc/system-release" ];
 then
   platform=$(sed 's/^\(.\+\) release.\+/\1/' /etc/system-release | tr '[A-Z]' '[a-z]')
