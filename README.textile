@@ -82,7 +82,7 @@ bc. yum update -y
 yum install -y gcc gcc-c++ kernel-devel make autoconf flex bison git java-1.6.0-openjdk java-1.6.0-openjdk-devel ruby ruby-libs ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc ruby-mode rubygems rpm-build libxml2 libxml2-devel libxslt libxslt-devel wget automake help2man libtool gettext texinfo which
 gem install fpm ohai --no-rdoc --no-ri
 wget https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
-git clone git://github.com/adamhjk/omnibus.git
+git clone git://github.com/opscode/omnibus.git
 cd omnibus
 mkdir build
 lein deps
@@ -93,7 +93,7 @@ bc. yum update -y
 yum install -y gcc gcc-c++ kernel-devel make autoconf flex bison git java-1.6.0-openjdk java-1.6.0-openjdk-devel ruby ruby-libs ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc ruby-mode rubygems rpm-build libxml2 libxml2-devel libxslt libxslt-devel wget automake help2man libtool gettext texinfo
 gem install fpm ohai --no-rdoc --no-ri
 wget https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
-git clone git://github.com/adamhjk/omnibus.git
+git clone git://github.com/opscode/omnibus.git
 cd omnibus
 mkdir build
 lein deps
@@ -106,7 +106,7 @@ yum update -y
 yum install -y gcc gcc-c++ kernel-devel make autoconf flex bison git java-1.6.0-openjdk java-1.6.0-openjdk-devel ruby ruby-libs ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc ruby-mode rubygems rpm-build libxml2 libxml2-devel libxslt libxslt-devel wget automake help2man libtool gettext texinfo
 gem install fpm ohai --no-rdoc --no-ri
 wget --no-check-certificate https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
-git clone git://github.com/adamhjk/omnibus.git
+git clone git://github.com/opscode/omnibus.git
 cd omnibus
 mkdir build
 lein deps
@@ -119,7 +119,7 @@ update-java-alternatives -s java-6-openjdk
 gem install fpm ohai --no-rdoc --no-ri
 ln -s /var/lib/gems/1.8/bin/* /usr/local/bin
 wget https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
-git clone git://github.com/adamhjk/omnibus.git
+git clone git://github.com/opscode/omnibus.git
 cd omnibus
 mkdir build
 lein deps
@@ -132,7 +132,7 @@ update-java-alternatives -s java-6-openjdk
 gem install fpm ohai --no-rdoc --no-ri
 ln -s /var/lib/gems/1.8/bin/* /usr/local/bin
 wget https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
-git clone git://github.com/adamhjk/omnibus.git
+git clone git://github.com/opscode/omnibus.git
 cd omnibus
 mkdir build
 lein deps
@@ -145,7 +145,7 @@ update-java-alternatives -s java-6-openjdk
 gem install fpm ohai --no-rdoc --no-ri
 ln -s /var/lib/gems/1.8/bin/* /usr/local/bin
 wget https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
-git clone git://github.com/adamhjk/omnibus.git
+git clone git://github.com/opscode/omnibus.git
 cd omnibus
 mkdir build
 lein deps
@@ -156,7 +156,7 @@ bc. # install Xcode
 # install git - http://code.google.com/p/git-osx-installer/
 wget https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
 lein self-install
-git clone git://github.com/adamhjk/omnibus.git
+git clone git://github.com/opscode/omnibus.git
 cd omnibus
 mkdir build
 lein deps
@@ -166,7 +166,7 @@ h3. Joyent Smartmachine
 bc. pkgin up
 pkgin in autoconf-2.68 gtexinfo bison flex
 wget --no-check-certificate https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
-git clone git://github.com/adamhjk/omnibus.git
+git clone git://github.com/opscode/omnibus.git
 cd omnibus
 mkdir build
 lein deps
@@ -224,7 +224,7 @@ gem update
 gem install ohai
 gem install fpm
 wget --no-check-certificate https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
-git clone git://github.com/adamhjk/omnibus.git
+git clone git://github.com/opscode/omnibus.git
 cd omnibus
 mkdir build
 lein deps
