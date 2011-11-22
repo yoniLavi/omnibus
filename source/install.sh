@@ -197,3 +197,10 @@ case "$filetype" in
   "deb") dpkg -i /tmp/$filename ;;
   "sh" ) bash /tmp/$filename ;;
 esac
+
+if [ $? -ne 0 ];
+then
+  echo "Installation failed"
+  report_bug
+  exit 1
+fi
