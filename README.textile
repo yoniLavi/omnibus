@@ -153,8 +153,10 @@ lein deps
 h3. OS X 10.6 (Snow Leopard)
 
 bc. # install Xcode
+# install Java
 # install git - http://code.google.com/p/git-osx-installer/
-wget https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
+curl https://raw.github.com/technomancy/leiningen/stable/bin/lein > lein
+sudo mkdir /usr/local/bin/lein && sudo mv lein /usr/local/bin && sudo chmod 755 /usr/local/bin/lein
 lein self-install
 git clone git://github.com/opscode/omnibus.git
 cd omnibus
