@@ -44,7 +44,6 @@ report_bug() {
   echo "Version: $release_version"
   echo " "
   echo "Please detail your operating system type, version and any other relevant details"
-  exit 1
 }
 
 # Get command line arguments
@@ -84,17 +83,32 @@ then
     platform_version="6.0"
   fi
   platform="el"
-
 elif [ -f "/etc/system-release" ];
 then
   platform=$(sed 's/^\(.\+\) release.\+/\1/' /etc/system-release | tr '[A-Z]' '[a-z]')
   platform_version=$(sed 's/^.\+ release \([.0-9]\+\).*/\1/' /etc/system-release | tr '[A-Z]' '[a-z]')
+# Apple OS X
+elif [ -f "/usr/bin/sw_vers" ];
+then
+  platform="mac_os_x"
+  # Matching the tab-space with sed is error-prone
+  platform_version=$(sw_vers | awk '/^ProductVersion:/ { print $2 }')
+  major_version=$(echo $platform_version | cut -d. -f1,2)
+  case $major_version in
+    "10.6") platform_version="10.6.8" ;;
+    "10.7") platform_version="10.7.2" ;;
+    *) echo "No builds for platform: $major_version"
+       report_bug
+       exit 1
+       ;;
+  esac
 fi
 
 if [ "x$platform" = "x" ];
 then
   echo "Unable to determine platform version!"
   report_bug
+  exit 1
 fi
 
 # Mangle $platform_version to pull the correct build
@@ -125,6 +139,7 @@ if [ "x$platform_version" = "x" ];
 then
   echo "Unable to determine platform version!"
   report_bug
+  exit 1
 fi
 
 if [ -z "$version" ];
@@ -147,15 +162,26 @@ fi
 
 echo "Downloading Chef $version for ${platform}..."
 
+url="http://s3.amazonaws.com/opscode-full-stack/$platform-$platform_version-$machine/$filename"
+
 if exists wget;
 then
-  wget -O /tmp/$filename http://s3.amazonaws.com/opscode-full-stack/$platform-$platform_version-$machine/$filename
+  wget -O /tmp/$filename $url
 elif exists curl;
 then
-  curl http://s3.amazonaws.com/opscode-full-stack/$platform-$platform_version-$machine/$filename > /tmp/$filename
+  curl $url > /tmp/$filename
 else
   echo "Cannot find wget or curl - cannot install Chef!"
   exit 5
+fi
+
+grep "does not exist" /tmp/$filename 2>&1 >/dev/null
+if [ $? -eq 0 ]
+then
+  echo "Unable to retrieve a valid package!"
+  report_bug
+  echo "URL: $url"
+  exit 1
 fi
 
 echo "Installing Chef $version"
