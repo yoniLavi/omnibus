@@ -36,6 +36,17 @@ shell_filename() {
   filename="chef-full-${version}-${platform}-${platform_version}-${machine}.sh"
 }
 
+report_bug() {
+  echo "Please file a bug report at http://tickets.opscode.com"
+  echo "Project: Chef"
+  echo "Component: Packages"
+  echo "Label: Omnibus"
+  echo "Version: $release_version"
+  echo " "
+  echo "Please detail your operating system type, version and any other relevant details"
+  exit 1
+}
+
 # Get command line arguments
 while getopts sv: opt
 do
@@ -80,6 +91,12 @@ then
   platform_version=$(sed 's/^.\+ release \([.0-9]\+\).*/\1/' /etc/system-release | tr '[A-Z]' '[a-z]')
 fi
 
+if [ "x$platform" = "x" ];
+then
+  echo "Unable to determine platform version!"
+  report_bug
+fi
+
 # Mangle $platform_version to pull the correct build
 # for various platforms
 major_version=$(echo $platform_version | cut -d. -f1)
@@ -103,6 +120,12 @@ case $platform in
     esac
     ;;
 esac
+
+if [ "x$platform_version" = "x" ];
+then
+  echo "Unable to determine platform version!"
+  report_bug
+fi
 
 if [ -z "$version" ];
 then
