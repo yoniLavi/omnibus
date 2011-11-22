@@ -93,6 +93,7 @@ then
   platform="mac_os_x"
   # Matching the tab-space with sed is error-prone
   platform_version=$(sw_vers | awk '/^ProductVersion:/ { print $2 }')
+
   major_version=$(echo $platform_version | cut -d. -f1,2)
   case $major_version in
     "10.6") platform_version="10.6.8" ;;
@@ -102,6 +103,12 @@ then
        exit 1
        ;;
   esac
+
+  # x86_64 Apple hardware often runs 32-bit kernels (see OHAI-63)
+  x86_64=$(sysctl -n hw.optional.x86_64)
+  if [ $x86_64 -eq 1 ]; then
+    machine="x86_64"
+  fi
 fi
 
 if [ "x$platform" = "x" ];
