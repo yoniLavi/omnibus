@@ -1,5 +1,6 @@
 chef-repo/.chef/
 pom.xml
+.lein-deps-sum
 *jar
 /build/
 /classes/
