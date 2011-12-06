@@ -59,34 +59,36 @@ when 'windows'
 
   # Ruby 1.9
   ruby_file_name = ::File.basename(node['omnibus']['chef-client']['ruby_url'])
-  remote_file "#{node['omnibus']['home']}/source/#{ruby_file_name}" do
+  file_cache_path = ::File.expand_path(Chef::Config[:file_cache_path]).gsub(::File::SEPARATOR, ::File::ALT_SEPARATOR)
+  ruby_download_path = "#{file_cache_path}\\#{ruby_file_name}"
+  remote_file ruby_download_path do
     source node['omnibus']['chef-client']['ruby_url']
     checksum node['omnibus']['chef-client']['ruby_checksum']
   end
-  unzip_dir_name =  "#{source_dir}\\" << File.basename(ruby_file_name, ".7z")
+  unzip_dir_name = "#{file_cache_path}\\" << File.basename(ruby_file_name, ".7z")
   windows_batch "unzip_and_move_ruby" do
     code <<-EOH
-    "#{node['7-zip']['home']}\\7z.exe" x #{source_dir}\\#{ruby_file_name} -o#{source_dir} -r -y
+    "#{node['7-zip']['home']}\\7z.exe" x #{ruby_download_path} -o#{file_cache_path} -r -y
     xcopy #{unzip_dir_name} \"#{embedded_dir}\" /e /y
     EOH
-    not_if { ::File.exists?("#{embedded_dir}/bin/ruby.exe") }
     action :run
+    not_if { ::File.exists?("#{embedded_dir}/bin/ruby.exe") }
   end
 
   # Ruby DevKit
   devkit_file_name = ::File.basename(node['omnibus']['chef-client']['ruby_dev_kit_url'])
+  devkit_download_path = "#{file_cache_path}\\#{devkit_file_name}"
   template "#{embedded_dir}/config.yml" do
     source "config.yml.erb"
     variables(:ruby_path => "#{embedded_dir}")
   end
-  remote_file "#{source_dir}/#{devkit_file_name}" do
+  remote_file devkit_download_path do
     source node['omnibus']['chef-client']['ruby_dev_kit_url']
     checksum node['omnibus']['chef-client']['ruby_dev_kit_checksum']
-    notifies :run, "windows_batch[install_devkit_and_enhance_ruby]", :immediately
   end
   windows_batch 'install_devkit_and_enhance_ruby' do
     code <<-EOH
-    #{source_dir}\\#{devkit_file_name} -y -o\"#{embedded_dir}\"
+    #{devkit_download_path} -y -o\"#{embedded_dir}\"
     cd \"#{embedded_dir}\" & \"#{embedded_dir}\\bin\\ruby.exe\" \"#{embedded_dir}\\dk.rb\" install
     EOH
     action :run
