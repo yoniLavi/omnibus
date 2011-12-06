@@ -40,7 +40,7 @@ $json_attribs | Out-File -Encoding ASCII $current_dir\chef-repo\.chef\omnibus.js
 C:\opscode
 C:\omnibus\pkg
 "@ -split "`r`n" | Foreach-Object {
-  if ((Test-Path $_) -eq True) {
+  if ((Test-Path $_) -eq $True) {
     Remove-Item $_ -force -recurse
   }
 }
