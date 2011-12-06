@@ -62,7 +62,6 @@ when 'windows'
   remote_file "#{node['omnibus']['home']}/source/#{ruby_file_name}" do
     source node['omnibus']['chef-client']['ruby_url']
     checksum node['omnibus']['chef-client']['ruby_checksum']
-    notifies :run, "windows_batch[unzip_and_move_ruby]", :immediately
   end
   unzip_dir_name =  "#{source_dir}\\" << File.basename(ruby_file_name, ".7z")
   windows_batch "unzip_and_move_ruby" do
@@ -70,7 +69,8 @@ when 'windows'
     "#{node['7-zip']['home']}\\7z.exe" x #{source_dir}\\#{ruby_file_name} -o#{source_dir} -r -y
     xcopy #{unzip_dir_name} \"#{embedded_dir}\" /e /y
     EOH
-    action :nothing
+    not_if { ::File.exists?(unzip_dir_name) }
+    action :run
   end
 
   # Ruby DevKit
@@ -83,14 +83,14 @@ when 'windows'
     source node['omnibus']['chef-client']['ruby_dev_kit_url']
     checksum node['omnibus']['chef-client']['ruby_dev_kit_checksum']
     notifies :run, "windows_batch[install_devkit_and_enhance_ruby]", :immediately
-    not_if { ::File.exists?("#{embedded_dir}/dk.rb") }
   end
   windows_batch 'install_devkit_and_enhance_ruby' do
     code <<-EOH
     #{source_dir}\\#{devkit_file_name} -y -o\"#{embedded_dir}\"
     cd \"#{embedded_dir}\" & \"#{embedded_dir}\\bin\\ruby.exe\" \"#{embedded_dir}\\dk.rb\" install
     EOH
-    action :nothing
+    action :run
+    not_if { ::File.exists?("#{embedded_dir}/dk.rb") }
   end
 
 else
