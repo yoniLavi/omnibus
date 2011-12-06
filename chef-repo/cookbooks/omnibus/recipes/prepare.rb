@@ -69,7 +69,7 @@ when 'windows'
     "#{node['7-zip']['home']}\\7z.exe" x #{source_dir}\\#{ruby_file_name} -o#{source_dir} -r -y
     xcopy #{unzip_dir_name} \"#{embedded_dir}\" /e /y
     EOH
-    not_if { ::File.exists?(unzip_dir_name) }
+    not_if { ::File.exists?("#{embedded_dir}/bin/ruby.exe") }
     action :run
   end
 
