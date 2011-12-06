@@ -35,6 +35,16 @@ $json_attribs = @"
 
 $json_attribs | Out-File -Encoding ASCII $current_dir\chef-repo\.chef\omnibus.json
 
+# clean up build related directories if they exist
+@"
+C:\opscode
+C:\omnibus\pkg
+"@ -split "`r`n" | Foreach-Object {
+  if ((Test-Path $_) -eq True) {
+    Remove-Item $_ -force -recurse
+  }
+}
+
 # (FU) MS - we have to use a script block since Write-Host output doesn't go to STDERR or STDOUT
 # https://connect.microsoft.com/PowerShell/feedback/details/283088/script-logging-needs-to-be-improved
 $script = {
