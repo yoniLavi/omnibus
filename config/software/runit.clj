@@ -36,5 +36,6 @@
                   {:command "cp" :args ["etc/2" "/opt/opscode/embedded/bin/runsvdir-start"]}
                   {:command "mkdir" :args ["-p" "/opt/opscode/service"]}
                   {:command "mkdir" :args ["-p" "/opt/opscode/sv"]}
+                  {:command "mkdir" :args ["-p" "/opt/opscode/init"]}
                  ])
 
