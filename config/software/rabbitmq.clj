@@ -22,8 +22,8 @@
           :steps [
                   {:command "pwd"}
                   {:command "cp" :args ["-a" "../rabbitmq_server-2.2.0" "/opt/opscode/embedded/lib/erlang/lib"]}
-                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmqctl" "/opt/opscode/bin/rabbitmqctl"]}
-                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-env" "/opt/opscode/bin/rabbitmq-env"]}
-                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-multi" "/opt/opscode/bin/rabbitmq-multi"]}
-                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-server" "/opt/opscode/bin/rabbitmq-server"]}
+                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmqctl" "/opt/opscode/embedded/bin/rabbitmqctl"]}
+                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-env" "/opt/opscode/embedded/bin/rabbitmq-env"]}
+                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-multi" "/opt/opscode/embedded/bin/rabbitmq-multi"]}
+                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-server" "/opt/opscode/embedded/bin/rabbitmq-server"]}
                     ])

@@ -35,6 +35,8 @@ template File.join(couchdb_etc_dir, "local.ini") do
   owner node['chef_server']['user']['username'] 
   mode "0600"
   variables(node['chef_server']['couchdb'].to_hash)
+  notifies :restart, "service[couchdb]"
 end
 
+# Start and enable the service
 runit_service "couchdb" 

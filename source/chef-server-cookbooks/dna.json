@@ -2,6 +2,9 @@
   "chef_server": {
     "couchdb": {
       "enable": true
+    },
+    "rabbitmq": {
+      "enable": true
     }
   },
   "run_list": [ "recipe[chef-server]" ]

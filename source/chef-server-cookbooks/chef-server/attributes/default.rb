@@ -19,7 +19,6 @@
 ####
 # The Chef User that services run as
 ####
-
 # The username for the chef services user
 default['chef_server']['user']['username'] = "chef"
 # The shell for the chef services user
@@ -30,30 +29,32 @@ default['chef_server']['user']['home'] = "/opt/opscode/embedded"
 ####
 # CouchDB 
 ####
-
 # Enable/disable the CouchDB service
 default['chef_server']['couchdb']['enable'] = true 
-
 # The directory for CouchDB data
-default['chef_server']['couchdb']['dir'] = "/var/opt/chef/couchdb"
-
+default['chef_server']['couchdb']['dir'] = "/var/opt/opscode/couchdb"
 # The port to listen on
 default['chef_server']['couchdb']['port'] = '5984'
-
 # The IP Address to bind on - use 0.0.0.0 for everything 
 default['chef_server']['couchdb']['bind_address'] = '127.0.0.1'
-
-# The maximum document size in bytes
 default['chef_server']['couchdb']['max_document_size'] = '4294967296'
 default['chef_server']['couchdb']['max_attachment_chunk_size'] = '4294967296'
 default['chef_server']['couchdb']['os_process_timeout'] = '300000'
 default['chef_server']['couchdb']['max_dbs_open'] = 10000
 default['chef_server']['couchdb']['delayed_commits'] = 'true'
-# number of docs at which to save a batch
 default['chef_server']['couchdb']['batch_save_size'] = 1000 
 default['chef_server']['couchdb']['batch_save_interval'] = 1000 
 default['chef_server']['couchdb']['log_level'] = 'info' 
 default['chef_server']['couchdb']['reduce_limit'] = 'false' 
 
-
+####
+# RabbitMQ
+####
+default['chef_server']['rabbitmq']['enable'] = true
+default['chef_server']['rabbitmq']['dir'] = "/var/opt/opscode/rabbitmq"
+default['chef_server']['rabbitmq']['vhost'] = '/chef'
+default['chef_server']['rabbitmq']['user'] = 'chef'
+default['chef_server']['rabbitmq']['password'] = 'chefrocks'
+default['chef_server']['rabbitmq']['node_ip_address'] = '127.0.0.1'
+default['chef_server']['rabbitmq']['node_port'] = '5672'
 
