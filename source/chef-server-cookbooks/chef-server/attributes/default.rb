@@ -76,3 +76,11 @@ default['chef_server']['chef-solr']['max_commit_docs'] = 1000
 default['chef_server']['chef-solr']['commit_interval'] = 60000 # in ms
 default['chef_server']['chef-solr']['poll_seconds'] = 20 # slave -> master poll interval in seconds, max of 60 (see solrconfig.xml.erb)
 
+####
+# Chef Expander
+####
+default['chef_server']['chef-expander']['enable'] = true
+default['chef_server']['chef-expander']['dir'] = "/var/opt/opscode/chef-expander"
+default['chef_server']['chef-expander']['consumer_id'] = "default" 
+default['chef_server']['chef-expander']['nodes'] = 2 
+

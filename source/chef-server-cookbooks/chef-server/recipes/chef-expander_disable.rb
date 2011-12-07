@@ -16,19 +16,6 @@
 # limitations under the License.
 #
 
-ENV['PATH'] = "/opt/opscode/bin:/opt/opscode/embedded/bin:#{ENV['PATH']}"
-
-# Create the Chef User
-include_recipe "chef-server::users"
-
-# Install our runit instance
-include_recipe "runit"
-
-# Configure Services
-[ "couchdb", "rabbitmq", "chef-solr", "chef-expander" ].each do |service|
-  if node["chef_server"][service]["enable"]
-    include_recipe "chef-server::#{service}"
-  else
-    include_recipe "chef-server::#{service}_disable"
-  end
+runit_service "chef-expander" do
+  action :disable
 end

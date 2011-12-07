@@ -5,6 +5,12 @@
     },
     "rabbitmq": {
       "enable": true
+    },
+    "chef-solr": {
+      "enable": true
+    },
+    "chef-expander": {
+      "enable": true
     }
   },
   "run_list": [ "recipe[chef-server]" ]

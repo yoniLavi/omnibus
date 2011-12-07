@@ -16,19 +16,26 @@
 # limitations under the License.
 #
 
-ENV['PATH'] = "/opt/opscode/bin:/opt/opscode/embedded/bin:#{ENV['PATH']}"
+expander_dir = node['chef_server']['chef-expander']['dir']
+expander_etc_dir = File.join(expander_dir, "etc")
 
-# Create the Chef User
-include_recipe "chef-server::users"
-
-# Install our runit instance
-include_recipe "runit"
-
-# Configure Services
-[ "couchdb", "rabbitmq", "chef-solr", "chef-expander" ].each do |service|
-  if node["chef_server"][service]["enable"]
-    include_recipe "chef-server::#{service}"
-  else
-    include_recipe "chef-server::#{service}_disable"
+[ expander_dir, expander_etc_dir ].each do |dir_name|
+  directory dir_name do
+    owner node['chef_server']['user']['username']
+    mode '0700'
+    recursive true
   end
 end
+
+expander_config = File.join(expander_etc_dir, "expander.rb")
+
+template expander_config do
+  source "expander.rb.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(node['chef_server']['chef-expander'].to_hash)
+  notifies :restart, 'service[chef-expander]'
+end
+
+runit_service "chef-expander"
