@@ -14,7 +14,8 @@ port = <%= @port %>
 bind_address = <%= @bind_address %>
 
 [log]
-level = <%= @level %> 
+level = <%= @log_level %> 
+file = <%= File.join(@dir, 'log', 'couchdb.log') %>
 
 [query_server_config]
 reduce_limit = <%= @reduce_limit %>

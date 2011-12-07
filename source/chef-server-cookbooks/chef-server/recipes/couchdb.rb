@@ -19,9 +19,10 @@
 couchdb_dir = node['chef_server']['couchdb']['dir']
 couchdb_etc_dir =  File.join(node['chef_server']['couchdb']['dir'], "etc")
 couchdb_data_dir = File.join(node['chef_server']['couchdb']['dir'], "data")
+couchdb_log_dir = File.join(node['chef_server']['couchdb']['dir'], "log")
 
 # Create the CouchDB directories
-[ couchdb_dir, couchdb_etc_dir, couchdb_data_dir ].each do |dir_name|
+[ couchdb_dir, couchdb_etc_dir, couchdb_data_dir, couchdb_log_dir ].each do |dir_name|
   directory dir_name do
     mode "0700"
     recursive true

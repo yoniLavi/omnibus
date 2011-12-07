@@ -44,7 +44,7 @@ default['chef_server']['couchdb']['max_dbs_open'] = 10000
 default['chef_server']['couchdb']['delayed_commits'] = 'true'
 default['chef_server']['couchdb']['batch_save_size'] = 1000 
 default['chef_server']['couchdb']['batch_save_interval'] = 1000 
-default['chef_server']['couchdb']['log_level'] = 'info' 
+default['chef_server']['couchdb']['log_level'] = 'error' 
 default['chef_server']['couchdb']['reduce_limit'] = 'false' 
 
 ####
@@ -83,4 +83,22 @@ default['chef_server']['chef-expander']['enable'] = true
 default['chef_server']['chef-expander']['dir'] = "/var/opt/opscode/chef-expander"
 default['chef_server']['chef-expander']['consumer_id'] = "default" 
 default['chef_server']['chef-expander']['nodes'] = 2 
+
+####
+# Chef Server API
+####
+default['chef_server']['chef-server-api']['enable'] = true
+default['chef_server']['chef-server-api']['dir'] = "/var/opt/opscode/chef-server-api"
+default['chef_server']['chef-server-api']['url'] = "http://127.0.0.1:4000" 
+default['chef_server']['chef-server-api']['listen'] = '127.0.0.1:4000'
+default['chef_server']['chef-server-api']['backlog'] = 1024
+default['chef_server']['chef-server-api']['tcp_nodelay'] = true 
+default['chef_server']['chef-server-api']['worker_timeout'] = 3600 
+default['chef_server']['chef-server-api']['validation_client_name'] = "chef"
+default['chef_server']['chef-server-api']['umask'] = "0022"
+default['chef_server']['chef-server-api']['worker_processes'] = node["cpu"]["total"].to_i
+default['chef_server']['chef-server-api']['web_ui_client_name'] = "chef-webui"
+default['chef_server']['chef-server-api']['web_ui_admin_user_name'] = "admin"
+default['chef_server']['chef-server-api']['web_ui_admin_default_password'] = "p@ssw0rd1"
+
 

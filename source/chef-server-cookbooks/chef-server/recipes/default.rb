@@ -25,7 +25,7 @@ include_recipe "chef-server::users"
 include_recipe "runit"
 
 # Configure Services
-[ "couchdb", "rabbitmq", "chef-solr", "chef-expander" ].each do |service|
+[ "couchdb", "rabbitmq", "chef-solr", "chef-expander", "chef-server-api" ].each do |service|
   if node["chef_server"][service]["enable"]
     include_recipe "chef-server::#{service}"
   else
