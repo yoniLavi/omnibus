@@ -58,3 +58,21 @@ default['chef_server']['rabbitmq']['password'] = 'chefrocks'
 default['chef_server']['rabbitmq']['node_ip_address'] = '127.0.0.1'
 default['chef_server']['rabbitmq']['node_port'] = '5672'
 
+####
+# Chef Solr
+####
+default['chef_server']['chef-solr']['enable'] = true
+default['chef_server']['chef-solr']['dir'] = "/var/opt/opscode/chef-solr"
+default['chef_server']['chef-solr']['heap_size'] = "256M" 
+default['chef_server']['chef-solr']['java_opts'] = ""
+default['chef_server']['chef-solr']['url'] = "http://localhost:8983"
+default['chef_server']['chef-solr']['ip_address'] = '127.0.0.1'
+default['chef_server']['chef-solr']['port'] = '8983'
+default['chef_server']['chef-solr']['ram_buffer_size'] = 200 
+default['chef_server']['chef-solr']['merge_factor'] = 100
+default['chef_server']['chef-solr']['max_merge_docs'] = 2147483647
+default['chef_server']['chef-solr']['max_field_length'] = 100000
+default['chef_server']['chef-solr']['max_commit_docs'] = 1000
+default['chef_server']['chef-solr']['commit_interval'] = 60000 # in ms
+default['chef_server']['chef-solr']['poll_seconds'] = 20 # slave -> master poll interval in seconds, max of 60 (see solrconfig.xml.erb)
+
