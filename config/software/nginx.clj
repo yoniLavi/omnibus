@@ -1,7 +1,6 @@
 ;;
 ;; Author:: Adam Jacob (<adam@opscode.com>)
-;; Author:: Christopher Brown (<cb@opscode.com>)
-;; Copyright:: Copyright (c) 2010 Opscode, Inc.
+;; Copyright:: Copyright (c) 2011 Opscode, Inc.
 ;; License:: Apache License, Version 2.0
 ;;
 ;; Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +16,17 @@
 ;; limitations under the License.
 ;;
 
-(project "chef-server-full" "0.10.4" "1"
-         :build-order [
-                     "prep" "autoconf" "zlib" "libiconv" "db" "gdbm"
-                     "ncurses" "openssl" "libxml2" "libxslt" "ruby" "rsync"
-                     "gecode" "erlang" "icu" "spidermonkey" "curl" "couchdb"
-                     "rabbitmq" "runit" "jre" "pcre" "nginx" "chef" "chef-server"])
+(software "nginx" :source "nginx-1.0.10"
+          :steps [
+                  {:command "./configure"
+                   :args ["--prefix=/opt/opscode/embedded"
+                          "--with-http_ssl_module",
+                          "--with-ld-opt=-L/opt/opscode/embedded/lib"
+                          "--with-cc-opt=-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
+                          ]}
+                  {:command "make" :env { "LD_RUN_PATH" "/opt/opscode/embedded/lib" }}
+                  {:command "make" :args ["install"]}
+                  ])
+
 
 
