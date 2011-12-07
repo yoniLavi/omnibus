@@ -61,6 +61,10 @@ ln -sf /opt/opscode/bin/chef-solo /usr/bin || error_exit "Cannot link chef-solo 
 ln -sf /opt/opscode/bin/knife /usr/bin || error_exit "Cannot link knife to /usr/bin"
 ln -sf /opt/opscode/bin/shef /usr/bin || error_exit "Cannot link shef to /usr/bin"
 ln -sf /opt/opscode/bin/ohai /usr/bin || error_exit "Cannot link ohai to /usr/bin"
+if [ -h /opt/opscode/bin/chef-server-ctl ]; then
+  ln -sf /opt/opscode/bin/chef-server-ctl /usr/bin || error_exit "Cannot link chef-server-ctl to /usr/bin"
+  /usr/bin/chef-server-ctl reconfigure
+fi
 
 echo "Thank you for installing Chef!"
 

@@ -1,7 +1,6 @@
 ;;
 ;; Author:: Adam Jacob (<adam@opscode.com>)
-;; Author:: Christopher Brown (<cb@opscode.com>)
-;; Copyright:: Copyright (c) 2010 Opscode, Inc.
+;; Copyright:: Copyright (c) 2011 Opscode, Inc.
 ;; License:: Apache License, Version 2.0
 ;;
 ;; Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +16,12 @@
 ;; limitations under the License.
 ;;
 
-(project "chef-server-full" "0.10.4" "1"
-         :build-order [
-                     "prep" "autoconf" "zlib" "libiconv" "db" "gdbm"
-                     "ncurses" "openssl" "libxml2" "libxslt" "ruby" "rsync"
-                     "gecode" "erlang" "icu" "spidermonkey" "curl" "couchdb"
-                     "rabbitmq" "runit" "jre" "pcre" "nginx" "chef" "chef-server" "chef-server-cookbooks"])
+(software "chef-server-cookbooks" :source "chef-server-cookbooks"
+          :steps [
+                  {:command "mkdir" :args [ "-p" "/opt/opscode/embedded/cookbooks" ]}
+                  {:command "bash" :args [ "-c" "cp -ra * /opt/opscode/embedded/cookbooks/" ] } 
+                  {:command "ln" :args [ "-sf" "/opt/opscode/embedded/cookbooks/bin/chef-server-ctl" "/opt/opscode/bin/chef-server-ctl" ] } 
+                  ])
+
 
 

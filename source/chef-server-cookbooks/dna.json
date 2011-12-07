@@ -1,21 +1,3 @@
 {
-  "chef_server": {
-    "couchdb": {
-      "enable": true
-    },
-    "rabbitmq": {
-      "enable": true
-    },
-    "chef-solr": {
-      "enable": true
-    },
-    "chef-expander": {
-      "enable": true
-    },
-    "chef-server-api": {
-      "enable": true
-    }
-
-  },
   "run_list": [ "recipe[chef-server]" ]
 }
