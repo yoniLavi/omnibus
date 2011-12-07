@@ -1,0 +1,8 @@
+{
+  "chef_server": {
+    "couchdb": {
+      "enable": true
+    }
+  },
+  "run_list": [ "recipe[chef-server]" ]
+}
