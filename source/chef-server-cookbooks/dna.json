@@ -11,7 +11,11 @@
     },
     "chef-expander": {
       "enable": true
+    },
+    "chef-server-api": {
+      "enable": true
     }
+
   },
   "run_list": [ "recipe[chef-server]" ]
 }
