@@ -101,4 +101,47 @@ default['chef_server']['chef-server-api']['web_ui_client_name'] = "chef-webui"
 default['chef_server']['chef-server-api']['web_ui_admin_user_name'] = "admin"
 default['chef_server']['chef-server-api']['web_ui_admin_default_password'] = "p@ssw0rd1"
 
+####
+# Chef Server WebUI
+####
+default['chef_server']['chef-server-webui']['enable'] = true
+default['chef_server']['chef-server-webui']['dir'] = "/var/opt/opscode/chef-server-webui"
+default['chef_server']['chef-server-webui']['url'] = "http://127.0.0.1:4040" 
+default['chef_server']['chef-server-webui']['listen'] = '127.0.0.1:4040'
+default['chef_server']['chef-server-webui']['backlog'] = 1024
+default['chef_server']['chef-server-webui']['tcp_nodelay'] = true 
+default['chef_server']['chef-server-webui']['worker_timeout'] = 3600 
+default['chef_server']['chef-server-webui']['validation_client_name'] = "chef"
+default['chef_server']['chef-server-webui']['umask'] = "0022"
+default['chef_server']['chef-server-webui']['worker_processes'] = node["cpu"]["total"].to_i
+default['chef_server']['chef-server-webui']['web_ui_client_name'] = "chef-webui"
+default['chef_server']['chef-server-webui']['web_ui_admin_user_name'] = "admin"
+default['chef_server']['chef-server-webui']['web_ui_admin_default_password'] = "p@ssw0rd1"
+
+####
+# Nginx
+####
+default['chef_server']['nginx']['enable'] = true
+default['chef_server']['nginx']['dir'] = "/var/opt/opscode/nginx"
+default['chef_server']['nginx']['ssl_port'] = 443
+default['chef_server']['nginx']['server_name'] = node['fqdn']
+default['chef_server']['nginx']['ssl_certificate'] = nil 
+default['chef_server']['nginx']['ssl_certificate_key'] = nil 
+default['chef_server']['nginx']['ssl_country_name'] = "US"
+default['chef_server']['nginx']['ssl_state_name'] = "WA"
+default['chef_server']['nginx']['ssl_locality_name'] = "Seattle"
+default['chef_server']['nginx']['ssl_company_name'] = "YouCorp"
+default['chef_server']['nginx']['ssl_organizational_unit_name'] = "Operations"
+default['chef_server']['nginx']['ssl_email_address'] = "you@example.com"
+default['chef_server']['nginx']['worker_processes'] = node['cpu']['total'].to_i
+default['chef_server']['nginx']['worker_connections'] = 2048
+default['chef_server']['nginx']['sendfile'] = 'on'
+default['chef_server']['nginx']['tcp_nopush'] = 'on'
+default['chef_server']['nginx']['tcp_nodelay'] = 'on'
+default['chef_server']['nginx']['gzip'] = "on"               
+default['chef_server']['nginx']['gzip_http_version'] = "1.0"
+default['chef_server']['nginx']['gzip_comp_level'] = "2"   
+default['chef_server']['nginx']['gzip_proxied'] = "any"   
+default['chef_server']['nginx']['gzip_types'] = [ "text/plain", "text/css", "application/x-javascript", "text/xml", "application/xml", "application/xml+rss", "text/javascript" ] 
+default['chef_server']['nginx']['keepalive_timeout'] = 65 
 
