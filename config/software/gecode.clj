@@ -19,9 +19,9 @@
 (software "gecode"
           :source "gecode-3.7.1"
           :steps [
-                  {:command "configure" :args [ "--prefix=/opt/opscode/embedded" "--disable-doc-dot" "--disable-doc-search" "--disable-doc-tagfile" "--disable-doc-chm" "--disable-doc-docset" "--disable-qt" "--disable-examples" ]}
+                  {:command "./configure" :args [ "--prefix=/opt/opscode/embedded" "--disable-doc-dot" "--disable-doc-search" "--disable-doc-tagfile" "--disable-doc-chm" "--disable-doc-docset" "--disable-qt" "--disable-examples" ]}
                   {:env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"} :command "make"}
-                  {:command "make install"}
+                  {:command "make" :args [ "install" ]}
                  ])
 
 
