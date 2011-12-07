@@ -52,7 +52,7 @@ template chef_server_webui_config do
 end
 
 template "/opt/opscode/embedded/lib/ruby/gems/1.9.1/gems/chef-server-webui-#{Chef::VERSION}/config.ru" do
-  source "chef-server-api.ru.erb" 
+  source "chef-server-webui.ru.erb" 
   mode "0644"
   owner "root"
   group "root"

@@ -19,6 +19,7 @@
 nginx_dir = node['chef_server']['nginx']['dir']
 nginx_etc_dir = File.join(nginx_dir, "etc")
 nginx_cache_dir = File.join(nginx_dir, "cache")
+nginx_cache_tmp_dir = File.join(nginx_dir, "cache-tmp")
 nginx_html_dir = File.join(nginx_dir, "html")
 nginx_ca_dir = File.join(nginx_dir, "ca")
 nginx_log_dir = File.join(nginx_dir, "log")
@@ -27,9 +28,10 @@ nginx_log_dir = File.join(nginx_dir, "log")
   nginx_dir,
   nginx_etc_dir,
   nginx_cache_dir,
+  nginx_cache_tmp_dir,
   nginx_html_dir,
   nginx_ca_dir,
-  nginx_log_dir
+  nginx_log_dir,
 ].each do |dir_name|
   directory dir_name do
     owner node['chef_server']['user']['username']
