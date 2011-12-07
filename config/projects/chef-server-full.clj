@@ -20,6 +20,6 @@
 (project "chef-server-full" "0.10.4" "1"
          :build-order [ "prep" "autoconf" "zlib" "libiconv" "db" "gdbm" "ncurses" "openssl"
                         "libxml2" "libxslt" "ruby" "rsync" "gecode" "chef" "chef-server"
-                        "erlang" "icu" "spidermonkey" "curl" "couchdb" "rabbitmq"])
+                        "erlang" "icu" "spidermonkey" "curl" "couchdb" "rabbitmq" "jre"])
 
 
