@@ -73,5 +73,13 @@ unicorn_config File.join(chef_server_webui_etc_dir, "unicorn.rb") do
   notifies :restart, 'service[chef-server-webui]'
 end
 
+if !File.exist?("/opt/opscode/sv/chef-server-webui")
+  ruby_block "Slow start the webui on first boot" do
+    block do
+      sleep 30
+    end
+  end
+end
+
 runit_service "chef-server-webui"
 

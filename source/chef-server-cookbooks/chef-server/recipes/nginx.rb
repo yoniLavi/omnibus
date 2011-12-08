@@ -49,7 +49,7 @@ unless File.exists?(ssl_keyfile) && File.exists?(ssl_crtfile) && File.exists?(ss
     owner "root"
     group "root"
     mode "0644"
-    content `cd #{nginx_ca_dir} && /opt/opscode/embedded/bin/openssl genrsa 2048`
+    content `/opt/opscode/embedded/bin/openssl genrsa 2048`
     not_if { File.exists?(ssl_keyfile) }
   end
 
@@ -80,7 +80,7 @@ unless File.exists?(ssl_keyfile) && File.exists?(ssl_crtfile) && File.exists?(ss
       r.owner "root"
       r.group "root"
       r.mode "0644"
-      r.content `cd #{nginx_ca_dir} && /opt/opscode/embedded/bin/openssl req -config '#{ssl_signing_conf}' -new -x509 -nodes -sha1 -days 3650 -key #{ssl_keyfile}`
+      r.content `/opt/opscode/embedded/bin/openssl req -config '#{ssl_signing_conf}' -new -x509 -nodes -sha1 -days 3650 -key #{ssl_keyfile}`
       r.not_if { File.exists?(ssl_crtfile) }
       r.run_action(:create)
     end

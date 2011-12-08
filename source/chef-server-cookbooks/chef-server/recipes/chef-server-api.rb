@@ -75,3 +75,19 @@ end
 
 runit_service "chef-server-api"
 
+template "/etc/chef/client.rb" do
+  owner "root"
+  group "root"
+  mode "0644"
+  source "client.rb.erb"
+  not_if { File.exists?("/etc/chef/client.rb") }
+end
+
+template "/etc/chef/knife.rb" do
+  owner "root"
+  group "root"
+  mode "0644"
+  source "knife.rb.erb"
+  not_if { File.exists?("/etc/chef/knife.rb") }
+end
+

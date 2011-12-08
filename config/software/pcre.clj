@@ -23,7 +23,7 @@
                          "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
                          }
                    :args ["--prefix=/opt/opscode/embedded" ]}
-                  {:command "make" :env { "LD_RUN_PATH" "/opt/opscode/embedded/lib" }}
+                  {:command "make" :env { "PATH" "/opt/opscode/embedded/bin:/opt/opscode/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin" "LD_RUN_PATH" "/opt/opscode/embedded/lib" }}
                   {:command "make" :args ["install"]}
                   ])
 
