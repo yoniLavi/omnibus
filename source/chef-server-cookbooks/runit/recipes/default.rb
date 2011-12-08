@@ -26,4 +26,6 @@ when "ubuntu"
     mode "0644"
     source "opscode-runsvdir"
   end
+
+  execute "service opscode-runsvdir restart" 
 end
