@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: runit
-# Recipe:: default
+# Recipe:: sysvinit
 #
-# Copyright 2008-2010, Opscode, Inc.
+# Copyright 2011, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,16 +17,13 @@
 # limitations under the License.
 #
 
-# TODO: This needs RHEL support
-case node["platform"]
-when "ubuntu"
-  include_recipe "runit::upstart"
-when "redhat","centos","rhel","scientific"
-  if node['platform_version'] =~ /^6/
-    include_recipe "runit::upstart"
-  else
-    include_recipe "runit::sysvinit"
-  end
-else
-  include_recipe "runit::sysvinit"
+# We assume you are sysvinit
+svdir_line = 'SV:123456:respawn:/opt/opscode/embedded/bin/runsvdir-start'
+execute "echo '#{svdir_line}' >> /etc/inittab" do
+  not_if "grep '#{svdir_line}' /etc/inittab"
+  notifies :run, "execute[init q]", :immediately
+end
+
+execute "init q" do
+  action :nothing
 end
