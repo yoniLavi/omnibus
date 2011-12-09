@@ -103,7 +103,7 @@ h3. CentOS 5
 bc. wget http://download.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
 rpm -Uvh epel-release-5-4.noarch.rpm
 yum update -y
-yum install -y gcc gcc-c++ kernel-devel make autoconf flex bison git java-1.6.0-openjdk java-1.6.0-openjdk-devel ruby ruby-libs ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc ruby-mode rubygems rpm-build libxml2 libxml2-devel libxslt libxslt-devel wget automake help2man libtool gettext texinfo
+yum install -y gcc44 gcc-c++44 gcc gcc-c++ kernel-devel make autoconf flex bison git java-1.6.0-openjdk java-1.6.0-openjdk-devel ruby ruby-libs ruby-devel ruby-docs ruby-ri ruby-irb ruby-rdoc ruby-mode rubygems rpm-build libxml2 libxml2-devel libxslt libxslt-devel wget automake help2man libtool gettext texinfo
 gem install fpm ohai --no-rdoc --no-ri
 wget --no-check-certificate https://github.com/technomancy/leiningen/raw/stable/bin/lein && mv lein /usr/local/bin && chmod 755 /usr/local/bin/lein
 git clone git://github.com/opscode/omnibus.git
