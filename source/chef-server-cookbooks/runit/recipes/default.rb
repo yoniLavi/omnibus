@@ -27,5 +27,15 @@ when "ubuntu"
     source "opscode-runsvdir"
   end
 
-  execute "service opscode-runsvdir restart" 
+  # Keep on trying till the job is found :(
+  execute "initctl status opscode-runsvdir" do
+    retries 30
+  end
+
+  # If we are stop/waiting, start
+  #
+  # Why, upstart, aren't you idempotent? :(
+  execute "service opscode-runsvdir start" do
+    only_if "initctl status opscode-runsvdir | grep stop"
+  end
 end
