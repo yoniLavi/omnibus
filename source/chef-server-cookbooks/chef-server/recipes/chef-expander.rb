@@ -35,7 +35,7 @@ template expander_config do
   group "root"
   mode "0644"
   variables(node['chef_server']['chef-expander'].to_hash)
-  notifies :restart, 'service[chef-expander]'
+  notifies :restart, 'service[chef-expander]' if OmnibusHelper.should_notify?("chef-expander")
 end
 
 runit_service "chef-expander"

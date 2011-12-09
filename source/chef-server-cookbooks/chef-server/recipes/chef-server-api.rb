@@ -41,6 +41,7 @@ chef_server_api_working_dir = File.join(chef_server_api_dir, "working")
 end
 
 chef_server_api_config = File.join(chef_server_api_etc_dir, "server.rb")
+should_notify = OmnibusHelper.should_notify?("chef-server-api")
 
 template chef_server_api_config do
   source "server.rb.erb"
@@ -48,7 +49,7 @@ template chef_server_api_config do
   group "root"
   mode "0644"
   variables(node['chef_server']['chef-server-api'].to_hash)
-  notifies :restart, 'service[chef-server-api]'
+  notifies :restart, 'service[chef-server-api]' if should_notify
 end
 
 template "/opt/opscode/embedded/lib/ruby/gems/1.9.1/gems/chef-server-api-#{Chef::VERSION}/config.ru" do
@@ -56,7 +57,7 @@ template "/opt/opscode/embedded/lib/ruby/gems/1.9.1/gems/chef-server-api-#{Chef:
   mode "0644"
   owner "root"
   group "root"
-  notifies :restart, 'service[chef-server-api]'
+  notifies :restart, 'service[chef-server-api]' if should_notify
 end
 
 unicorn_config File.join(chef_server_api_etc_dir, "unicorn.rb") do
@@ -70,7 +71,7 @@ unicorn_config File.join(chef_server_api_etc_dir, "unicorn.rb") do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, 'service[chef-server-api]'
+  notifies :restart, 'service[chef-server-api]' if should_notify
 end
 
 runit_service "chef-server-api"

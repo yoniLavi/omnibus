@@ -40,6 +40,8 @@ chef_server_webui_working_dir = File.join(chef_server_webui_dir, "working")
   end
 end
 
+should_notify = OmnibusHelper.should_notify?("chef-server-webui")
+
 chef_server_webui_config = File.join(chef_server_webui_etc_dir, "server.rb")
 
 template chef_server_webui_config do
@@ -48,7 +50,7 @@ template chef_server_webui_config do
   group "root"
   mode "0644"
   variables(node['chef_server']['chef-server-webui'].to_hash)
-  notifies :restart, 'service[chef-server-webui]'
+  notifies :restart, 'service[chef-server-webui]' if should_notify
 end
 
 template "/opt/opscode/embedded/lib/ruby/gems/1.9.1/gems/chef-server-webui-#{Chef::VERSION}/config.ru" do
@@ -56,7 +58,7 @@ template "/opt/opscode/embedded/lib/ruby/gems/1.9.1/gems/chef-server-webui-#{Che
   mode "0644"
   owner "root"
   group "root"
-  notifies :restart, 'service[chef-server-webui]'
+  notifies :restart, 'service[chef-server-webui]' if should_notify
 end
 
 unicorn_config File.join(chef_server_webui_etc_dir, "unicorn.rb") do
@@ -70,7 +72,7 @@ unicorn_config File.join(chef_server_webui_etc_dir, "unicorn.rb") do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, 'service[chef-server-webui]'
+  notifies :restart, 'service[chef-server-webui]' if should_notify
 end
 
 if !File.exist?("/opt/opscode/sv/chef-server-webui")

@@ -36,7 +36,7 @@ template File.join(couchdb_etc_dir, "local.ini") do
   owner node['chef_server']['user']['username'] 
   mode "0600"
   variables(node['chef_server']['couchdb'].to_hash)
-  notifies :restart, "service[couchdb]"
+  notifies :restart, "service[couchdb]" if OmnibusHelper.should_notify?("couchdb")
 end
 
 # Start and enable the service

@@ -56,12 +56,14 @@ file solr_installed_file do
   action :nothing
 end
 
+should_notify = OmnibusHelper.should_notify?("chef-solr")
+
 template File.join(solr_jetty_dir, "etc", "jetty.xml") do
   owner node['chef_server']['user']['username']
   mode "0644"
   source "jetty.xml.erb"
   variables(node['chef_server']['chef-solr'].to_hash)
-  notifies :restart, 'service[chef-solr]'
+  notifies :restart, 'service[chef-solr]' if should_notify
 end
 
 template File.join(solr_home_dir, "conf", "solrconfig.xml") do
@@ -69,7 +71,7 @@ template File.join(solr_home_dir, "conf", "solrconfig.xml") do
   mode "0644"
   source "solrconfig.xml.erb"
   variables(node['chef_server']['chef-solr'].to_hash)
-  notifies :restart, 'service[chef-solr]'
+  notifies :restart, 'service[chef-solr]' if should_notify
 end
 
 runit_service "chef-solr"
