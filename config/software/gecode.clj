@@ -17,7 +17,7 @@
 ;;
 
 (let 
-  [env (if (= 1 (get (sh "/bin/sh" :args [ "-c" "which g++44" ] :return-map true) :exit-status)) 
+  [env (if (= 0 (get (sh "/bin/sh" :args [ "-c" "which g++44" ] :return-map true) :exit-status)) 
          { "CC" "gcc44" "CXX" "g++44" } 
          { })]
 
