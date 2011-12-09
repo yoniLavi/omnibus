@@ -16,12 +16,17 @@
 ;; limitations under the License.
 ;;
 
+(let 
+  [env (if (= 1 (get (sh "/bin/which" :args [ "g++44" ] :return-map true) :exit-status)) 
+         { "CC" "gcc44" "CXX" "g++44" } 
+         { })]
+
 (software "gecode"
           :source "gecode-3.7.1"
           :steps [
-                  {:command "./configure" :args [ "--prefix=/opt/opscode/embedded" "--disable-doc-dot" "--disable-doc-search" "--disable-doc-tagfile" "--disable-doc-chm" "--disable-doc-docset" "--disable-qt" "--disable-examples" ]}
+                  {:command "./configure" :env env :args [ "--prefix=/opt/opscode/embedded" "--disable-doc-dot" "--disable-doc-search" "--disable-doc-tagfile" "--disable-doc-chm" "--disable-doc-docset" "--disable-qt" "--disable-examples" ]}
                   {:env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"} :command "make"}
                   {:command "make" :args [ "install" ]}
-                 ])
+                 ]))
 
 
