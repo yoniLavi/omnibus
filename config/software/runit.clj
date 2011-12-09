@@ -22,6 +22,7 @@
                   {:command "sed" :args ["-i" "-e" "s:^char *varservice =\"/service/\";$:char *varservice =\"/opt/opscode/service/\";:" "src/sv.c"]}
                   {:command "sed" :args ["-i" "-e" "s:/service:/opt/opscode/service:" "etc/2"]}
                   {:command "sed" :args ["-i" "-e" "s!^PATH=/command:/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin$!PATH=/opt/opscode/bin:/opt/opscode/embedded/bin:/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin!" "etc/2"]}
+                  {:command "sed" :args ["-i" "-e" "s:-static::" "src/Makefile"]}
                   {:command "sh" :args ["-c" "cd src && make"]}
                   {:command "sh" :args ["-c" "cd src && make check"]}
                   {:command "cp" :args ["src/chpst" "/opt/opscode/embedded/bin"]}
