@@ -1,0 +1,52 @@
+cd src
+
+# apply custom CFLAGS and LDFLAGS
+echo "${CC:-gcc} $CFLAGS" > conf-cc || return 1
+echo "${CC:-gcc -s} $LDFLAGS" > conf-ld || return 1
+# set default service path to /opt/opscode/service
+sed -i -e 's:^char \*varservice ="/service/";$:char \*varservice ="/opt/opscode/service/";:' sv.c || return 1
+
+  # compile
+  make || return 1
+  make check || return 1
+
+  # default services
+  install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/pkg-default || return 1
+  install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/all || return 1
+  install -d -m0755 ${startdir}/pkg/var || return 1
+
+  # set up runit-init
+  install -m0755 $startdir/src/[123] ${startdir}/pkg/etc/runit || return 1
+  install -m0755 $startdir/src/admin/$pkgname-$pkgver/etc/debian/ctrlaltdel ${startdir}/pkg/etc/runit || return 1
+
+  ln -s ../etc/runit/runsvdir/current ${startdir}/pkg/var/service || return 1
+
+  # install binaries
+  install -d -m0755 ${startdir}/pkg/sbin || return 1
+  for i in `cat $startdir/src/admin/$pkgname-$pkgver/package/commands`
+  do
+    install -s -m0755 $startdir/src/admin/$pkgname-$pkgver/src/$i ${startdir}/pkg/sbin || return 1
+  done
+
+  # man-pages
+  install -d -m0755 ${startdir}/pkg/usr/share/man/man8 || return 1
+  install -m0644 $startdir/src/admin/$pkgname-$pkgver/man/* ${startdir}/pkg/usr/share/man/man8 || return 1
+
+  # doc
+  install -d -m0755 ${startdir}/pkg/usr/share/doc/runit || return 1
+  install -m0644 $startdir/src/admin/$pkgname-$pkgver/doc/*.html ${startdir}/pkg/usr/share/doc/runit  || return 1
+  
+  # add gettys for 1-4 terminals
+  cd $startdir/src/admin/$pkgname-$pkgver/etc/debian/getty-tty5/ || return 1
+  for i in {1..4}
+  do
+    install -d -m0755 ${startdir}/pkg/etc/runit/runsvdir/all/getty-$i || return 1
+  ln -s ../all/getty-$i "${startdir}/pkg/etc/runit/runsvdir/pkg-default/" || return 1
+  for f in *
+  do
+    sed "s/tty5/tty$i/g;s/getty/agetty/g" <"$f" >"${startdir}/pkg/etc/runit/runsvdir/all/getty-$i/$f" || return 1
+    chmod 0755 "${startdir}/pkg/etc/runit/runsvdir/all/getty-$i/$f"
+  done
+  done
+
+  install -D $startdir/src/admin/runit-$pkgver/package/COPYING $startdir/pkg/usr/share/licenses/runit/COPYING

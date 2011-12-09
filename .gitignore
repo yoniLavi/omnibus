@@ -1,5 +1,7 @@
 pom.xml
+.lein-deps-sum
 *jar
+/source/chef-server-cookbooks/cache
 /build/
 /classes/
 /lib/

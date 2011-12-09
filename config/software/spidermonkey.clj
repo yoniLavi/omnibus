@@ -18,8 +18,8 @@
 ;;
 
 (let [initial-steps
-      [{:command "make" :args ["BUILD_OPT=1" "XCFLAGS=-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include" "-f" "Makefile.ref"]}
-       {:command "make" :args ["BUILD_OPT=1" "JS_DIST=/opt/opscode/embedded" "-f" "Makefile.ref" "export"]}]
+      [{:env { "LD_RUN_PATH" "/opt/opscode/embedded/lib" } :command "make" :args ["BUILD_OPT=1" "XCFLAGS=-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include" "-f" "Makefile.ref"]}
+       {:env { "LD_RUN_PATH" "/opt/opscode/embedded/lib" } :command "make" :args ["BUILD_OPT=1" "JS_DIST=/opt/opscode/embedded" "-f" "Makefile.ref" "export"]}]
       steps
       (cond
        (and (is-os? "linux") (is-machine? "x86_64"))

@@ -1,0 +1,4 @@
+#!/bin/sh
+exec 2>&1
+exec chpst -U <%= node['chef_server']['user']['username'] %> -u <%= node['chef_server']['user']['username'] %> /usr/bin/env PATH=/opt/opscode/embedded/bin:/opt/opscode/bin:/opt/opscode/embedded/jre/bin:$PATH JAVA_HOME=/opt/opscode/embedded/jre /opt/opscode/bin/chef-solr -c <%= File.join(node['chef_server']['chef-solr']['dir'], "etc", "solr.rb") %>
+
