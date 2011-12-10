@@ -17,7 +17,7 @@
 ;;
 
 (let 
-  [env (if (= 0 (get (clojure.java.shell/sh "test" :args [ "-f" "/usr/bin/gcc44" ] :return-map true) :exit)) 
+  [env (if (= 0 (get (clojure.java.shell/sh "test" "-f" "/usr/bin/gcc44") :exit)) 
          { "CC" "gcc44" "CXX" "g++44" } 
          { })]
 
