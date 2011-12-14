@@ -22,8 +22,8 @@ $json_attribs = @"
   },
   "omnibus": {
     "$project_name": {
-      "version": "0.10.4",
-      "iteration": "6",
+      "version": "0.10.6",
+      "iteration": "1",
       "bucket_name": "$bucket_name"
     }
   },

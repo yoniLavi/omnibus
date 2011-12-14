@@ -17,6 +17,6 @@
 ;; limitations under the License.
 ;;
 
-(project "chef-full" "0.10.4" "6"
+(project "chef-full" "0.10.6" "1"
          :build-order [ "prep" "help2man" "libtool" "autoconf" "automake" "gdbm" "zlib" "libiconv" "readline" "db" "ncurses"
                         "openssl" "libxml2" "libxslt" "ruby" "rsync" "chef" ])
