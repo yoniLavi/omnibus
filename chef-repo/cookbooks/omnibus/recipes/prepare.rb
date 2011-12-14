@@ -89,7 +89,7 @@ when 'windows'
   windows_batch 'install_devkit_and_enhance_ruby' do
     code <<-EOH
     #{devkit_download_path} -y -o\"#{embedded_dir}\"
-    cd \"#{embedded_dir}\" & \"#{embedded_dir}\\bin\\ruby.exe\" \"#{embedded_dir}\\dk.rb\" install
+    cd /d \"#{embedded_dir}\" & \"#{embedded_dir}\\bin\\ruby.exe\" \"#{embedded_dir}\\dk.rb\" install
     EOH
     action :run
     not_if { ::File.exists?("#{embedded_dir}/dk.rb") }
