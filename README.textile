@@ -74,6 +74,11 @@ bc. $ sudo lein run --project-name "chef-full" --bucket-name FULL_STACK --s3-acc
 
 The resulting build artifact will be dropped off in the S3 bucket named above. If you want to submit a build to us, drop it off in your own bucket, and let us know where and how to test the final product.
 
+For Windows the enclosed PowerShell script takes care of writing out the correct chef-solo json file nad executing the build
+via chef-solo.
+
+bc. powershell C:\omnibus\build-omnibus.ps1 "chef-client" "S3_BUCKET_NAME" "ACCESS_KEY" "SECRET_KEY"
+
 h2. Operating System Prep
 
 h3. Fedora 15
