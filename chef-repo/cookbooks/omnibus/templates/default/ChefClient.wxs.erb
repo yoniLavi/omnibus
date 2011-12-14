@@ -60,8 +60,8 @@
     <!--
       UI Stuff
     -->
-    <Icon Id="oc.ico" SourceFile="<%= @assets_dir %>\oc_16x16.ico"/>
-    <Property Id="ARPPRODUCTICON" Value="oc.ico" />
+    <Icon Id="oc.exe" SourceFile="<%= @assets_dir %>\oc.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="oc.exe" />
     <Property Id="ARPHELPLINK" Value="http://help.opscode.com/" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
 
@@ -77,10 +77,10 @@
     <WixVariable Id="WixUIDialogBmp" Value="<%= @assets_dir %>\dialog_background.bmp" />
     <WixVariable Id="WixUIBannerBmp" Value="<%= @assets_dir %>\banner_background.bmp" />
 
-    <WixVariable Id="WixUIExclamationIco" Value="<%= @assets_dir %>\oc_32x32.ico" />
+    <!--<WixVariable Id="WixUIExclamationIco" Value="<%= @assets_dir %>\oc_32x32.ico" />
     <WixVariable Id="WixUIInfoIco" Value="<%= @assets_dir %>\oc_32x32.ico" />
     <WixVariable Id="WixUINewIco" Value="<%= @assets_dir %>\oc_16x16.ico" />
-    <WixVariable Id="WixUIUpIco" Value="<%= @assets_dir %>\oc_16x16.ico" />
+    <WixVariable Id="WixUIUpIco" Value="<%= @assets_dir %>\oc_16x16.ico" />-->
 
   </Product>
 </Wix>
