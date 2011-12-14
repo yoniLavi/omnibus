@@ -235,6 +235,8 @@ h3. Windows
 
 Run in PowerShell 2.0+.  "*Set-ExecutionPolicy RemoteSigned*" must be set on the target machine if run as a 'ps1' script (vs pasted into PowerShell).
 
+The chef-solo based build process has been tested on under Ruby 1.8.7 and Chef Solo 0.10.4.
+
 bc.. $client = new-object System.Net.WebClient
 
 # download/install Git
@@ -260,16 +262,14 @@ Start-Process -FilePath "ruby.exe" 'C:\DevKit\dk.rb install' -Wait
 
 # install required gems
 Start-Process -FilePath "gem" 'install win32-api win32-service --platform=mswin32 --no-rdoc --no-ri' -Wait
-Start-Process -FilePath "gem" 'install win32-open3 rdp-ruby-wmi windows-api windows-pr --no-rdoc --no-ri' -Wait
-Start-Process -FilePath "gem" 'install ohai chef --no-rdoc --no-ri --verbose' -Wait
+Start-Process -FilePath "gem" 'install win32-open3 rdp-ruby-wmi windows-api windows-pr win32-process --no-rdoc --no-ri' -Wait
+Start-Process -FilePath "gem" 'install chef -v 0.10.4 --no-rdoc --no-ri --verbose' -Wait
 
 # check out omnibus code
 Start-Process -FilePath "git" 'clone git://github.com/opscode/omnibus.git C:\omnibus' -Wait -NoNewWindow
 
 # this will allow execution of local scripts (.ps1 files)
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
-
-p.
 
 h2. Bundled software and licensing
 
