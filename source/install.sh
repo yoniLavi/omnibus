@@ -87,6 +87,12 @@ elif [ -f "/etc/system-release" ];
 then
   platform=$(sed 's/^\(.\+\) release.\+/\1/' /etc/system-release | tr '[A-Z]' '[a-z]')
   platform_version=$(sed 's/^.\+ release \([.0-9]\+\).*/\1/' /etc/system-release | tr '[A-Z]' '[a-z]')
+  # amazon is built off of fedora, so act like RHEL
+  if [ "$platform" = "amazon linux ami" ];
+  then
+    platform="el"
+    platform_version="6.0"
+  fi
 # Apple OS X
 elif [ -f "/usr/bin/sw_vers" ];
 then
