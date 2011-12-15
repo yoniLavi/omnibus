@@ -130,7 +130,7 @@ major_version=$(echo $platform_version | cut -d. -f1)
 case $platform in
   "el")
     case $major_version in
-      "5") platform_version="5.6" ;;
+      "5") platform_version="5.7" ;;
       "6") platform_version="6.0" ;;
     esac
     ;;
