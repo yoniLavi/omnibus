@@ -69,7 +69,7 @@ when 'windows'
   windows_batch "unzip_and_move_ruby" do
     code <<-EOH
     "#{node['7-zip']['home']}\\7z.exe" x #{ruby_download_path} -o#{file_cache_path} -r -y
-    xcopy #{unzip_dir_name} \"#{embedded_dir}\" /e /y
+    xcopy \"#{unzip_dir_name}\" \"#{embedded_dir}\" /e /y
     EOH
     action :run
     not_if { ::File.exists?("#{embedded_dir}/bin/ruby.exe") }
