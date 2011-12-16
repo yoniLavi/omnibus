@@ -1,6 +1,6 @@
 #!/bin/bash
 
-release_version="0.10.8-1"
+release_version="0.10.8-2"
 use_shell=0
 
 # Check whether a command exists - returns 0 if it does, 1 if it does not
