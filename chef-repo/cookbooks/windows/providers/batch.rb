@@ -8,9 +8,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,20 +21,20 @@
 require 'tempfile'
 require 'chef/resource/execute'
 
+include Windows::Helper
+
 action :run do
   begin
     script_file.puts(@new_resource.code)
     script_file.close
     set_owner_and_group
 
-    # cwd hax...shell_out on windows needs to support proper 'cwd'
-    # follow CHEF-2357 for more
-    cwd = @new_resource.cwd ? "cd \"#{@new_resource.cwd}\" & " : ""
-
     r = Chef::Resource::Execute.new(@new_resource.name, run_context)
+    r.command("\"#{script_file.path}\"")
+    r.environment(@new_resource.environment)
+    r.cwd(@new_resource.cwd)
     r.user(@new_resource.user)
     r.group(@new_resource.group)
-    r.command("#{cwd}call \"#{script_file.path}\" #{@new_resource.flags}")
     r.creates(@new_resource.creates)
     r.returns(@new_resource.returns)
     r.run_action(:run)
