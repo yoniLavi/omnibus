@@ -249,12 +249,12 @@ $client.DownloadFile("http://msysgit.googlecode.com/files/Git-1.7.6-preview20110
 Start-Process -FilePath "$ENV:TEMP\gitinstaller.exe" '/verysilent /dir="C:\git"' -Wait
 [Environment]::SetEnvironmentVariable( "Path", "$ENV:PATH;C:\git\cmd", [System.EnvironmentVariableTarget]::Machine )
 
-# download/install Ruby
-$client.DownloadFile("http://files.rubyforge.vm.bytemark.co.uk/rubyinstaller/rubyinstaller-1.8.7-p334.exe","$ENV:TEMP\rubyinstaller.exe")
-Start-Process -FilePath "$ENV:TEMP\rubyinstaller.exe" '/verysilent /dir="C:\ruby" /tasks="assocfiles,modpath"' -Wait
+# download/install Ruby 1.9.2
+$client.DownloadFile("http://rubyforge.org/frs/download.php/75127/rubyinstaller-1.9.2-p290.exe","$ENV:TEMP\rubyinstaller-1.9.2.exe")
+Start-Process -FilePath "$ENV:TEMP\rubyinstaller-1.9.2.exe" '/verysilent /tasks="assocfiles,modpath"' -Wait
 
 # add Ruby and Git to the PATH and persist it
-$ENV:PATH = "$ENV:PATH;C:\ruby\bin;C:\git\cmd"
+$ENV:PATH = "$ENV:PATH;C:\Ruby192\bin;C:\git\cmd"
 [Environment]::SetEnvironmentVariable("PATH", $ENV:PATH, "Machine")
 
 # download/install Ruby DevKit
@@ -267,8 +267,8 @@ Start-Process -FilePath "ruby.exe" 'C:\DevKit\dk.rb install' -Wait
 
 # install required gems
 Start-Process -FilePath "gem" 'install win32-api win32-service --platform=mswin32 --no-rdoc --no-ri' -Wait
-Start-Process -FilePath "gem" 'install win32-open3 rdp-ruby-wmi windows-api windows-pr win32-process --no-rdoc --no-ri' -Wait
-Start-Process -FilePath "gem" 'install chef -v 0.10.4 --no-rdoc --no-ri --verbose' -Wait
+Start-Process -FilePath "gem" 'install rdp-ruby-wmi windows-api windows-pr win32-process --no-rdoc --no-ri' -Wait
+Start-Process -FilePath "gem" 'install chef -v 0.10.8 --no-rdoc --no-ri --verbose' -Wait
 
 # check out omnibus code
 Start-Process -FilePath "git" 'clone git://github.com/opscode/omnibus.git C:\omnibus' -Wait -NoNewWindow
