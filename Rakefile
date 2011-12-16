@@ -4,7 +4,7 @@
 require 'rubygems'
 require 'right_aws'
 
-revision = "0.10.8-1"
+revision = "0.10.8-2"
 
 # This ACL is FullControl for the owner (Opscode) and Read for all others
 public_acl = '<AccessControlPolicy xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Owner><ID>145c450e70dfcb6eb2f2a7e4334a6576011830b3ced4eeeb20de547653a455b3</ID><DisplayName>th416</DisplayName></Owner><AccessControlList><Grant><Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser"><ID>145c450e70dfcb6eb2f2a7e4334a6576011830b3ced4eeeb20de547653a455b3</ID><DisplayName>th416</DisplayName></Grantee><Permission>FULL_CONTROL</Permission></Grant><Grant><Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Group"><URI>http://acs.amazonaws.com/groups/global/AllUsers</URI></Grantee><Permission>READ</Permission></Grant></AccessControlList></AccessControlPolicy>'
@@ -38,4 +38,24 @@ task :windows_latest, :aws_id, :aws_key, :aws_bucket do |t,args|
   s3.put_acl(args.aws_bucket, 'windows/chef-client-latest.msi', public_acl)
   puts "Done"
 end
+
+desc "Update Omnibus / Chef versions"
+task :update_version do
+
+  files = [
+    'config/projects/chef-full.clj',
+    'config/projects/chef-server-full.clj',
+    'config/software/chef.clj',
+    'build-omnibus.ps1',
+    'source/install.sh',
+    'Rakefile'
+  ]
+
+  # use vim because we're not masochists -- btm
+  files.each do |file|
+    system "vim #{file}"
+  end
+end
+
+
 
