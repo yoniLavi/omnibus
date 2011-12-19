@@ -53,9 +53,14 @@
     </Directory>
 
     <!-- Set the components defined in our fragment files that will be used for our feature  -->
-    <Feature Id="ChefClientFeature" Title="!(loc.ProductName)" Level="1">
+    <Feature Id="ChefClientFeature" Title="!(loc.ProductName)" Level="1" Absent="disallow" AllowAdvertise="no"
+    ConfigurableDirectory="INSTALLLOCATION">
       <ComponentGroupRef Id="<%= @files_component_group %>" />
       <ComponentRef Id="ChefClientPath" />
+      <ComponentRef Id="ChefClientService" />
+    </Feature>
+
+    <Feature Id="ChefServiceFeature" Title="!(loc.ServiceName)" Level="1000" AllowAdvertise="no">
       <ComponentRef Id="ChefClientService" />
     </Feature>
 
@@ -79,7 +84,7 @@
 
     <UIRef Id="ChefClientUI_InstallDir"/>
     <UI Id="ChefClientUI_InstallDir">
-      <UIRef Id="WixUI_InstallDir"/>
+      <UIRef Id="WixUI_FeatureTree"/>
       <TextStyle Id="WixUI_Font_Normal_White" FaceName="Tahoma" Size="8" Red="255" Green="255" Blue="255" />
       <TextStyle Id="WixUI_Font_Bigger_White" FaceName="Tahoma" Size="12" Red="255" Green="255" Blue="255" />
       <TextStyle Id="WixUI_Font_Title_White" FaceName="Tahoma" Size="9" Bold="yes" Red="255" Green="255" Blue="255" />
