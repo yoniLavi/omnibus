@@ -27,7 +27,7 @@
             "PATH" (apply str (interpose ":" ["/opt/opscode/embedded/bin" (System/getenv "PATH")]))} ]
   (software "couchdb" :source "apache-couchdb-1.0.1"
             :steps [
-                    {:command "/opt/opscode/embedded/bin/autoreconf"}
+                    {:env env :command "./bootstrap"}
                     {:env env
                      :command "./configure"
                      :args ["--prefix=/opt/opscode/embedded"
