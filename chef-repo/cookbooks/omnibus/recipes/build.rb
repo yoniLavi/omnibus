@@ -48,8 +48,10 @@ when 'windows'
     options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
   end
 
+  # TODO pull dependent gems from Chef gemspec or Gemfile
+
   # gems with precompiled binaries
-  %w{ win32-api win32-service }.each do |win_gem|
+  %w{ ffi win32-api win32-service }.each do |win_gem|
     gem_package win_gem do
       gem_binary "#{embedded_dir}\\bin\\gem"
       options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri --platform=mswin32"
