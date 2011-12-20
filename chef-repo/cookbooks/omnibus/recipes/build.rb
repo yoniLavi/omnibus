@@ -42,10 +42,36 @@ when 'windows'
   end
 
   # Chef
-  gem_package "chef" do
-    version node['omnibus']['chef-client']['version']
-    gem_binary "#{embedded_dir}\\bin\\gem"
-    options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
+  if node['omnibus']['chef-client']['version'] == "master"
+    clone_location = "#{Chef::Config[:file_cache_path]}/chef-master"
+
+    # clone in the compile phase so node.['omnibus']['chef-client']['version']
+    # is available early on
+    git clone_location do
+      repository "git://github.com/opscode/chef.git"
+      revision "master"
+      action :nothing
+    end.run_action(:sync)
+    node.set['omnibus']['chef-client']['version'] = eval(IO.read("#{clone_location}/chef/lib/chef/version.rb"))
+
+    execute "build-chef" do
+      command "rake gem"
+      cwd "#{clone_location}/chef"
+      action :run
+    end
+
+    execute "install-chef" do
+      command "#{embedded_dir}\\bin\\gem install pkg\\chef-*.gem -n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
+      cwd "#{clone_location}/chef"
+      action :run
+      creates "#{node['omnibus']['chef-client']['home']}/embedded/bin/chef-client"
+    end
+  else
+    gem_package "chef" do
+      version node['omnibus']['chef-client']['version']
+      gem_binary "#{embedded_dir}\\bin\\gem"
+      options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
+    end
   end
 
   # TODO pull dependent gems from Chef gemspec or Gemfile
