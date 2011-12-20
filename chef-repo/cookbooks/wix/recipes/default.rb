@@ -28,13 +28,12 @@ file_name = ::File.basename(node['wix']['url'])
 
 cookbook_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
   source file_name
-  notifies :unzip, "windows_zipfile[wix]", :immediately
 end
 
 windows_zipfile "wix" do
   path node['wix']['home']
   source "#{Chef::Config[:file_cache_path]}/#{file_name}"
-  action :nothing
+  action :unzip
   not_if { ::File.exists?("#{node['wix']['home']}/heat.exe") }
 end
 
