@@ -274,7 +274,7 @@ Start-Process -FilePath "gem" 'install chef -v 0.10.8 --no-rdoc --no-ri --verbos
 Start-Process -FilePath "git" 'clone git://github.com/opscode/omnibus.git C:\omnibus' -Wait -NoNewWindow
 
 # this will allow execution of local scripts (.ps1 files)
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Force
 
 h2. Bundled software and licensing
 
