@@ -19,12 +19,13 @@
 
 (software "libxml2" :source "libxml2-2.7.7"
           :steps [
-                  {:env {"LDFLAGS" "-R/opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-                         "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"}
+                  {:env {"LDFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
+                         "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
+                         "LD_RUN_PATH" "/opt/opscode/embedded/lib"}
                    :command "./configure"
                    :args ["--prefix=/opt/opscode/embedded"
                           "--with-zlib=/opt/opscode/embedded"
                           "--with-readline=/opt/opscode/embedded"
                           "--with-iconv=/opt/opscode/embedded"]}
-                  {:command "make"}
-                  {:command "make" :args ["install"]}])
+                  {:env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"} :command "make"}
+                  {:env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"} :command "make" :args ["install"]}])

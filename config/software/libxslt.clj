@@ -18,8 +18,9 @@
 ;;
 
 (software "libxslt" :source "libxslt-1.1.26"
-          :steps [{:env {"LDFLAGS" "-R/opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-                         "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"}
+          :steps [{:env {"LDFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
+                         "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
+                         "LD_RUN_PATH" "/opt/opscode/embedded/lib"}
                    :command (cond (is-os? "darwin")
                                   "true"
                                   true
@@ -33,4 +34,4 @@
                   {:command (if (is-os? "solaris2") "perl" "true")
                    :args [ "-pi" "-e" "s/^(#LIBXSLT_VERSION_SCRIPT.+)/LIBXSLT_VERSION_SCRIPT =/g" 
                            (str *omnibus-build-dir* "/libxslt-1.1.26/libxslt/Makefile") ]}
-                  {:command "make" :args ["install"]}])
+                  {:env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"} :command "make" :args ["install"]}])
