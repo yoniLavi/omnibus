@@ -42,7 +42,7 @@
                     Arguments="[CHEFLOCATION]embedded\lib\ruby\gems\1.9.1\gems\chef-0.$(var.DisplayVersionNumber)\lib\chef\application\windows_service.rb"
                     DisplayName="!(loc.ServiceDisplayName)"
                     Description="!(loc.ServiceDescription)" />
-                  <ServiceControl Id="ControlChefClientService" Name="ChefClientService"
+                  <ServiceControl Id="ControlChefClientService" Name="chef-client"
                     Remove="both" Stop="both" Wait="yes" />
                 </Component>
               </Directory>
@@ -53,14 +53,13 @@
     </Directory>
 
     <!-- Set the components defined in our fragment files that will be used for our feature  -->
-    <Feature Id="ChefClientFeature" Title="!(loc.ProductName)" Level="1" Absent="disallow" AllowAdvertise="no"
+    <Feature Id="ChefClientFeature" Title="!(loc.FeatureMainName)" Level="1" Absent="disallow" AllowAdvertise="no"
     ConfigurableDirectory="INSTALLLOCATION">
       <ComponentGroupRef Id="<%= @files_component_group %>" />
       <ComponentRef Id="ChefClientPath" />
-      <ComponentRef Id="ChefClientService" />
     </Feature>
 
-    <Feature Id="ChefServiceFeature" Title="!(loc.ServiceName)" Level="1000" AllowAdvertise="no">
+    <Feature Id="ChefServiceFeature" Title="!(loc.FeatureServiceName)" Level="1000" AllowAdvertise="no">
       <ComponentRef Id="ChefClientService" />
     </Feature>
 
