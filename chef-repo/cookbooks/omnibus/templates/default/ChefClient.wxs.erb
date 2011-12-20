@@ -37,7 +37,7 @@
                 </Component>
                 <Component Id="ChefClientService" Guid="{69B2D8BE-4A47-4BE3-AEE8-83FAEB6E2FAF}" >
                   <File Id="RubyExecutable" Source="$(var.ChefClientSourceDir)\embedded\bin\ruby.exe" KeyPath="yes" />
-                  <ServiceInstall Name="ChefClient" Type="ownProcess"
+                  <ServiceInstall Name="chef-client" Type="ownProcess"
                     Start="auto" Vital="yes" ErrorControl="ignore"
                     Arguments="[CHEFLOCATION]embedded\lib\ruby\gems\1.9.1\gems\chef-0.$(var.DisplayVersionNumber)\lib\chef\application\windows_service.rb"
                     DisplayName="!(loc.ServiceDisplayName)"
