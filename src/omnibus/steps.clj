@@ -28,7 +28,7 @@
 
 (defn run-shell
   [step]
-  (let [combined-env (merge (step :env) (System/getenv))]
+  (let [combined-env (merge (hash-map) (System/getenv) (step :env))]
     (with-sh-env combined-env
       (if (step :args)
         (apply sh (cons (step :command) (step :args)))
