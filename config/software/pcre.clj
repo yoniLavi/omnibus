@@ -23,6 +23,8 @@
                          "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
                          }
                    :args ["--prefix=/opt/opscode/embedded" ]}
+                  ;; touch aclocal.m4 required to avoid trying to regenerate it
+                  {:command "touch" :args ["aclocal.m4"]}
                   {:command "make" :env { "PATH" "/opt/opscode/embedded/bin:/opt/opscode/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin" "LD_RUN_PATH" "/opt/opscode/embedded/lib" }}
                   {:command "make" :args ["install"]}
                   ])
