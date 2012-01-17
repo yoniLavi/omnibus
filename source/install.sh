@@ -188,8 +188,9 @@ else
   exit 5
 fi
 
+# Check to see if we got a 404 or an empty file
 grep "does not exist" /tmp/$filename 2>&1 >/dev/null
-if [ $? -eq 0 ]
+if [ $? -eq 0 ] || [ ! -s /tmp/$filename ]
 then
   echo "Unable to retrieve a valid package!"
   report_bug
