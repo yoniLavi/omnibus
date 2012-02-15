@@ -18,9 +18,9 @@
 ;;
 
 (software "prep"
-          :steps [{:command "rm" :args ["-fR" "/opt/opscode"]}
-                  {:command "mkdir" :args ["-p" "/opt/opscode/embedded/lib"]}
-                  {:command "mkdir" :args ["-p" "/opt/opscode/embedded/bin"]}
-                  {:command "mkdir" :args ["-p" "/opt/opscode/bin"]}])
+          :steps [{:command "rm" :args ["-fR" "/opt/chef"]}
+                  {:command "mkdir" :args ["-p" "/opt/chef/embedded/lib"]}
+                  {:command "mkdir" :args ["-p" "/opt/chef/embedded/bin"]}
+                  {:command "mkdir" :args ["-p" "/opt/chef/bin"]}])
 
 

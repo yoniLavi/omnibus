@@ -20,13 +20,13 @@
 (let [env (cond
            (and (is-os? "darwin") (is-machine? "x86_64"))
            {
-            "LDFLAGS" "-R/opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-            "CFLAGS" "-I/opt/opscode/embedded/include -L/opt/opscode/embedded/lib"
+            "LDFLAGS" "-R/opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+            "CFLAGS" "-I/opt/chef/embedded/include -L/opt/chef/embedded/lib"
             }
            (is-os? "linux")
            {
-            "LDFLAGS" "-Wl,-rpath /opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-            "CFLAGS" "-I/opt/opscode/embedded/include -L/opt/opscode/embedded/lib"
+            "LDFLAGS" "-Wl,-rpath /opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+            "CFLAGS" "-I/opt/chef/embedded/include -L/opt/chef/embedded/lib"
             })]
 
 (software "git"
@@ -35,7 +35,7 @@
                   {:command "make"
                    :args ["configure"]}
                   {:command "./configure"
-                   :args ["--prefix=/opt/opscode/embedded" "--with-curl=/opt/opscode/embedded" "--with-openssl=/opt/opscode/embedded" "--with-iconv=/opt/opscode/embedded"]}
+                   :args ["--prefix=/opt/chef/embedded" "--with-curl=/opt/chef/embedded" "--with-openssl=/opt/chef/embedded" "--with-iconv=/opt/chef/embedded"]}
                   {:command "make"}
                   {:command "make"
                    :args ["install"]}]))

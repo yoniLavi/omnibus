@@ -24,9 +24,9 @@
                               {
                                :command "./Configure"
                                :args ["darwin64-x86_64-cc"
-                                      "--prefix=/opt/opscode/embedded"
-                                      "--with-zlib-lib=/opt/opscode/embedded/lib"
-                                      "--with-zlib-include=/opt/opscode/embedded/include"
+                                      "--prefix=/opt/chef/embedded"
+                                      "--with-zlib-lib=/opt/chef/embedded/lib"
+                                      "--with-zlib-include=/opt/chef/embedded/include"
                                       "zlib"
                                       "shared"]
                                }
@@ -34,29 +34,29 @@
                               {
                                 :command "./Configure"
                                 :args ["solaris-x86-gcc"
-                                       "--prefix=/opt/opscode/embedded"
-                                       "--with-zlib-lib=/opt/opscode/embedded/lib"
-                                       "--with-zlib-include=/opt/opscode/embedded/include"
+                                       "--prefix=/opt/chef/embedded"
+                                       "--with-zlib-lib=/opt/chef/embedded/lib"
+                                       "--with-zlib-include=/opt/chef/embedded/include"
                                        "zlib"
                                        "shared"
-                                       "-L/opt/opscode/embedded/lib"
-                                       "-I/opt/opscode/embedded/include"
-                                       "-R/opt/opscode/embedded/lib"]
+                                       "-L/opt/chef/embedded/lib"
+                                       "-I/opt/chef/embedded/include"
+                                       "-R/opt/chef/embedded/lib"]
                                }
                               true
                               {
-                                :env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"}
+                                :env {"LD_RUN_PATH" "/opt/chef/embedded/lib"}
                                 :command "./config"
-                                :args ["--prefix=/opt/opscode/embedded"
-                                       "--with-zlib-lib=/opt/opscode/embedded/lib"
-                                       "--with-zlib-include=/opt/opscode/embedded/include"
+                                :args ["--prefix=/opt/chef/embedded"
+                                       "--with-zlib-lib=/opt/chef/embedded/lib"
+                                       "--with-zlib-include=/opt/chef/embedded/include"
                                        "zlib"
                                        "shared"
-                                       "-L/opt/opscode/embedded/lib"
-                                       "-I/opt/opscode/embedded/include"]
+                                       "-L/opt/chef/embedded/lib"
+                                       "-I/opt/chef/embedded/include"]
                                })
                             {
-                             :env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"}
+                             :env {"LD_RUN_PATH" "/opt/chef/embedded/lib"}
                              :command "make"
                              }
                             {

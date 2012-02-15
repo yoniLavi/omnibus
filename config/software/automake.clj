@@ -20,10 +20,10 @@
 (software "automake" :source "automake-1.10.3"
           :steps [
             {:command "./bootstrap"}
-            { :env {"LDFLAGS" "-R/opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-                         "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"}
+            { :env {"LDFLAGS" "-R/opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+                         "CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"}
                    :command "./configure"
-                   :args ["--prefix=/opt/opscode/embedded"]
+                   :args ["--prefix=/opt/chef/embedded"]
                    }
                   {:command "make"}
                   {:command "make" :args ["install"]}])

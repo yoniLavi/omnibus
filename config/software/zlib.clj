@@ -20,13 +20,13 @@
 (let [env (cond
            (and (is-os? "darwin") (is-machine? "x86_64"))
            {
-            "LDFLAGS" "-R/opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-            "CFLAGS" "-I/opt/opscode/embedded/include -L/opt/opscode/embedded/lib"
+            "LDFLAGS" "-R/opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+            "CFLAGS" "-I/opt/chef/embedded/include -L/opt/chef/embedded/lib"
             }
            (is-os? "linux")
            {
-            "LDFLAGS" "-Wl,-rpath /opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-            "CFLAGS" "-I/opt/opscode/embedded/include -L/opt/opscode/embedded/lib"
+            "LDFLAGS" "-Wl,-rpath /opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+            "CFLAGS" "-I/opt/chef/embedded/include -L/opt/chef/embedded/lib"
             })]
   (software "zlib"
             :source "zlib-1.2.5"
@@ -34,7 +34,7 @@
                     {
                      :command "./configure"
                      :env env
-                     :args ["--prefix=/opt/opscode/embedded"]
+                     :args ["--prefix=/opt/chef/embedded"]
                      }
                     { :command "make" }
                     { :command "make" :args ["install"]}

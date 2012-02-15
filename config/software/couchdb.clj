@@ -17,25 +17,25 @@
 ;; limitations under the License.
 ;;
 
-(let [ env {"RPATH" "/opt/opscode/embedded/lib"
-            "CURL_CONFIG" "/opt/opscode/embedded/bin/curl-config"
-            "ICU_CONFIG" "/opt/opscode/embedded/bin/icu-config"
-            "ERL" "/opt/opscode/embedded/bin/erl"
-            "ERLC" "/opt/opscode/embedded/bin/erlc"
-            "LD_RUN_PATH" "/opt/opscode/embedded/lib"
-            "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-            "PATH" (apply str (interpose ":" ["/opt/opscode/embedded/bin" (System/getenv "PATH")]))} ]
+(let [ env {"RPATH" "/opt/chef/embedded/lib"
+            "CURL_CONFIG" "/opt/chef/embedded/bin/curl-config"
+            "ICU_CONFIG" "/opt/chef/embedded/bin/icu-config"
+            "ERL" "/opt/chef/embedded/bin/erl"
+            "ERLC" "/opt/chef/embedded/bin/erlc"
+            "LD_RUN_PATH" "/opt/chef/embedded/lib"
+            "CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+            "PATH" (apply str (interpose ":" ["/opt/chef/embedded/bin" (System/getenv "PATH")]))} ]
   (software "couchdb" :source "apache-couchdb-1.0.1"
             :steps [
                     {:env env :command "./bootstrap"}
                     {:env env
                      :command "./configure"
-                     :args ["--prefix=/opt/opscode/embedded"
+                     :args ["--prefix=/opt/chef/embedded"
                             "--disable-init"
                             "--disable-launchd"
-                            "--with-erlang=/opt/opscode/embedded/lib/erlang/usr/include"
-                            "--with-js-include=/opt/opscode/embedded/include"
-                            "--with-js-lib=/opt/opscode/embedded/lib" ]}
+                            "--with-erlang=/opt/chef/embedded/lib/erlang/usr/include"
+                            "--with-js-include=/opt/chef/embedded/include"
+                            "--with-js-lib=/opt/chef/embedded/lib" ]}
                     {:env env :command "make"}
                     {:env env :command "make" :args ["install"]} ]))
 

@@ -27,6 +27,6 @@
                                            "jre-7u1-linux-i586.tar.gz"
                                            )
                                          ]}
-                  {:command "cp" :args ["-a" "jre1.7.0_01" "/opt/opscode/embedded/jre"]}
+                  {:command "cp" :args ["-a" "jre1.7.0_01" "/opt/chef/embedded/jre"]}
                     ])
 

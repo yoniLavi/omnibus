@@ -18,20 +18,20 @@
 ;;
 
 (software "libxslt" :source "libxslt-1.1.26"
-          :steps [{:env {"LDFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-                         "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-                         "LD_RUN_PATH" "/opt/opscode/embedded/lib"}
+          :steps [{:env {"LDFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+                         "CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+                         "LD_RUN_PATH" "/opt/chef/embedded/lib"}
                    :command (cond (is-os? "darwin")
                                   "true"
                                   true
                                   "./autogen.sh")
-                   :args ["--prefix=/opt/opscode/embedded" "--with-libxml-prefix=/opt/opscode/embedded"
-                          "--with-libxml-include-prefix=/opt/opscode/embedded/include"
-                          "--with-libxml-libs-prefix=/opt/opscode/embedded/lib"]}
+                   :args ["--prefix=/opt/chef/embedded" "--with-libxml-prefix=/opt/chef/embedded"
+                          "--with-libxml-include-prefix=/opt/chef/embedded/include"
+                          "--with-libxml-libs-prefix=/opt/chef/embedded/lib"]}
                   {:command (if (is-os? "solaris2") "perl" "true")
                    :args [ "-pi" "-e" "s/^(LIBXSLT_VERSION_SCRIPT = \\$.+)/\\# Woof/g"
                            (str *omnibus-build-dir* "/libxslt-1.1.26/libxslt/Makefile") ]}
                   {:command (if (is-os? "solaris2") "perl" "true")
                    :args [ "-pi" "-e" "s/^(#LIBXSLT_VERSION_SCRIPT.+)/LIBXSLT_VERSION_SCRIPT =/g" 
                            (str *omnibus-build-dir* "/libxslt-1.1.26/libxslt/Makefile") ]}
-                  {:env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"} :command "make" :args ["install"]}])
+                  {:env {"LD_RUN_PATH" "/opt/chef/embedded/lib"} :command "make" :args ["install"]}])

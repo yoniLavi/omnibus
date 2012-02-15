@@ -19,23 +19,23 @@
 
 (software "chef" :source "chef"
           :steps [
-                  {:command "/opt/opscode/embedded/bin/gem"
-                   :args ["install" "chef" "--version" "0.10.8" "-n" "/opt/opscode/bin"
+                  {:command "/opt/chef/embedded/bin/gem"
+                   :args ["install" "chef" "--version" "0.10.8" "-n" "/opt/chef/bin"
                           "--no-rdoc" "--no-ri"
-                          "--" "--with-xml2-include=/opt/opscode/embedded/include/libxml2"
-                          "--with-xml2-lib=/opt/opscode/embedded/lib"]}
-                  {:command "/opt/opscode/embedded/bin/gem"
-                   :args ["install" "highline" "net-ssh-multi" "knife-ec2" "knife-rackspace" "-n" "/opt/opscode/bin"
+                          "--" "--with-xml2-include=/opt/chef/embedded/include/libxml2"
+                          "--with-xml2-lib=/opt/chef/embedded/lib"]}
+                  {:command "/opt/chef/embedded/bin/gem"
+                   :args ["install" "highline" "net-ssh-multi" "knife-ec2" "knife-rackspace" "-n" "/opt/chef/bin"
                           "--no-rdoc" "--no-ri"
-                          "--" "--with-xml2-include=/opt/opscode/embedded/include/libxml2"
-                          "--with-xml2-lib=/opt/opscode/embedded/lib"]}
-                  {:command "cp" :args ["setup.sh" "/opt/opscode"]}
-                  {:command "chmod" :args ["755" "/opt/opscode/setup.sh"]}
-                  {:command "rm" :args ["-rf" "/opt/opscode/embedded/docs"]}
-                  {:command "rm" :args ["-rf" "/opt/opscode/embedded/share/man"]}
-                  {:command "rm" :args ["-rf" "/opt/opscode/embedded/share/doc"]}
-                  {:command "rm" :args ["-rf" "/opt/opscode/embedded/share/gtk-doc"]}
-                  {:command "rm" :args ["-rf" "/opt/opscode/embedded/ssl/man"]}
-                  {:command "rm" :args ["-rf" "/opt/opscode/embedded/man"]}
-                  {:command "rm" :args ["-rf" "/opt/opscode/embedded/info"]}])
+                          "--" "--with-xml2-include=/opt/chef/embedded/include/libxml2"
+                          "--with-xml2-lib=/opt/chef/embedded/lib"]}
+                  {:command "cp" :args ["setup.sh" "/opt/chef"]}
+                  {:command "chmod" :args ["755" "/opt/chef/setup.sh"]}
+                  {:command "rm" :args ["-rf" "/opt/chef/embedded/docs"]}
+                  {:command "rm" :args ["-rf" "/opt/chef/embedded/share/man"]}
+                  {:command "rm" :args ["-rf" "/opt/chef/embedded/share/doc"]}
+                  {:command "rm" :args ["-rf" "/opt/chef/embedded/share/gtk-doc"]}
+                  {:command "rm" :args ["-rf" "/opt/chef/embedded/ssl/man"]}
+                  {:command "rm" :args ["-rf" "/opt/chef/embedded/man"]}
+                  {:command "rm" :args ["-rf" "/opt/chef/embedded/info"]}])
 

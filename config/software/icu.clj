@@ -20,9 +20,9 @@
 (software "icu" :source "icu"
           :build-subdir "source"
           :steps [
-                  {:env { "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include" }
-                   :command "./configure" :args ["--prefix=/opt/opscode/embedded" ]}
-                  {:command "make" :env { "LD_RUN_PATH" "/opt/opscode/embedded/lib" }}
+                  {:env { "CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include" }
+                   :command "./configure" :args ["--prefix=/opt/chef/embedded" ]}
+                  {:command "make" :env { "LD_RUN_PATH" "/opt/chef/embedded/lib" }}
                   {:command "make" :args ["install"]}
                   ])
 

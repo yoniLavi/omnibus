@@ -19,7 +19,7 @@
 
 (let [args (cond
             (and (is-os? "darwin") (is-machine? "x86_64"))
-            ["--prefix=/opt/opscode/embedded"
+            ["--prefix=/opt/chef/embedded"
              "--enable-threads"
              "--enable-smp-support"
              "--enable-kernel-poll"
@@ -27,12 +27,12 @@
              "--enable-dynamic-ssl-lib"
              "--enable-m64-build"
              "--without-javac"
-             "--with-ssl=/opt/opscode/embedded"
+             "--with-ssl=/opt/chef/embedded"
              "--build=i686-apple-darwin10"
              "--disable-hipe"
              "--disable-debug"]
             (is-os? "linux")
-            ["--prefix=/opt/opscode/embedded"
+            ["--prefix=/opt/chef/embedded"
              "--enable-threads"
              "--enable-smp-support"
              "--enable-kernel-poll"
@@ -40,15 +40,15 @@
              "--enable-shared-zlib"
              "--enable-hipe"
              "--without-javac"
-             "--with-ssl=/opt/opscode/embedded"
+             "--with-ssl=/opt/chef/embedded"
              "--disable-debug"])
       env (cond
            (and (is-os? "darwin") (is-machine? "x86_64"))
-           { "CFLAGS" "-arch x86_64 -m64 -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-             "LDFLAGS" "-arch x86_64 -R/opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"}
+           { "CFLAGS" "-arch x86_64 -m64 -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+             "LDFLAGS" "-arch x86_64 -R/opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"}
            (is-os? "linux")
-           { "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-             "LDFLAGS" "-Wl,-rpath /opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"}
+           { "CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+             "LDFLAGS" "-Wl,-rpath /opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"}
            )
       ]
   (software "erlang" :source "otp_src_R14B02"
@@ -69,14 +69,14 @@
                     {:env env :command "./configure" :args args}
                     {:env env :command "make" }
                     {:command "make" :args ["install"]}
-;                     {:command  "ln" :args ["-sfn" "/opt/opscode/embedded/bin/erl" "/usr/local/bin/erl"]}
-;                     {:command  "ln" :args ["-sfn" "/opt/opscode/embedded/bin/erlc" "/usr/local/bin/erlc"]}
-;                     {:command  "ln" :args ["-sfn" "/opt/opscode/embedded/bin/epmd" "/usr/local/bin/epmd"]}
-;                     {:command  "ln" :args ["-sfn" "/opt/opscode/embedded/bin/run_erl" "/usr/local/bin/run_erl"]}
-;                     {:command  "ln" :args ["-sfn" "/opt/opscode/embedded/bin/to_erl" "/usr/local/bin/to_erl"]}
-;                     {:command  "ln" :args ["-sfn" "/opt/opscode/embedded/bin/dialyzer" "/usr/local/bin/dialyzer"]}
-;                     {:command  "ln" :args ["-sfn" "/opt/opscode/embedded/bin/typer" "/usr/local/bin/typer"]}
-;                     {:command  "ln" :args ["-sfn" "/opt/opscode/embedded/bin/escript" "/usr/local/bin/escript"]}
-;                     {:command  "ln" :args ["-sfn" "/opt/opscode/embedded/bin/run_test" "/usr/local/bin/run_test"]}
+;                     {:command  "ln" :args ["-sfn" "/opt/chef/embedded/bin/erl" "/usr/local/bin/erl"]}
+;                     {:command  "ln" :args ["-sfn" "/opt/chef/embedded/bin/erlc" "/usr/local/bin/erlc"]}
+;                     {:command  "ln" :args ["-sfn" "/opt/chef/embedded/bin/epmd" "/usr/local/bin/epmd"]}
+;                     {:command  "ln" :args ["-sfn" "/opt/chef/embedded/bin/run_erl" "/usr/local/bin/run_erl"]}
+;                     {:command  "ln" :args ["-sfn" "/opt/chef/embedded/bin/to_erl" "/usr/local/bin/to_erl"]}
+;                     {:command  "ln" :args ["-sfn" "/opt/chef/embedded/bin/dialyzer" "/usr/local/bin/dialyzer"]}
+;                     {:command  "ln" :args ["-sfn" "/opt/chef/embedded/bin/typer" "/usr/local/bin/typer"]}
+;                     {:command  "ln" :args ["-sfn" "/opt/chef/embedded/bin/escript" "/usr/local/bin/escript"]}
+;                     {:command  "ln" :args ["-sfn" "/opt/chef/embedded/bin/run_test" "/usr/local/bin/run_test"]}
                     ]))
 

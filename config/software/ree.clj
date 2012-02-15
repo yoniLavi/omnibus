@@ -19,20 +19,20 @@
 
 (software "ree" :source "ruby-enterprise-1.8.7-2011.01"
           :steps [
-                  {:env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"
-                         "LDFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include -R/opt/opscode/embedded/lib"
-                         "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"}
+                  {:env {"LD_RUN_PATH" "/opt/chef/embedded/lib"
+                         "LDFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include -R/opt/chef/embedded/lib"
+                         "CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"}
                    :command "./installer"
-                   :args ["-a" "/opt/opscode/embedded" "--dont-install-useful-gems" "--no-dev-docs"]} ])
+                   :args ["-a" "/opt/chef/embedded" "--dont-install-useful-gems" "--no-dev-docs"]} ])
 
 ;; These gory bits are going on inside the installer above. Left for future understanding [cb]
 
-;; ["bash" "-c" "cd ./source/distro/google-perftools-1.4 && ./configure --prefix=/opt/opscode/embedded --disable-dependency-tracking && make libtcmalloc_minimal.la"]
-;; [ "mkdir" "-p" "/opt/opscode/embedded/lib"]
+;; ["bash" "-c" "cd ./source/distro/google-perftools-1.4 && ./configure --prefix=/opt/chef/embedded --disable-dependency-tracking && make libtcmalloc_minimal.la"]
+;; [ "mkdir" "-p" "/opt/chef/embedded/lib"]
 ;; [ "bash" "-c" (str "cp -Rpf " (cond (is-os? "darwin") "./source/distro/google-perftools-1.4/.libs/libtcmalloc_minimal.*" 
-;; (is-os? "linux") "./source/distro/google-perftools-1.4/.libs/libtcmalloc_minimal.*") " /opt/opscode/embedded/lib")]
-;; ["bash" "-c" "cd ./source && ./configure --prefix=/opt/opscode/embedded --enable-mbari-api CFLAGS='-g -O2' --with-opt-dir=/opt/opscode/embedded"]
+;; (is-os? "linux") "./source/distro/google-perftools-1.4/.libs/libtcmalloc_minimal.*") " /opt/chef/embedded/lib")]
+;; ["bash" "-c" "cd ./source && ./configure --prefix=/opt/chef/embedded --enable-mbari-api CFLAGS='-g -O2' --with-opt-dir=/opt/chef/embedded"]
 ;; ["bash" "-c" 
-;;  (cond (is-os? "darwin") "cd ./source && make RPATH=/opt/opscode/embedded/lib PRELIBS=\"-Wl,-rpath,/opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -lsystem_allocator -ltcmalloc_minimal\""
-;; (is-os? "linux") "cd ./source && make RPATH=/opt/opscode/embedded/lib PRELIBS=\"-Wl,-rpath,/opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -ltcmalloc_minimal\"")]
-;; [ "bash" "-c" "cd ./source && env RPATH=/opt/opscode/embedded/lib make install"]])
+;;  (cond (is-os? "darwin") "cd ./source && make RPATH=/opt/chef/embedded/lib PRELIBS=\"-Wl,-rpath,/opt/chef/embedded/lib -L/opt/chef/embedded/lib -lsystem_allocator -ltcmalloc_minimal\""
+;; (is-os? "linux") "cd ./source && make RPATH=/opt/chef/embedded/lib PRELIBS=\"-Wl,-rpath,/opt/chef/embedded/lib -L/opt/chef/embedded/lib -ltcmalloc_minimal\"")]
+;; [ "bash" "-c" "cd ./source && env RPATH=/opt/chef/embedded/lib make install"]])

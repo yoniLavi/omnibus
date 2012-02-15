@@ -19,6 +19,6 @@
 
 (software "rubygems" :source "rubygems-1.3.7"
           :steps [
-                  {:command "/opt/opscode/embedded/bin/ruby"
+                  {:command "/opt/chef/embedded/bin/ruby"
                    :args ["setup.rb"]}])
 

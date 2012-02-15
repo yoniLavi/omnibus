@@ -18,9 +18,9 @@
 ;;
 
 (software "libiconv" :source "libiconv-1.13.1"
-          :steps [{:env {"CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include" "LD_RUN_PATH" "/opt/opscode/embedded/lib"}
-                   :command "./configure" :args ["--prefix=/opt/opscode/embedded"]}
-                  {:env {"CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include" "LD_RUN_PATH" "/opt/opscode/embedded/lib"}
+          :steps [{:env {"CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include" "LD_RUN_PATH" "/opt/chef/embedded/lib"}
+                   :command "./configure" :args ["--prefix=/opt/chef/embedded"]}
+                  {:env {"CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include" "LD_RUN_PATH" "/opt/chef/embedded/lib"}
                    :command "make"}
                   {:command "make"
                    :args ["install"]}])

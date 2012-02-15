@@ -18,9 +18,9 @@
 
 (software "chef-server-cookbooks" :source "chef-server-cookbooks"
           :steps [
-                  {:command "mkdir" :args [ "-p" "/opt/opscode/embedded/cookbooks" ]}
-                  {:command "bash" :args [ "-c" "cp -ra * /opt/opscode/embedded/cookbooks/" ] } 
-                  {:command "ln" :args [ "-sf" "/opt/opscode/embedded/cookbooks/bin/chef-server-ctl" "/opt/opscode/bin/chef-server-ctl" ] } 
+                  {:command "mkdir" :args [ "-p" "/opt/chef/embedded/cookbooks" ]}
+                  {:command "bash" :args [ "-c" "cp -ra * /opt/chef/embedded/cookbooks/" ] } 
+                  {:command "ln" :args [ "-sf" "/opt/chef/embedded/cookbooks/bin/chef-server-ctl" "/opt/chef/bin/chef-server-ctl" ] } 
                   ])
 
 

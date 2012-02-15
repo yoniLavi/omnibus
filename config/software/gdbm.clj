@@ -18,7 +18,7 @@
 ;;
 
 (software "gdbm" :source "gdbm-1.8.3"
-          :steps [{:command "/opt/opscode/embedded/bin/autoconf"}
-                  {:command "./configure" :args ["--prefix=/opt/opscode/embedded"]}
+          :steps [{:command "/opt/chef/embedded/bin/autoconf"}
+                  {:command "./configure" :args ["--prefix=/opt/chef/embedded"]}
                   {:command "make" :args ["BINOWN=root" "BINGRP=wheel"]}
                   {:command "make" :args ["install"]}])

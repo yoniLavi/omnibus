@@ -19,14 +19,14 @@
 (let [env
       (cond
        (and (is-os? "darwin") (is-machine? "x86_64"))
-       { "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-         "LDFLAGS" "-R/opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"}
+       { "CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+         "LDFLAGS" "-R/opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"}
        (is-os? "linux")
-       { "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-         "LDFLAGS" "-Wl,-rpath /opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"}
+       { "CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+         "LDFLAGS" "-Wl,-rpath /opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"}
        (is-os? "solaris2")
-       { "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-         "LDFLAGS" "-Wl,-rpath /opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"}
+       { "CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+         "LDFLAGS" "-Wl,-rpath /opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"}
        )
       ]
 
@@ -34,7 +34,7 @@
             :steps [{
                      :env env
                      :command "./configure"
-                     :args ["--prefix=/opt/opscode/embedded"]
+                     :args ["--prefix=/opt/chef/embedded"]
                      }
                     {:command "make"}
                     {:command "make" :args ["install"]}]))

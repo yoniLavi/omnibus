@@ -20,12 +20,12 @@
 (software "rsync"
           :source "rsync-3.0.7"
           :steps [
-                  {:env {"LDFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-                         "CFLAGS" "-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-                         "LD_RUN_PATH" "/opt/opscode/embedded/lib"}
+                  {:env {"LDFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+                         "CFLAGS" "-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+                         "LD_RUN_PATH" "/opt/chef/embedded/lib"}
                    :command "./configure"
-                   :args ["--prefix=/opt/opscode/embedded"]}
-                  {:env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"}
+                   :args ["--prefix=/opt/chef/embedded"]}
+                  {:env {"LD_RUN_PATH" "/opt/chef/embedded/lib"}
                    :command "make"}
                   {:command "make"
                    :args ["install"]}])

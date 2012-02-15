@@ -19,21 +19,21 @@
 
 (software "chef-server" :source "chef"
           :steps [
-                  {:command "/opt/opscode/embedded/bin/gem"
-                   :args ["install" "chef-server" "chef-server-webui" "chef-server-api" "chef-solr" "--version" "0.10.8" "-n" "/opt/opscode/bin"
+                  {:command "/opt/chef/embedded/bin/gem"
+                   :args ["install" "chef-server" "chef-server-webui" "chef-server-api" "chef-solr" "--version" "0.10.8" "-n" "/opt/chef/bin"
                           "--no-rdoc" "--no-ri"
-                          "--" "--with-xml2-include=/opt/opscode/embedded/include/libxml2"
-                          "--with-xml2-lib=/opt/opscode/embedded/lib"]}
-                  {:command "/opt/opscode/embedded/bin/gem"
-                   :args ["install" "unicorn" "-n" "/opt/opscode/bin"
+                          "--" "--with-xml2-include=/opt/chef/embedded/include/libxml2"
+                          "--with-xml2-lib=/opt/chef/embedded/lib"]}
+                  {:command "/opt/chef/embedded/bin/gem"
+                   :args ["install" "unicorn" "-n" "/opt/chef/bin"
                           "--no-rdoc" "--no-ri"
-                          "--" "--with-xml2-include=/opt/opscode/embedded/include/libxml2"
-                          "--with-xml2-lib=/opt/opscode/embedded/lib"]}
+                          "--" "--with-xml2-include=/opt/chef/embedded/include/libxml2"
+                          "--with-xml2-lib=/opt/chef/embedded/lib"]}
                   {:command "chown"
                    :args ["-R" (cond
                                 (is-os? "darwin")
                                 "root:wheel"
-                                true "root:root") "/opt/opscode"]}])
+                                true "root:root") "/opt/chef"]}])
 
 
 

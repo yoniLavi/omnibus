@@ -19,12 +19,12 @@
 (software "nginx" :source "nginx-1.0.10"
           :steps [
                   {:command "./configure"
-                   :args ["--prefix=/opt/opscode/embedded"
+                   :args ["--prefix=/opt/chef/embedded"
                           "--with-http_ssl_module",
-                          "--with-ld-opt=-L/opt/opscode/embedded/lib"
-                          "--with-cc-opt=-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
+                          "--with-ld-opt=-L/opt/chef/embedded/lib"
+                          "--with-cc-opt=-L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
                           ]}
-                  {:command "make" :env { "LD_RUN_PATH" "/opt/opscode/embedded/lib" }}
+                  {:command "make" :env { "LD_RUN_PATH" "/opt/chef/embedded/lib" }}
                   {:command "make" :args ["install"]}
                   ])
 

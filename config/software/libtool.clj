@@ -22,7 +22,7 @@
     :steps [
 	    {
 	     :command "./configure"
-	     :args ["--prefix=/opt/opscode/embedded"]
+	     :args ["--prefix=/opt/chef/embedded"]
 	     }
 	    { :command (if (or (is-os? "solaris2") (is-os? "freebsd")) "gmake" "make") }
 	    { :command (if (or (is-os? "solaris2") (is-os? "freebsd")) "gmake" "make") :args ["install"]}

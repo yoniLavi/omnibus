@@ -18,16 +18,16 @@
 ;;
 
 (let [initial-steps
-      [{:env { "LD_RUN_PATH" "/opt/opscode/embedded/lib" } :command "make" :args ["BUILD_OPT=1" "XCFLAGS=-L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include" "-f" "Makefile.ref"]}
-       {:env { "LD_RUN_PATH" "/opt/opscode/embedded/lib" } :command "make" :args ["BUILD_OPT=1" "JS_DIST=/opt/opscode/embedded" "-f" "Makefile.ref" "export"]}]
+      [{:env { "LD_RUN_PATH" "/opt/chef/embedded/lib" } :command "make" :args ["BUILD_OPT=1" "XCFLAGS=-L/opt/chef/embedded/lib -I/opt/chef/embedded/include" "-f" "Makefile.ref"]}
+       {:env { "LD_RUN_PATH" "/opt/chef/embedded/lib" } :command "make" :args ["BUILD_OPT=1" "JS_DIST=/opt/chef/embedded" "-f" "Makefile.ref" "export"]}]
       steps
       (cond
        (and (is-os? "linux") (is-machine? "x86_64"))
        (concat
         initial-steps
-        [{:command "mv" :args ["/opt/opscode/embedded/lib64/libjs.a" "/opt/opscode/embedded/lib"]}
-         {:command "mv" :args ["/opt/opscode/embedded/lib64/libjs.so" "/opt/opscode/embedded/lib"]}
-         {:command "rm" :args ["-rf" "/opt/opscode/embedded/lib64"]}])
+        [{:command "mv" :args ["/opt/chef/embedded/lib64/libjs.a" "/opt/chef/embedded/lib"]}
+         {:command "mv" :args ["/opt/chef/embedded/lib64/libjs.so" "/opt/chef/embedded/lib"]}
+         {:command "rm" :args ["-rf" "/opt/chef/embedded/lib64"]}])
        true
        initial-steps)]
   (software "spidermonkey"

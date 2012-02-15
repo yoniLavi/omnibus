@@ -21,9 +21,9 @@
           :source "rabbitmq_server-2.2.0"
           :steps [
                   {:command "pwd"}
-                  {:command "cp" :args ["-a" "../rabbitmq_server-2.2.0" "/opt/opscode/embedded/lib/erlang/lib"]}
-                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmqctl" "/opt/opscode/embedded/bin/rabbitmqctl"]}
-                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-env" "/opt/opscode/embedded/bin/rabbitmq-env"]}
-                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-multi" "/opt/opscode/embedded/bin/rabbitmq-multi"]}
-                  {:command "ln" :args ["-sf" "/opt/opscode/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-server" "/opt/opscode/embedded/bin/rabbitmq-server"]}
+                  {:command "cp" :args ["-a" "../rabbitmq_server-2.2.0" "/opt/chef/embedded/lib/erlang/lib"]}
+                  {:command "ln" :args ["-sf" "/opt/chef/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmqctl" "/opt/chef/embedded/bin/rabbitmqctl"]}
+                  {:command "ln" :args ["-sf" "/opt/chef/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-env" "/opt/chef/embedded/bin/rabbitmq-env"]}
+                  {:command "ln" :args ["-sf" "/opt/chef/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-multi" "/opt/chef/embedded/bin/rabbitmq-multi"]}
+                  {:command "ln" :args ["-sf" "/opt/chef/embedded/lib/erlang/lib/rabbitmq_server-2.2.0/sbin/rabbitmq-server" "/opt/chef/embedded/bin/rabbitmq-server"]}
                     ])

@@ -21,20 +21,20 @@
 (let [env (cond
            (and (is-os? "darwin") (is-machine? "x86_64"))
            {
-            "LDFLAGS" "-R/opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-            "CFLAGS" "-I/opt/opscode/embedded/include -L/opt/opscode/embedded/lib"
+            "LDFLAGS" "-R/opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+            "CFLAGS" "-I/opt/chef/embedded/include -L/opt/chef/embedded/lib"
             }
            (is-os? "linux")
            {
-            "LDFLAGS" "-Wl,-rpath /opt/opscode/embedded/lib -L/opt/opscode/embedded/lib -I/opt/opscode/embedded/include"
-            "CFLAGS" "-I/opt/opscode/embedded/include -L/opt/opscode/embedded/lib"
+            "LDFLAGS" "-Wl,-rpath /opt/chef/embedded/lib -L/opt/chef/embedded/lib -I/opt/chef/embedded/include"
+            "CFLAGS" "-I/opt/chef/embedded/include -L/opt/chef/embedded/lib"
             })]
 (software "ncurses" :source "ncurses-5.7"
           :steps [ {
-		   :env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"} 
+		   :env {"LD_RUN_PATH" "/opt/chef/embedded/lib"} 
                    :command "./configure"
-                   :args ["--prefix=/opt/opscode/embedded" "--with-shared" "--without-debug"]}
-                  {:env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"} :command "make"}
-                  {:env {"LD_RUN_PATH" "/opt/opscode/embedded/lib"} :command "make" :args ["install"]}])
+                   :args ["--prefix=/opt/chef/embedded" "--with-shared" "--without-debug"]}
+                  {:env {"LD_RUN_PATH" "/opt/chef/embedded/lib"} :command "make"}
+                  {:env {"LD_RUN_PATH" "/opt/chef/embedded/lib"} :command "make" :args ["install"]}])
 
 )

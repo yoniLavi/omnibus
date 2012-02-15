@@ -20,7 +20,7 @@
 (software "curl" :source "curl-7.21.2"
           :steps [
                   {:command "./configure"
-                   :args ["--prefix=/opt/opscode/embedded"
+                   :args ["--prefix=/opt/chef/embedded"
                           "--disable-debug"
                           "--enable-optimize"
                           "--disable-ldap"
@@ -30,13 +30,13 @@
                           "--disable-dependency-tracking"
                           "--enable-ipv6"
                           "--without-libidn"
-                          "--with-ssl=/opt/opscode/embedded"
-                          "--with-zlib=/opt/opscode/embedded"]}
-                  {:command "make" :env { "LD_RUN_PATH" "/opt/opscode/embedded/lib" }}
+                          "--with-ssl=/opt/chef/embedded"
+                          "--with-zlib=/opt/chef/embedded"]}
+                  {:command "make" :env { "LD_RUN_PATH" "/opt/chef/embedded/lib" }}
                   {:command "make" :args ["install"]}
                  ; {:command "ln"
                  ;  :args ["-sfn"
-                 ;         "/opt/opscode/embedded/bin/curl-config"
+                 ;         "/opt/chef/embedded/bin/curl-config"
                  ;         "/usr/local/bin/curl-config"]}
                   ])
 
