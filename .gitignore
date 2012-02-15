@@ -12,3 +12,4 @@ pom.xml
 /chef-repo/.chef/cache/*
 /chef-repo/.chef/backup/*
 /chef-repo/.chef/omnibus.json
+/chef-repo/.chef/*
