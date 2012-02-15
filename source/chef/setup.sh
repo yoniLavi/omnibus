@@ -32,7 +32,12 @@ shift `expr $OPTIND - 1`
 
 
 mkdir -p /opt/opscode || error_exit "Cannot create /opt/opscode!"
-LD_LIBRARY_PATH=$INSTALLER_DIR/embedded/lib $INSTALLER_DIR/embedded/bin/rsync -a --delete --exclude $INSTALLER_DIR/setup.sh $INSTALLER_DIR/ /opt/opscode || error_exit "Cannot rsync release to /opt/opscode"
+if [ -f "/usr/bin/sw_vers" ]; then
+    # OS X -- Use DYLD_LIBRARY_PATH
+    DYLD_LIBRARY_PATH=$INSTALLER_DIR/embedded/lib $INSTALLER_DIR/embedded/bin/rsync -a --delete --exclude $INSTALLER_DIR/setup.sh $INSTALLER_DIR/ /opt/opscode || error_exit "Cannot rsync release to /opt/opscode"
+else
+    LD_LIBRARY_PATH=$INSTALLER_DIR/embedded/lib $INSTALLER_DIR/embedded/bin/rsync -a --delete --exclude $INSTALLER_DIR/setup.sh $INSTALLER_DIR/ /opt/opscode || error_exit "Cannot rsync release to /opt/opscode"
+fi
 
 if [ "" != "$chef_url" ]; then
   mkdir -p /etc/chef || error_exit "Cannot create /etc/chef!"
