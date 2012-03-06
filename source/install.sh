@@ -144,6 +144,7 @@ case $platform in
     case $platform_version in
       "10.10") platform_version="10.04";;
       "11.10") platform_version="11.04";;
+      "12.04") platform_version="11.04";;
     esac
     ;;
 esac
