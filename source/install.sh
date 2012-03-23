@@ -131,7 +131,7 @@ case $platform in
   "el")
     case $major_version in
       "5") platform_version="5.7" ;;
-      "6") platform_version="6.0" ;;
+      "6") platform_version="6.2" ;;
     esac
     ;;
   "debian")
