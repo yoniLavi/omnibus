@@ -17,8 +17,8 @@ Dir.mkdir "#{BASE_PATH}/build-output" unless File.directory?("#{BASE_PATH}/build
 hosts_to_build = {
   'debian-6-i686' => "debian-6-i386.opscode.us",
   'debian-6-x86_64' => "debian-6-x86-64.opscode.us",
-  'el-6-i686' => "sl-6-i386.opscode.us",
-  'el-6-x86_64' => "sl-6-x86-64.opscode.us",
+  'el-6-i686' => "centos-62-i386.opscode.us",
+  'el-6-x86_64' => "centos-62-x86-64.opscode.us",
   'el-5.6-i686' => "centos-5-i386.opscode.us", 
   'el-5.6-x86_64' => "centos-5-x86-64.opscode.us",
   'ubuntu-1004-i686' => "ubuntu-1004-i386.opscode.us",
