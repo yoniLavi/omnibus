@@ -75,7 +75,7 @@ when 'windows'
   end
 
   # create bin bat files with *relative* paths to ruby.exe
-  executables = gem_executables('ohai')
+  executables = gem_executables('ohai', '0.6.10')
   executables << gem_executables('chef', node['omnibus']['chef-client']['version'])
   executables.flatten.reject{|g| g =~ /.rb/}.each do |bin|
     template "#{node['omnibus']['chef-client']['home']}\\bin\\#{bin}.bat" do

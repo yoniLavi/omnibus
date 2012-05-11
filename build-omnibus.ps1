@@ -12,6 +12,8 @@ $s3_access_key = $args[2]
 $s3_secret_key = $args[3]
 $current_dir = (Split-Path ((Get-Variable MyInvocation -Scope 0).Value).MyCommand.Path) -replace "\\$", ""
 
+Write-Output "### OHAI VERSION FIXED TO 0.6.10 ###"
+Write-Output "### chef-repo/cookbooks/omnibus/recipes/build.rb ###"
 Write-Output "Starting omnibus build of $project_name"
 
 $json_attribs = @"
