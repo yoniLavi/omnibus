@@ -49,7 +49,7 @@ when 'windows'
       gem_binary "#{embedded_dir}\\bin\\gem"
       options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
     end
-  }
+  end
 
   # Chef
   gem_package "chef" do
