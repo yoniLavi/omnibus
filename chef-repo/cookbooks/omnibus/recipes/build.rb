@@ -41,12 +41,15 @@ when 'windows'
     end
   end
 
-  # Ohai - For installing a specific version
-  gem_package "ohai" do
-    version "0.6.10"
-    gem_binary "#{embedded_dir}\\bin\\gem"
-    options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
-  end
+  
+  # Install specific versions of gems
+  { "ohai" => "0.6.10", "systemu" => "2.2.0" }.each do |gem_name, gem_version|
+    gem_package gem_name do
+      version gem_version
+      gem_binary "#{embedded_dir}\\bin\\gem"
+      options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
+    end
+  }
 
   # Chef
   gem_package "chef" do
