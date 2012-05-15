@@ -41,6 +41,13 @@ when 'windows'
     end
   end
 
+  # Ohai - For installing a specific version
+  gem_package "ohai" do
+    version "0.6.10"
+    gem_binary "#{embedded_dir}\\bin\\gem"
+    options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
+  end
+
   # Chef
   gem_package "chef" do
     version node['omnibus']['chef-client']['version']
@@ -75,7 +82,7 @@ when 'windows'
   end
 
   # create bin bat files with *relative* paths to ruby.exe
-  executables = gem_executables('ohai', '0.6.10')
+  executables = gem_executables('ohai')
   executables << gem_executables('chef', node['omnibus']['chef-client']['version'])
   executables.flatten.reject{|g| g =~ /.rb/}.each do |bin|
     template "#{node['omnibus']['chef-client']['home']}\\bin\\#{bin}.bat" do
