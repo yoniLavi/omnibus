@@ -1,6 +1,6 @@
 #!/bin/bash
 
-release_version="0.10.8-3"
+release_version="0.10.10-1"
 use_shell=0
 
 # Check whether a command exists - returns 0 if it does, 1 if it does not
@@ -98,9 +98,6 @@ elif [ -f "/usr/bin/sw_vers" ];
 then
   platform="mac_os_x"
   
-  # FIXME: CHEFCONF HACK
-  version="0.10.8-2"
-
   # Matching the tab-space with sed is error-prone
   platform_version=$(sw_vers | awk '/^ProductVersion:/ { print $2 }')
 
