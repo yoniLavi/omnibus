@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# This is the current stable release to default to, with Omnibus patch level (e.g. 10.12.0-1)
 release_version="0.10.10-1"
 use_shell=0
 
@@ -41,7 +42,7 @@ report_bug() {
   echo "Project: Chef"
   echo "Component: Packages"
   echo "Label: Omnibus"
-  echo "Version: $release_version"
+  echo "Version: $version"
   echo " "
   echo "Please detail your operating system type, version and any other relevant details"
 }
