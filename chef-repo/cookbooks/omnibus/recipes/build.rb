@@ -40,21 +40,24 @@ when 'windows'
       not_if{ ::File.exists?("#{node['omnibus']['chef-client']['home']}\\bin\\#{target}") }
     end
   end
-
-  # Install specific version of Ohai [if needed]
-  gem_package "ohai" do
-    #version "0.6.10"
-    gem_binary "#{embedded_dir}\\bin\\gem"
-    options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
-  end
   
   # Install specific versions of gems
+  # Systemu 2.5.0 and 2.5.1 and known to break on Windows (OHAI-306)
+  # However we cannot fix the version per platform (OHAI-271)
+  # Systemu 2.2.0 must be installed before Ohai so we satisfy the dependency
   { "systemu" => "2.2.0" }.each do |gem_name, gem_version|
     gem_package gem_name do
       version gem_version
       gem_binary "#{embedded_dir}\\bin\\gem"
       options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
     end
+  end
+
+  # Install specific version of Ohai [if needed]
+  gem_package "ohai" do
+    #version "0.6.10"
+    gem_binary "#{embedded_dir}\\bin\\gem"
+    options "-n '#{node['omnibus']['chef-client']['home']}\\bin' --no-rdoc --no-ri"
   end
 
   # Chef
