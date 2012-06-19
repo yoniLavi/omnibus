@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # This is the current stable release to default to, with Omnibus patch level (e.g. 10.12.0-1)
-release_version="0.10.10-1"
+# Note that the chef-full template downloads 'x.y.z' not 'x.y.z-r' which should be a duplicate of the latest -r
+release_version="10.12.0-1"
 use_shell=0
 
 # Check whether a command exists - returns 0 if it does, 1 if it does not
