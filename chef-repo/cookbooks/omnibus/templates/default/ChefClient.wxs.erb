@@ -26,6 +26,10 @@
       <UpgradeVersion Minimum="0.0.0.0" IncludeMinimum="yes" Maximum="$(var.VersionNumber)" IncludeMaximum="no" Property="OLDER_VERSION_FOUND" />
     </Upgrade>
 
+    <InstallExecuteSequence>
+      <RemoveExistingProducts Before="InstallInitialize" /> 
+    </InstallExecuteSequence>
+
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="WindowsVolume">
         <Directory Id="INSTALLLOCATION" Name="opscode">
