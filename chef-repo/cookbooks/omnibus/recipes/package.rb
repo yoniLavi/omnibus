@@ -48,8 +48,9 @@ when 'windows'
     mode "0755"
     variables(
       :guid => node['omnibus']['chef-client']['package_guid'],
-      :major_version => version[1],
-      :minor_version => version[2],
+      :major_version => version[0],
+      :minor_version => version[1],
+      :micro_version => version[2],
       :build_version => node['omnibus']['chef-client']['iteration']
     )
   end
