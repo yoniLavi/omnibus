@@ -33,18 +33,23 @@ $json_attribs = @"
 }
 "@
 
+Write-Output "Creating JSON file"
+
 $json_attribs | Out-File -Encoding ASCII $current_dir\chef-repo\.chef\omnibus.json
 
 # clean up build related directories if they exist
+Write-Output "Cleaning up temporary directories"
 @"
 C:\opscode
 C:\omnibus\pkg
 "@ -split "`r`n" | Foreach-Object {
   if ((Test-Path $_) -eq $True) {
+    Write-Output "  Removing $_"
     Remove-Item $_ -force -recurse
   }
 }
 
+Write-Output "Preparing script"
 # (FU) MS - we have to use a script block since Write-Host output doesn't go to STDERR or STDOUT
 # https://connect.microsoft.com/PowerShell/feedback/details/283088/script-logging-needs-to-be-improved
 $script = {
@@ -53,6 +58,7 @@ $script = {
   Start-Process -FilePath 'chef-solo' "-c $solo_path\solo.rb -j $solo_path\omnibus.json" -Wait -NoNewWindow
 }
 
+Write-Output "Executing chef-solo build"
 PowerShell -Command $script -args "$current_dir\chef-repo\.chef" >> $ENV:TEMP\omnibus.out 2>&1
 
 Write-Output "Finished build of $project_name"
