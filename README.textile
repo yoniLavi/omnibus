@@ -1,3 +1,11 @@
+h1. This project is DEPRECATED
+
+%{color:red}It has been rewritten in Ruby, please see the following projects:%
+
+http://github.com/opscode/omnibus-ruby
+http://github.com/opscode/omnibus-chef
+http://github.com/opscode/omnibus-software
+
 h2. Introduction
 
 omnibus helps you build self-installing, full-stack software builds.  For
