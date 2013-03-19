@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # This is the current stable release to default to, with Omnibus patch level (e.g. 10.12.0-1)
-# Note that the chef-full template downloads 'x.y.z' not 'x.y.z-r' which should be a duplicate of the latest -r
-release_version="10.12.0-1"
+# Note that the chef template downloads 'x.y.z' not 'x.y.z-r' which should be a duplicate of the latest -r
 use_shell=0
+
+prerelease="false"
 
 # Check whether a command exists - returns 0 if it does, 1 if it does not
 exists() {
@@ -20,22 +21,29 @@ deb_filename() {
   filetype="deb"
   if [ $machine = "x86_64" ];
   then
-    filename="chef-full_${version}_amd64.deb"
+    filename="chef_${version}_amd64.deb"
   else
-    filename="chef-full_${version}_i386.deb"
+    filename="chef_${version}_i386.deb"
   fi
 }
 
 # Set the filename for an rpm, based on version and machine
 rpm_filename() {
   filetype="rpm"
-  filename="chef-full-${version}.${machine}.rpm"
+  filename="chef-${version}.${machine}.rpm"
+}
+
+# Set the filename for a Solaris SVR4 package, based on version and machine
+svr4_filename() {
+  PATH=/usr/sfw/bin:$PATH
+  filetype="solaris"
+  filename="chef-${version}.${machine}.solaris"
 }
 
 # Set the filename for the sh archive
 shell_filename() {
   filetype="sh"
-  filename="chef-full-${version}-${platform}-${platform_version}-${machine}.sh"
+  filename="chef-${version}-${platform}-${platform_version}-${machine}.sh"
 }
 
 report_bug() {
@@ -49,11 +57,12 @@ report_bug() {
 }
 
 # Get command line arguments
-while getopts sv: opt
+while getopts spv: opt
 do
   case "$opt" in
     v)  version="$OPTARG";;
     s)  use_shell=1;;
+    p)  prerelease="true";;
     \?)   # unknown flag
       echo >&2 \
       "usage: $0 [-s] [-v version]"
@@ -84,6 +93,10 @@ then
     # Change platform version for use below.
     platform_version="6.0"
   fi
+  if [ "$platform" = "xcp" ];
+  then
+    platform_version="5.0"
+  fi
   platform="el"
 elif [ -f "/etc/system-release" ];
 then
@@ -99,14 +112,14 @@ then
 elif [ -f "/usr/bin/sw_vers" ];
 then
   platform="mac_os_x"
-  
   # Matching the tab-space with sed is error-prone
   platform_version=$(sw_vers | awk '/^ProductVersion:/ { print $2 }')
 
   major_version=$(echo $platform_version | cut -d. -f1,2)
   case $major_version in
-    "10.6") platform_version="10.6.8" ;;
-    "10.7") platform_version="10.7.2" ;;
+    "10.6") platform_version="10.6" ;;
+    "10.7") platform_version="10.7" ;;
+    "10.8") platform_version="10.7" ;;
     *) echo "No builds for platform: $major_version"
        report_bug
        exit 1
@@ -117,6 +130,21 @@ then
   x86_64=$(sysctl -n hw.optional.x86_64)
   if [ $x86_64 -eq 1 ]; then
     machine="x86_64"
+  fi
+elif [ -f "/etc/release" ];
+then
+  platform="solaris2"
+  machine=$(/usr/bin/uname -p)
+  platform_version=$(/usr/bin/uname -r)
+elif [ -f "/etc/SuSE-release" ];
+then
+  if grep -q 'Enterprise' /etc/SuSE-release;
+  then
+      platform="sles"
+      platform_version=$(awk '/^VERSION/ {V = $3}; /^PATCHLEVEL/ {P = $3}; END {print V "." P}' /etc/SuSE-release)
+  else
+      platform="suse"
+      platform_version=$(awk '/^VERSION =/ { print $3 }' /etc/SuSE-release)
   fi
 fi
 
@@ -133,21 +161,14 @@ major_version=$(echo $platform_version | cut -d. -f1)
 case $platform in
   "el")
     case $major_version in
-      "5") platform_version="5.7" ;;
-      "6") platform_version="6.2" ;;
+      "5") platform_version="5" ;;
+      "6") platform_version="6" ;;
     esac
     ;;
   "debian")
     case $major_version in
-      "5") platform_version="6.0.1";;
-      "6") platform_version="6.0.1";;
-    esac
-    ;;
-  "ubuntu")
-    case $platform_version in
-      "10.10") platform_version="10.04";;
-      "11.10") platform_version="11.04";;
-      "12.04") platform_version="11.04";;
+      "5") platform_version="6";;
+      "6") platform_version="6";;
     esac
     ;;
 esac
@@ -159,11 +180,6 @@ then
   exit 1
 fi
 
-if [ -z "$version" ];
-then
-    version=$release_version
-fi
-
 if [ $use_shell = 1 ];
 then
   shell_filename
@@ -172,42 +188,74 @@ else
     "ubuntu") deb_filename ;;
     "debian") deb_filename ;;
     "el") rpm_filename ;;
+    "suse") rpm_filename ;;
+    "sles") rpm_filename ;;
     "fedora") rpm_filename ;;
+    "solaris2") svr4_filename ;;
     *) shell_filename ;;
   esac
 fi
 
 echo "Downloading Chef $version for ${platform}..."
 
-url="http://s3.amazonaws.com/opscode-full-stack/$platform-$platform_version-$machine/$filename"
+url="https://www.opscode.com/chef/download?v=${version}&prerelease=${prerelease}&p=${platform}&pv=${platform_version}&m=${machine}"
+tmp_dir=$(mktemp -d -t tmp.XXXXXXXX || echo "/tmp")
 
 if exists wget;
 then
-  wget -O /tmp/$filename $url
+  downloader="wget"
+  wget -O "$tmp_dir/$filename" $url 2>/tmp/stderr
 elif exists curl;
 then
-  curl $url > /tmp/$filename
+  downloader="curl"
+  curl -L $url > "$tmp_dir/$filename"
 else
   echo "Cannot find wget or curl - cannot install Chef!"
   exit 5
 fi
 
 # Check to see if we got a 404 or an empty file
-grep "does not exist" /tmp/$filename 2>&1 >/dev/null
-if [ $? -eq 0 ] || [ ! -s /tmp/$filename ]
-then
+
+unable_to_retrieve_package() {
   echo "Unable to retrieve a valid package!"
   report_bug
   echo "URL: $url"
   exit 1
+}
+
+if [ $downloader == "curl" ]
+then
+  #do curl stuff
+  grep "The specified key does not exist." "$tmp_dir/$filename" 2>&1 >/dev/null
+  if [ $? -eq 0 ] || [ ! -s "$tmp_dir/$filename" ]
+  then
+    unable_to_retrieve_package
+  fi
+elif [ $downloader == "wget" ]
+then
+  #do wget stuff
+  grep "ERROR 404" /tmp/stderr 2>&1 >/dev/null
+  if [ $? -eq 0 ] || [ ! -s "$tmp_dir/$filename" ]
+  then
+    unable_to_retrieve_package
+  fi
 fi
 
 echo "Installing Chef $version"
 case "$filetype" in
-  "rpm") rpm -Uvh /tmp/$filename ;;
-  "deb") dpkg -i /tmp/$filename ;;
-  "sh" ) bash /tmp/$filename ;;
+  "rpm") rpm -Uvh "$tmp_dir/$filename" ;;
+  "deb") dpkg -i "$tmp_dir/$filename" ;;
+  "solaris") echo "conflict=nocheck" > /tmp/nocheck
+         echo "action=nocheck" >> /tmp/nocheck
+         pkgadd -n -d "$tmp_dir/$filename" -a /tmp/nocheck chef
+         ;;
+  "sh" ) bash "$tmp_dir/$filename" ;;
 esac
+
+if [ "$tmp_dir" != "/tmp" ];
+then
+  rm -r "$tmp_dir"
+fi
 
 if [ $? -ne 0 ];
 then
